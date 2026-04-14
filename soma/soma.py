@@ -255,6 +255,24 @@ class SOMALayer(nn.Module):
             poses_rot_relative, self._t_pose_orient, self._t_pose_orient_parent_T
         )
 
+    # ------------------------------------------------------------------
+    # Public accessors for skeleton topology and T-pose data
+    # ------------------------------------------------------------------
+
+    @property
+    def joint_names(self):
+        """List of joint name strings (length J), indexed to match rotation arrays."""
+        return list(self.rig_data["joint_names"])
+
+    def get_tpose_rotations(self):
+        """Return T-pose rotation matrices for all joints.
+
+        Returns:
+            (J, 3, 3) tensor — the upper-left 3×3 rotation block of
+            each joint's T-pose world transform.
+        """
+        return self.t_pose_world[:, :3, :3]
+
     def prepare_identity(
         self,
         identity_coeffs,
