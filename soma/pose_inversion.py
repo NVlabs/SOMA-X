@@ -64,6 +64,7 @@ except ImportError:
 _1DOF_Z_JOINTS = frozenset({"LeftForeArm", "RightForeArm", "LeftShin", "RightShin"})
 
 _HIPS_IDX = 1  # SOMA Hips joint (child of virtual Root at 0)
+HIPS_IDX = _HIPS_IDX  #: Public alias — index of the Hips joint (Root's child).
 
 
 # ---------------------------------------------------------------------------
@@ -344,6 +345,24 @@ def _build_world_transforms(pose_local, cache):
     local_t[:, _HIPS_IDX, :] = pose_local[:, _HIPS_IDX, :3, 3]
     T_local = SE3_from_Rt(pose_local[:, :, :3, :3], local_t)
     return joint_local_to_world_levelorder(T_local, cache["levels"])
+
+
+def build_world_transforms(pose_local, cache):
+    """Build world SE3 transforms from local rotations and bind translations.
+
+    Public wrapper around the internal FK computation.
+
+    Args:
+        pose_local: (B, J, 4, 4) local SE3 transforms.  Rotation in the
+            upper-left 3x3; hips translation in ``[:, HIPS_IDX, :3, 3]``.
+        cache: dict returned by ``PoseInversion._cache`` after
+            ``prepare_identity()`` has been called.  Required keys:
+            ``"bind_local_t"`` and ``"levels"``.
+
+    Returns:
+        (B, J, 4, 4) world SE3 transforms via level-order FK.
+    """
+    return _build_world_transforms(pose_local, cache)
 
 
 # ---------------------------------------------------------------------------

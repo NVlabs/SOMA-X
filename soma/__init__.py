@@ -7,6 +7,7 @@ from .assets import get_assets_dir
 from .geometry.rig_utils import remove_joint_orient_local
 from .identity_model import BaseIdentityModel, create_identity_model
 from .io import add_npz_args, save_soma_npz
+from .pose_inversion import HIPS_IDX, PoseInversion, build_world_transforms
 from .soma import SOMALayer
 from .units import Unit
 
@@ -37,6 +38,9 @@ def setup_warp_for_ddp():
 __all__ = [
     "__version__",
     "get_assets_dir",
+    "build_world_transforms",
+    "HIPS_IDX",
+    "PoseInversion",
     "SOMALayer",
     "SomaLayer",
     "Unit",
