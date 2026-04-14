@@ -40,6 +40,7 @@ Usage::
     # result["rotations"]        (B, J, 3, 3) absolute local rotations
     # result["root_translation"] (B, 3)
     # result["per_vertex_error"] (B, V)
+    # result["joint_positions"]  (B, J, 3) world-space joint positions
 """
 
 import torch
@@ -945,8 +946,9 @@ class PoseInversion:
 
         Returns:
             dict with ``rotations`` (B, J, 3, 3),
-            ``root_translation`` (B, 3), and
-            ``per_vertex_error`` (B, V) L2 error per vertex.
+            ``root_translation`` (B, 3),
+            ``per_vertex_error`` (B, V) L2 error per vertex, and
+            ``joint_positions`` (B, J, 3) world-space joint positions.
         """
         if self._cache is None:
             raise RuntimeError("Call prepare_identity() first.")
@@ -1100,6 +1102,7 @@ class PoseInversion:
             "rotations": rotations,
             "root_translation": root_translation,
             "per_vertex_error": per_vertex_error,
+            "joint_positions": W[:, :, :3, 3].clone(),  # (B, J, 3)
         }
 
     def _fit_autograd_fk(
@@ -1220,6 +1223,7 @@ class PoseInversion:
             "rotations": R_local,
             "root_translation": transl_opt.detach(),
             "per_vertex_error": per_vertex_error,
+            "joint_positions": W[:, :, :3, 3].clone(),  # (B, J, 3)
         }
 
     def roundtrip(self, posed_vertices, **kwargs):
