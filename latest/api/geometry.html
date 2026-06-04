@@ -1,0 +1,2425 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>soma.geometry &#8212; SOMA-X</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+
+
+
+    <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/geometry';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="canonical" href="https://nvlabs.github.io/SOMA-X/api/geometry.html" />
+    <link rel="icon" href="../_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Data Assets" href="../data_assets.html" />
+    <link rel="prev" title="soma.io" href="io.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="SOMA-X - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="SOMA-X - Home"/>
+  
+  
+    <p class="title logo__title">SOMA-X</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVlabs/SOMA-X" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="SOMA-X - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="SOMA-X - Home"/>
+  
+  
+    <p class="title logo__title">SOMA-X</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVlabs/SOMA-X" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_card.html">Model Overview</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../BIAS.html">Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../EXPLAINABILITY.html">Explainability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PRIVACY.html">Privacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SAFETY_and_SECURITY.html">Safety and Security</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="soma-geometry">
+<h1><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code><a class="headerlink" href="#soma-geometry" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code> package contains the lower-level geometry, rigging, interpolation,
+and Warp-accelerated kernels used internally by <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> and <code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code>.</p>
+<p>This section is useful when you want to build custom fitting or retargeting workflows
+without going through the higher-level layer wrappers.</p>
+<section id="module-soma.geometry.transforms">
+<span id="transform-and-rig-utilities"></span><h2>Transform and rig utilities<a class="headerlink" href="#module-soma.geometry.transforms" title="Link to this heading">#</a></h2>
+<p>Rotation and rigid-transform helpers used across SOMA geometry modules.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.compute_covariance">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">compute_covariance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">virtual_normal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.compute_covariance" title="Link to this definition">#</a></dt>
+<dd><p>Compute covariance matrix H = A^T &#64; B for rotation estimation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>Tensor</em>) – Target vectors (…, N, 3)</p></li>
+<li><p><strong>B</strong> (<em>Tensor</em>) – Source vectors (…, N, 3)</p></li>
+<li><p><strong>virtual_normal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, add synthetic normal correspondence for conditioning</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>H</em> – Covariance matrix (…, 3, 3)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.kabsch">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">kabsch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.kabsch" title="Link to this definition">#</a></dt>
+<dd><p>Compute rotation matrix from covariance using Kabsch algorithm (SVD).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>H</strong> (<em>Tensor</em>) – Covariance matrix (…, 3, 3)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>R</em> – Rotation matrix (…, 3, 3) with det(R) = 1</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.newton_schulz">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">newton_schulz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.newton_schulz" title="Link to this definition">#</a></dt>
+<dd><p>Compute rotation matrix from covariance using Newton-Schulz iteration.</p>
+<p>This is primarily a reference implementation for testing and comparing against
+the Warp-accelerated Newton-Schulz kernel. Production callers should pair
+Newton-Schulz with validity checks or a reference-gauge policy when the
+covariance is rank deficient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>H</strong> (<em>Tensor</em>) – Covariance matrix (…, 3, 3)</p></li>
+<li><p><strong>num_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of iterations (default 30)</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>R</em> – Rotation matrix (…, 3, 3) with det(R) = 1</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Convergence depends on conditioning of H. Ill-conditioned matrices may
+require more iterations or may not converge to high precision.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.regularize_covariance_with_reference">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">regularize_covariance_with_reference</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">H</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">reference_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">prior_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AUTO_ROTATION_PRIOR_STRENGTH</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rank_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">AUTO_ROTATION_RANK_THRESHOLD</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-8</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.regularize_covariance_with_reference" title="Link to this definition">#</a></dt>
+<dd><p>Add a weak reference-gauge prior to a Procrustes covariance matrix.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.rotation_matrices_are_valid">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">rotation_matrices_are_valid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">det_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orthogonality_tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.rotation_matrices_are_valid" title="Link to this definition">#</a></dt>
+<dd><p>Return a boolean mask for finite right-handed orthonormal rotations.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.rodrigues_rotation">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">rodrigues_rotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.rodrigues_rotation" title="Link to this definition">#</a></dt>
+<dd><p>Compute rotation matrix that aligns vector b to vector a.</p>
+<p>Uses the shortest arc rotation approach similar to SciPy’s align_vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>Tensor</em>) – Target vector (…, 3)</p></li>
+<li><p><strong>b</strong> (<em>Tensor</em>) – Source vector (…, 3)</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>R</em> – Rotation matrix (…, 3, 3) such that R &#64; b ≈ a</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.align_vectors">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">align_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.align_vectors" title="Link to this definition">#</a></dt>
+<dd><p>SciPy-compatible: return rotation C such that C &#64; b ≈ a.
+Supports broadcasting across leading batch dims. Inputs: (…, N, 3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>Tensor</em>) – Target vectors (…, N, 3)</p></li>
+<li><p><strong>B</strong> (<em>Tensor</em>) – Source vectors (…, N, 3)</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><em>Literal</em></a><em>[</em><em>'kabsch'</em><em>, </em><em>'newton-schulz'</em><em>, </em><em>'auto'</em><em>]</em>) – ‘auto’, ‘kabsch’ (SVD-based), or ‘newton-schulz’ (iterative)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.SE3_from_Rt">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">SE3_from_Rt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.SE3_from_Rt" title="Link to this definition">#</a></dt>
+<dd><p>autograd-safe SE(3) transform construction from rotation R and translation t.
+R: (…, 3, 3)
+t: (…, 3)
+Returns: T (…, 4, 4)</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.SE3_inverse">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">SE3_inverse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.SE3_inverse" title="Link to this definition">#</a></dt>
+<dd><p>Invert SE(3) transform(s) in homogeneous coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>T</strong> (<em>Tensor</em>) – (…, 4, 4) torch.Tensor</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Tinv</em> – (…, 4, 4)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.euler_xyz_to_matrix">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">euler_xyz_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">euler_xyz</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.euler_xyz_to_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Convert XYZ Euler angles to rotation matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>euler_xyz</strong> (<em>Tensor</em>) – (…, 3) angles in radians, ordered as X, Y, Z.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(…, 3, 3) rotation matrices.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.matrix_to_euler_xyz">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">matrix_to_euler_xyz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.matrix_to_euler_xyz" title="Link to this definition">#</a></dt>
+<dd><p>Convert rotation matrices to XYZ Euler angles.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>R</strong> (<em>Tensor</em>) – (…, 3, 3) rotation matrices.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(…, 3) angles in radians, ordered as X, Y, Z.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.quaternion_normalize_xyzw">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">quaternion_normalize_xyzw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.quaternion_normalize_xyzw" title="Link to this definition">#</a></dt>
+<dd><p>Normalize XYZW quaternions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quaternion</strong> (<em>Tensor</em>) – (…, 4) quaternions ordered as x, y, z, w.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(…, 4) unit quaternions ordered as x, y, z, w.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.quaternion_conjugate_xyzw">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">quaternion_conjugate_xyzw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.quaternion_conjugate_xyzw" title="Link to this definition">#</a></dt>
+<dd><p>Return the conjugate of XYZW quaternions.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.quaternion_multiply_xyzw">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">quaternion_multiply_xyzw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.quaternion_multiply_xyzw" title="Link to this definition">#</a></dt>
+<dd><p>Hamilton product of XYZW quaternions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>a</strong> (<em>Tensor</em>) – (…, 4) left quaternions ordered as x, y, z, w.</p></li>
+<li><p><strong>b</strong> (<em>Tensor</em>) – (…, 4) right quaternions ordered as x, y, z, w.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(…, 4) product quaternions ordered as x, y, z, w.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.quaternion_xyzw_to_matrix">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">quaternion_xyzw_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.quaternion_xyzw_to_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Convert XYZW quaternions to rotation matrices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quaternion</strong> (<em>Tensor</em>) – (…, 4) quaternions ordered as x, y, z, w.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(…, 3, 3) rotation matrices.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.matrix_to_quaternion_xyzw">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">matrix_to_quaternion_xyzw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.matrix_to_quaternion_xyzw" title="Link to this definition">#</a></dt>
+<dd><p>Convert rotation matrices to XYZW unit quaternions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>R</strong> (<em>Tensor</em>) – (…, 3, 3) rotation matrices.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(…, 4) quaternions ordered as x, y, z, w with non-negative w.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.matrix_to_quaternion_xyzw_stable">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">matrix_to_quaternion_xyzw_stable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.matrix_to_quaternion_xyzw_stable" title="Link to this definition">#</a></dt>
+<dd><p>Convert rotation matrices to XYZW quaternions with finite sqrt gradients.</p>
+<p>This follows the same signed-branch convention as <code class="docutils literal notranslate"><span class="pre">matrix_to_quaternion_xyzw</span></code>
+but adds a tiny value inside each square root.  It is intended for code paths
+that need gradients through matrix-to-quaternion conversion near zero-valued
+branches.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.single_axis_rotation_matrices">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">single_axis_rotation_matrices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_signs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.single_axis_rotation_matrices" title="Link to this definition">#</a></dt>
+<dd><p>Create rotation matrices for angles around one shared local axis.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.quaternion_half_angle_xyzw">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">quaternion_half_angle_xyzw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.quaternion_half_angle_xyzw" title="Link to this definition">#</a></dt>
+<dd><p>Return the principal half-angle quaternion for XYZW rotations.</p>
+<p><code class="docutils literal notranslate"><span class="pre">q</span></code> and <code class="docutils literal notranslate"><span class="pre">-q</span></code> represent the same rotation. This helper first chooses the
+representation with non-negative <code class="docutils literal notranslate"><span class="pre">w</span></code> and then computes the normalized
+square-root quaternion <code class="docutils literal notranslate"><span class="pre">sqrt(q)</span></code> using <code class="docutils literal notranslate"><span class="pre">[v,</span> <span class="pre">w</span> <span class="pre">+</span> <span class="pre">1]</span></code>. This is useful when
+extracting twist angles near 180 degrees without an unstable full-angle
+projection.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.quaternion_twist_angle_xyzw">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">quaternion_twist_angle_xyzw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quaternion</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis_ids</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.quaternion_twist_angle_xyzw" title="Link to this definition">#</a></dt>
+<dd><p>Extract signed twist angles around local axes from XYZW quaternions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>quaternion</strong> (<em>Tensor</em>) – (…, 4) quaternions ordered as x, y, z, w.</p></li>
+<li><p><strong>axis_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>Tensor</em>) – scalar axis id or tensor broadcastable to <code class="docutils literal notranslate"><span class="pre">quaternion.shape[:-1]</span></code>.
+Axis ids use <code class="docutils literal notranslate"><span class="pre">0=x</span></code>, <code class="docutils literal notranslate"><span class="pre">1=y</span></code>, <code class="docutils literal notranslate"><span class="pre">2=z</span></code>.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">quaternion.shape[:-1]</span></code> twist angles in radians.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.matrix_to_rotvec">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">matrix_to_rotvec</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.matrix_to_rotvec" title="Link to this definition">#</a></dt>
+<dd><p>(…,3,3) rotation matrices -&gt; (…,3) rotation vectors (axis * angle).
+Robust for small angles and near-pi.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.rotvec_to_matrix">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">rotvec_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotvec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-8</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.rotvec_to_matrix" title="Link to this definition">#</a></dt>
+<dd><p>(…,3) rotation vectors -&gt; (…,3,3) rotation matrices.
+Robust near zero.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.transforms.rotation_6d_to_matrix">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">rotation_6d_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.rotation_6d_to_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Convert 6D rotation representation by Zhou et al. [1] to rotation matrix.</p>
+<p>Uses Gram-Schmidt orthogonalization per Section B of [1].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>d6</strong> (<em>Tensor</em>) – 6D rotation representation, of size <code class="docutils literal notranslate"><span class="pre">(*,</span> <span class="pre">6)</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Batch of rotation matrices of size <code class="docutils literal notranslate"><span class="pre">(*,</span> <span class="pre">3,</span> <span class="pre">3)</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+<p>[1] Zhou, Y., Barnes, C., Lu, J., Yang, J., &amp; Li, H.
+On the Continuity of Rotation Representations in Neural Networks.
+IEEE Conference on Computer Vision and Pattern Recognition, 2019.
+Retrieved from <a class="reference external" href="http://arxiv.org/abs/1812.07035">http://arxiv.org/abs/1812.07035</a></p>
+</dd></dl>
+
+<p id="module-soma.geometry.rig_utils">Skeleton hierarchy utilities for converting between local and world frames.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.joint_world_to_local">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">joint_world_to_local</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_world_transforms</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">return_inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.joint_world_to_local" title="Link to this definition">#</a></dt>
+<dd><p>Convert world space joint transforms to local space (relative to parent).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>joint_world_transforms</strong> (<em>Tensor</em>) – (J, M, M) or (B, J, M, M) where M=4 or 3</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>joint_local_transforms</em> – same shape as joint_world_transforms</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.joint_local_to_world">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">joint_local_to_world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_local_transforms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.joint_local_to_world" title="Link to this definition">#</a></dt>
+<dd><p>Convert local space joint transforms (relative to parent) to world space.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>joint_local_transforms</strong> (<em>Tensor</em>) – (J, M, M) or (B, J, M, M) where M=4 or 3</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array or Python list[int] (list preferred for torch.export)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>joint_world_transforms</em> – same shape as joint_local_transforms</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.compute_skeleton_levels">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">compute_skeleton_levels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.compute_skeleton_levels" title="Link to this definition">#</a></dt>
+<dd><p>Group joints by tree depth for level-order forward kinematics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array, tensor, or Python list of parent indices.</p></li>
+<li><p><strong>device</strong> (<em>device</em><em> | </em><em>None</em>) – torch device for the returned index tensors.  Defaults to the
+device of <em>joint_parent_ids</em> when it is a tensor, otherwise <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of <code class="docutils literal notranslate"><span class="pre">(joint_ids,</span> <span class="pre">parent_ids)</span></code> tensor pairs, one per depth level.
+Level 0 contains the root(s); levels 1+ contain joints whose parents
+are at strictly lower levels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.joint_local_to_world_levelorder">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">joint_local_to_world_levelorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_local_transforms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.joint_local_to_world_levelorder" title="Link to this definition">#</a></dt>
+<dd><p>Batched level-order forward kinematics.</p>
+<p>Equivalent to <a class="reference internal" href="#soma.geometry.rig_utils.joint_local_to_world" title="soma.geometry.rig_utils.joint_local_to_world"><code class="xref py py-obj docutils literal notranslate"><span class="pre">joint_local_to_world</span></code></a> but processes all joints at the
+same tree depth in a single batched <code class="docutils literal notranslate"><span class="pre">bmm</span></code>, reducing ~J sequential kernel
+launches to ~D (number of depth levels, typically 10-12 for humanoids).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>joint_local_transforms</strong> (<em>Tensor</em>) – (J, M, M) or (B, J, M, M) where M = 3 or 4.</p></li>
+<li><p><strong>levels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><em>Tensor</em><em>, </em><em>Tensor</em><em>]</em><em>]</em>) – precomputed output of <a class="reference internal" href="#soma.geometry.rig_utils.compute_skeleton_levels" title="soma.geometry.rig_utils.compute_skeleton_levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_skeleton_levels</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>joint_world_transforms</em> – same shape as <em>joint_local_transforms</em>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.precompute_joint_orient">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">precompute_joint_orient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_orient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.precompute_joint_orient" title="Link to this definition">#</a></dt>
+<dd><p>Precompute tensors for <a class="reference internal" href="#soma.geometry.rig_utils.apply_joint_orient_local" title="soma.geometry.rig_utils.apply_joint_orient_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_joint_orient_local</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>joint_orient</strong> (<em>Tensor</em>) – (J, 3, 3) world-space orientation per joint.</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array or Python list of parent indices.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(orient,</span> <span class="pre">orient_parent_T)</span></code> – both (J, 3, 3) tensors ready to be
+passed to <a class="reference internal" href="#soma.geometry.rig_utils.apply_joint_orient_local" title="soma.geometry.rig_utils.apply_joint_orient_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_joint_orient_local</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.apply_joint_orient_local">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">apply_joint_orient_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_rotations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient_parent_T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.apply_joint_orient_local" title="Link to this definition">#</a></dt>
+<dd><p>Apply joint orient as a per-joint local operation (no FK loop).</p>
+<p>Mathematically equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">world</span> <span class="o">=</span> <span class="n">joint_local_to_world</span><span class="p">(</span><span class="n">local_rotations</span><span class="p">,</span> <span class="n">parent_ids</span><span class="p">)</span>
+<span class="n">world</span> <span class="o">=</span> <span class="n">world</span> <span class="o">@</span> <span class="n">orient</span>
+<span class="n">local</span> <span class="o">=</span> <span class="n">joint_world_to_local</span><span class="p">(</span><span class="n">world</span><span class="p">,</span> <span class="n">parent_ids</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>but computed as a single parallel matmul:</p>
+<blockquote>
+<div><p>R_out[j] = orient_parent_T[j] &#64; R_in[j] &#64; orient[j]</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_rotations</strong> (<em>Tensor</em>) – (B, J, 3, 3) local-space rotation matrices.</p></li>
+<li><p><strong>orient</strong> (<em>Tensor</em>) – (J, 3, 3) from <a class="reference internal" href="#soma.geometry.rig_utils.precompute_joint_orient" title="soma.geometry.rig_utils.precompute_joint_orient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precompute_joint_orient</span></code></a>.</p></li>
+<li><p><strong>orient_parent_T</strong> (<em>Tensor</em>) – (J, 3, 3) from <a class="reference internal" href="#soma.geometry.rig_utils.precompute_joint_orient" title="soma.geometry.rig_utils.precompute_joint_orient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precompute_joint_orient</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(B, J, 3, 3) oriented local rotations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.remove_joint_orient_local">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">remove_joint_orient_local</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_rotations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient_parent_T</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.remove_joint_orient_local" title="Link to this definition">#</a></dt>
+<dd><p>Remove joint orient — inverse of <a class="reference internal" href="#soma.geometry.rig_utils.apply_joint_orient_local" title="soma.geometry.rig_utils.apply_joint_orient_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_joint_orient_local</span></code></a>.</p>
+<p>Converts absolute local rotations (with orient baked in) back to
+T-pose-relative rotations:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R_rel</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">orient_parent_T</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">^</span><span class="n">T</span> <span class="o">@</span> <span class="n">R_abs</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">@</span> <span class="n">orient</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">^</span><span class="n">T</span>
+</pre></div>
+</div>
+<p>This is used to convert PoseInversion output (absolute) into the
+relative convention expected by <code class="docutils literal notranslate"><span class="pre">SOMALayer.pose(absolute_pose=False)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>local_rotations</strong> (<em>Tensor</em>) – (B, J, 3, 3) absolute local rotations.</p></li>
+<li><p><strong>orient</strong> (<em>Tensor</em>) – (J, 3, 3) from <a class="reference internal" href="#soma.geometry.rig_utils.precompute_joint_orient" title="soma.geometry.rig_utils.precompute_joint_orient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precompute_joint_orient</span></code></a>.</p></li>
+<li><p><strong>orient_parent_T</strong> (<em>Tensor</em>) – (J, 3, 3) from <a class="reference internal" href="#soma.geometry.rig_utils.precompute_joint_orient" title="soma.geometry.rig_utils.precompute_joint_orient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">precompute_joint_orient</span></code></a>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(B, J, 3, 3) T-pose-relative rotations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.get_joint_children_ids">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">get_joint_children_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.get_joint_children_ids" title="Link to this definition">#</a></dt>
+<dd><p>Given a list of joint parent IDs, return a list of lists of joint children IDs.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.get_joint_descendents">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">get_joint_descendents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joint_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.get_joint_descendents" title="Link to this definition">#</a></dt>
+<dd><p>Given a list of joint parent IDs, return a list of all descendents of a given joint ID.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.get_body_part_vertex_ids">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">get_body_part_vertex_ids</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">skinning_weights</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">root_joint_id</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">include_root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">weight_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.get_body_part_vertex_ids" title="Link to this definition">#</a></dt>
+<dd><p>Get the vertex IDs influenced by a body part defined by a root joint and its descendents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>skinning_weights</strong> (<em>Tensor</em>) – (V, J) array of skinning weights</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array of joint parent indices</p></li>
+<li><p><strong>root_joint_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – int, joint ID of the body part root</p></li>
+<li><p><strong>include_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – bool, whether to include vertices influenced by the root joint itself</p></li>
+<li><p><strong>weight_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – float, minimum skinning weight to consider a vertex influenced by a joint</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>vertex_ids</em> – list of int, vertex IDs influenced by the body part</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.PoseMirror_SOMA">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">PoseMirror_SOMA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Root'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.PoseMirror_SOMA" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Mirrors world-space SOMA skeletal poses across the sagittal plane (YZ plane).</p>
+<p>This class reflects joint positions and orientations to swap the “Left” and “Right”
+sides of the body, effectively creating a mirror image of the pose. It handles the
+complexities of retaining a valid Right-Handed Coordinate System (RHCS) after reflection.</p>
+<dl class="simple">
+<dt>Rig Assumptions:</dt><dd><ul class="simple">
+<li><p><strong>World Up:</strong> +Y</p></li>
+<li><p><strong>World Forward:</strong> +Z</p></li>
+<li><p><strong>Bone Axis:</strong> Local +X axis points toward the child joint (along the bone).</p></li>
+<li><p><strong>Naming Convention:</strong> Symmetrical joints must start with “Left” or “Right”.</p></li>
+</ul>
+</dd>
+<dt>Mathematical Logic:</dt><dd><ol class="arabic simple">
+<li><p><strong>Global Reflection:</strong> Reflects world positions across the YZ plane ($$x     o -x$$).</p></li>
+<li><p><strong>Chirality Correction:</strong> Flips the local Y-axis to restore the coordinate system
+determinant to +1 (fixing the “inside-out” matrix caused by reflection).</p></li>
+<li><p><strong>Axis Realignment:</strong> Applies 180-degree rotations to realign the bone vectors:
+- <strong>Limbs:</strong> Rotated 180° about Y to ensure Local +X points to the child.
+- <strong>Center:</strong> Rotated 180° about X to correct roll/twist on the mirror plane.</p></li>
+<li><p><strong>Swap:</strong> Swaps the memory of Left and Right joint indices.</p></li>
+</ol>
+</dd>
+<dt>Features:</dt><dd><ul class="simple">
+<li><p>Supports both NumPy arrays and PyTorch tensors (CPU/GPU).</p></li>
+<li><p>Auto-detects backend and caches device-specific matrices.</p></li>
+<li><p>Vectorized operations (no loops during execution).</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>joint_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – List of joint names in the order of the pose array.</p></li>
+<li><p><strong>root_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the root joint. Defaults to “Root”.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.rig_utils.PoseMirror_MHR">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">PoseMirror_MHR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negate_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_DEFAULT_MHR_NEGATE_PARAMS</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.PoseMirror_MHR" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Mirror MHR parameters across the sagittal plane (YZ plane).</p>
+<p>Handles both pose parameters (<code class="docutils literal notranslate"><span class="pre">l_</span></code> / <code class="docutils literal notranslate"><span class="pre">r_</span></code> prefixed) and scale parameters
+(<code class="docutils literal notranslate"><span class="pre">scale_l_</span></code> / <code class="docutils literal notranslate"><span class="pre">scale_r_</span></code> prefixed), swapping left/right counterparts and
+negating parameters that reverse sign under reflection.</p>
+<dl class="simple">
+<dt>Features:</dt><dd><ul class="simple">
+<li><p>Supports both NumPy arrays and PyTorch tensors (CPU/GPU).</p></li>
+<li><p>Pre-computes swap indices and sign vectors.</p></li>
+<li><p>Vectorized execution.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – List of MHR parameter names (pose and/or scale).</p></li>
+<li><p><strong>negate_params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><em>set</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Set of parameter names to negate (multiply by -1).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-soma.geometry.lbs">
+<span id="skinning-and-skeleton-fitting"></span><h2>Skinning and skeleton fitting<a class="headerlink" href="#module-soma.geometry.lbs" title="Link to this heading">#</a></h2>
+<p>PyTorch linear blend skinning and Rodrigues conversion helpers.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.lbs.batch_rodrigues">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.lbs.</span></span><span class="sig-name descname"><span class="pre">batch_rodrigues</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rot_vecs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.lbs.batch_rodrigues" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the rotation matrices for a batch of rotation vectors
+:param rot_vecs: array of N axis-angle vectors
+:type rot_vecs: torch.tensor Nx3</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>R</strong> (<em>torch.tensor Nx3x3</em>) – The rotation matrices for the given axis-angle parameters</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.lbs.lbs">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.lbs.</span></span><span class="sig-name descname"><span class="pre">lbs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bind_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skinning_weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_pose_world</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.lbs.lbs" title="Link to this definition">#</a></dt>
+<dd><p>Linear Blend Skinning (PyTorch).</p>
+<dl class="simple">
+<dt>Supported:</dt><dd><ol class="upperalpha simple">
+<li><p>target batched only:
+bind_shape:        (V, 3)
+skinning_weights:  (V, J)       # STRICT
+target_pose_world: (…, J, 4, 4)</p></li>
+<li><p>all batched with same leading dims:
+bind_shape:        (…, V, 3)
+skinning_weights:  (V, J)       # STRICT
+target_pose_world: (…, J, 4, 4)</p></li>
+<li><p>fully unbatched:
+bind_shape:        (V, 3)
+skinning_weights:  (V, J)
+target_pose_world: (J, 4, 4)</p></li>
+</ol>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>blended</em> – (…, V, 3)  # mirrors the active batch dims (from A or B)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-soma.geometry.batched_skinning">Batched forward kinematics and linear blend skinning utilities.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.batched_skinning.FKTopology">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.batched_skinning.</span></span><span class="sig-name descname"><span class="pre">FKTopology</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">parent_ids</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">target_joint_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_orient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">global_translation_joint_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bind_world_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.batched_skinning.FKTopology" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Optional FK-only source topology for a target LBS rig.</p>
+<p><code class="docutils literal notranslate"><span class="pre">BatchedSkinning</span></code> always owns one target topology for LBS.  A source
+topology describes a related FK rig whose world transforms can be expanded
+into the target topology by caller-owned logic.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.batched_skinning.topk_skinning">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.batched_skinning.</span></span><span class="sig-name descname"><span class="pre">topk_skinning</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">K</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">weight_eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">sort_desc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">pad_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dtype_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.int32</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">dtype_w</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">torch.float32</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.batched_skinning.topk_skinning" title="Link to this definition">#</a></dt>
+<dd><p>Convert dense skinning weights (N, J) -&gt; sparse top-K jointIndices/jointWeights.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>W</strong> (<em>Tensor</em>) – (N, J) float tensor of skinning weights per vertex.</p></li>
+<li><p><strong>K</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – number of influences per vertex to keep.</p></li>
+<li><p><strong>weight_eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – prune tiny weights; also avoids div-by-zero in normalization.</p></li>
+<li><p><strong>sort_desc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – sort the chosen K influences by descending weight (stable output).</p></li>
+<li><p><strong>pad_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – index used when fewer than K nonzero weights exist for a vertex.</p></li>
+<li><p><strong>dtype_idx</strong> (<em>dtype</em>) – dtype for the joint-index output.</p></li>
+<li><p><strong>dtype_w</strong> (<em>dtype</em>) – dtype for the joint-weight output.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>idx_mat</em> – (N, K) int32
+w_mat:   (N, K) float32</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-soma.geometry.skeleton_transfer">Skeleton fitting utilities for adapting a bind rig to a new rest shape.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.skeleton_transfer.SkeletonTransfer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.skeleton_transfer.</span></span><span class="sig-name descname"><span class="pre">SkeletonTransfer</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bind_world_transforms</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bind_shape</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">skinning_weights</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rbf_kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">vertex_ids_to_exclude</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">freeze_rotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">skip_endjoints</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">use_sparse_rbf_matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">use_warp_for_rotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rotation_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">skip_inverse_lbs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">root_joint_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.skeleton_transfer.SkeletonTransfer" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Fit joint positions and orientations to a new rest-shape surface.</p>
+<p>Initialize a SkeletonTransfer instance for fitting a skeleton to new shapes.
+:param joint_parent_ids: (J,) int array of joint parent indices
+:param bind_world_transforms: (J, 4, 4) array of joint bind poses in world space
+:param bind_shape: (V, 3) array of vertex positions in bind pose
+:param skinning_weights: (V, J) array of skinning weights
+:param rbf_kernel: type of RBF kernel to use for joint position regression
+:param vertex_ids_to_exclude: (V,) int array of vertex ids to exclude from the joint position regressors
+:param freeze_rotations: list of joint ids to freeze to bind pose (for Warp mode)
+:param skip_endjoints: bool, whether to skip rotation fitting for end joints (for Warp mode)
+:param use_sparse_rbf_matrix: bool, whether to use a sparse RBF matrix for joint position regression
+:param use_warp_for_rotations: bool, whether to use Warp-based rotation fitting (requires Warp)
+:param rotation_method: str, rotation extraction method (‘auto’, ‘kabsch’, or ‘newton-schulz’)
+:param skip_inverse_lbs: bool, whether to skip Inverse LBS (skinned vertex fitting) and use identity R_init
+:param root_joint_idx: index of the root joint (0 for hand models, 1 for full-body SOMA)</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.skeleton_transfer.SkeletonTransfer.update_bind">
+<span class="sig-name descname"><span class="pre">update_bind</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bind_world_transforms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bind_shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.update_bind" title="Link to this definition">#</a></dt>
+<dd><p>Update bind-pose data without rebuilding structural caches.</p>
+<p>This is much faster than constructing a new SkeletonTransfer and is
+suitable when only the identity (shape) changes but the topology,
+skinning weights, and skeleton structure remain the same.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.skeleton_transfer.SkeletonTransfer.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_shapes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.fit" title="Link to this definition">#</a></dt>
+<dd><p>Fit the skeleton to new shapes by adjusting joint positions and orientations.
+:param target_shapes: (B, V, 3) or (V, 3) array of new vertex positions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>target_bind_world_transforms</em> – (B, J, 4, 4) or (J, 4, 4) array of new bind poses in world space</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.skeleton_transfer.SkeletonTransfer.fit_joint_positions">
+<span class="sig-name descname"><span class="pre">fit_joint_positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target_shapes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.fit_joint_positions" title="Link to this definition">#</a></dt>
+<dd><p>Fit the skeleton to new shapes by adjusting joint positions.
+:param target_shapes: (B, V, 3) or (V, 3) array of new vertex positions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>new_joint_positions</em> – (B, J, 3) or (J, 3) array of new joint positions</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.skeleton_transfer.SkeletonTransfer.fit_joint_rotations">
+<span class="sig-name descname"><span class="pre">fit_joint_rotations</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">new_joint_positions</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">target_shapes</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.fit_joint_rotations" title="Link to this definition">#</a></dt>
+<dd><p>Fit the skeleton to new positions by adjusting joint orientations.
+:param new_joint_positions: (B, J, 3) or (J, 3) array of new joint positions
+:param target_shapes: (B, V, 3) or (V, 3) array of new vertex positions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>world_bind_pose</em> – (B, J, 4, 4) or (J, 4, 4) array of new bind poses in world space</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.skeleton_transfer.SkeletonTransfer.fit_rotations_warp">
+<span class="sig-name descname"><span class="pre">fit_rotations_warp</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">new_joint_positions</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">target_shapes</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.fit_rotations_warp" title="Link to this definition">#</a></dt>
+<dd><p>Warp-accelerated version of fit_joint_rotations using GPU-parallel alignment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>new_joint_positions</strong> (<em>Tensor</em>) – (B, J, 3) or (J, 3) array of new joint positions</p></li>
+<li><p><strong>target_shapes</strong> (<em>Tensor</em>) – (B, V, 3) or (V, 3) array of new vertex positions</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>world_bind_pose</em> – (B, J, 4, 4) or (J, 4, 4) array of new bind poses in world space</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-soma.geometry.barycentric_interp">
+<span id="interpolation-and-mesh-utilities"></span><h2>Interpolation and mesh utilities<a class="headerlink" href="#module-soma.geometry.barycentric_interp" title="Link to this heading">#</a></h2>
+<p>Barycentric interpolation for mesh deformation transfer.</p>
+<dl>
+<dt>Example usage:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">soma.geometry.barycentric_interp</span><span class="w"> </span><span class="kn">import</span> <span class="n">BarycentricInterpolator</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create interpolator</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">interp</span> <span class="o">=</span> <span class="n">BarycentricInterpolator</span><span class="p">(</span><span class="n">V_src</span><span class="p">,</span> <span class="n">F_src</span><span class="p">,</span> <span class="n">V_dst</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Apply to deformed source mesh</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">V_dst_deformed</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">V_src_deformed</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Works with batches too</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">V_dst_batch</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">V_src_batch</span><span class="p">)</span>  <span class="c1"># (batch, n_verts, 3)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.barycentric_interp.fabricate_tet">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.barycentric_interp.</span></span><span class="sig-name descname"><span class="pre">fabricate_tet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.fabricate_tet" title="Link to this definition">#</a></dt>
+<dd><p>Fabricate a tetrahedron from triangle vertices by adding a point
+perpendicular to the triangle plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p0</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – First triangle vertex, shape (…, 3)</p></li>
+<li><p><strong>p1</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Second triangle vertex, shape (…, 3)</p></li>
+<li><p><strong>p2</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Third triangle vertex, shape (…, 3)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>p3</em> – Fourth point of tetrahedron, shape (…, 3)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.barycentric_interp.compute_barycentric_coords_3d">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.barycentric_interp.</span></span><span class="sig-name descname"><span class="pre">compute_barycentric_coords_3d</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.compute_barycentric_coords_3d" title="Link to this definition">#</a></dt>
+<dd><p>Compute 3D barycentric coordinates for point p in tetrahedron (v0, v1, v2, v3).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>p</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Query points, shape (…, 3)</p></li>
+<li><p><strong>v0</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – First tetrahedron vertex, shape (…, 3)</p></li>
+<li><p><strong>v1</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Second tetrahedron vertex, shape (…, 3)</p></li>
+<li><p><strong>v2</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Third tetrahedron vertex, shape (…, 3)</p></li>
+<li><p><strong>v3</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Fourth tetrahedron vertex, shape (…, 3)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Barycentric coordinates, shape (…, 4)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.barycentric_interp.barycentric_interpolation">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.barycentric_interp.</span></span><span class="sig-name descname"><span class="pre">barycentric_interpolation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_tet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F_tet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_ids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bary_coords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.barycentric_interpolation" title="Link to this definition">#</a></dt>
+<dd><p>Interpolate vertices using precomputed barycentric coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>V_tet</strong> (<em>Tensor</em>) – Tetrahedralized vertices, shape (batch, n_verts + n_faces, 3) or (n_verts + n_faces, 3)</p></li>
+<li><p><strong>F_tet</strong> (<em>Tensor</em>) – Tetrahedron face indices, shape (n_faces, 4)</p></li>
+<li><p><strong>face_ids</strong> (<em>Tensor</em>) – Closest face indices for each target point, shape (n_target,)</p></li>
+<li><p><strong>bary_coords</strong> (<em>Tensor</em>) – Barycentric coordinates, shape (n_target, 4)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Interpolated vertices, shape (batch, n_target, 3) or (n_target, 3)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.barycentric_interp.BarycentricInterpolator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.barycentric_interp.</span></span><span class="sig-name descname"><span class="pre">BarycentricInterpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_dst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correspondence_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.BarycentricInterpolator" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Barycentric interpolation for transferring deformations from source to target mesh.
+Uses tetrahedral mesh construction and 3D barycentric coordinates.</p>
+<p>Initialize barycentric interpolator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>V_src</strong> (<em>Tensor</em>) – Source mesh vertices, (n_src_verts, 3) - torch tensor</p></li>
+<li><p><strong>F_src</strong> (<em>Tensor</em>) – Source mesh faces, (n_faces, 3) - torch tensor</p></li>
+<li><p><strong>V_dst</strong> (<em>Tensor</em>) – Target mesh vertices, (n_dst_verts, 3) - torch tensor</p></li>
+<li><p><strong>correspondence_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Optional path to load precomputed correspondence</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.barycentric_interp.BarycentricInterpolator.compute_correspondence">
+<span class="sig-name descname"><span class="pre">compute_correspondence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.BarycentricInterpolator.compute_correspondence" title="Link to this definition">#</a></dt>
+<dd><p>Compute correspondence using trimesh for closest point queries.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.barycentric_interp.BarycentricInterpolator.load_correspondence">
+<span class="sig-name descname"><span class="pre">load_correspondence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.BarycentricInterpolator.load_correspondence" title="Link to this definition">#</a></dt>
+<dd><p>Load precomputed correspondence from file.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.barycentric_interp.BarycentricInterpolator.save_correspondence">
+<span class="sig-name descname"><span class="pre">save_correspondence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.BarycentricInterpolator.save_correspondence" title="Link to this definition">#</a></dt>
+<dd><p>Save computed correspondence to file.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.barycentric_interp.BarycentricInterpolator.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_src_deformed</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.BarycentricInterpolator.forward" title="Link to this definition">#</a></dt>
+<dd><p>Apply barycentric interpolation to transfer deformation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>V_src_deformed</strong> (<em>Tensor</em>) – Deformed source vertices, shape (batch, n_src_verts, 3) or (n_src_verts, 3)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Deformed target vertices, shape (batch, n_dst_verts, 3) or (n_dst_verts, 3)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class" id="module-soma.geometry.interpolate">
+<dt class="sig sig-object py" id="soma.geometry.interpolate.RadialBasisFunction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.interpolate.</span></span><span class="sig-name descname"><span class="pre">RadialBasisFunction</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">source_control_points</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kernel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'thin_plate_spline'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kernel_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">include_polynomial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.interpolate.RadialBasisFunction" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>RBF interpolator with precomputed system matrix (PyTorch).</p>
+<dl class="field-list simple">
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.interpolate.RadialBasisFunction.get_basis_weights">
+<span class="sig-name descname"><span class="pre">get_basis_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query_point</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.interpolate.RadialBasisFunction.get_basis_weights" title="Link to this definition">#</a></dt>
+<dd><p>Compute linear weights <code class="docutils literal notranslate"><span class="pre">w</span></code> such that <code class="docutils literal notranslate"><span class="pre">interpolated_pos</span> <span class="pre">=</span> <span class="pre">sum(w_i</span> <span class="pre">*</span> <span class="pre">source_point_i)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>query_point</strong> – <code class="docutils literal notranslate"><span class="pre">(D,)</span></code> vector representing the static template
+position of the joint (or point) being interpolated.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(N,)</span></code> vector of weights corresponding to the
+<code class="docutils literal notranslate"><span class="pre">source_control_points</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.interpolate.RadialBasisFunction.interpolate">
+<span class="sig-name descname"><span class="pre">interpolate</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">target_control_positions</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">query_points</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.interpolate.RadialBasisFunction.interpolate" title="Link to this definition">#</a></dt>
+<dd><p>Interpolate query points from new control-point positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>target_control_positions</strong> – <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">D)</span></code> or <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">N,</span> <span class="pre">D)</span></code>.</p></li>
+<li><p><strong>query_points</strong> – <code class="docutils literal notranslate"><span class="pre">(M,</span> <span class="pre">D)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(M,</span> <span class="pre">D)</span></code> if input was <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">D)</span></code>; <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">M,</span> <span class="pre">D)</span></code> if input was
+<code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">N,</span> <span class="pre">D)</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-soma.geometry.laplacian">Sparse Laplacian construction and Laplacian mesh editing helpers.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.laplacian.cotangent_weights">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.laplacian.</span></span><span class="sig-name descname"><span class="pre">cotangent_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.laplacian.cotangent_weights" title="Link to this definition">#</a></dt>
+<dd><p>Compute cotangent weights for mesh Laplacian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>V</strong> (<em>Tensor</em>) – Vertices (n_verts, 3)</p></li>
+<li><p><strong>F</strong> (<em>Tensor</em>) – Faces (n_faces, 3)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sparse COO indices and values for cotangent Laplacian matrix</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>, <em>Tensor</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.laplacian.build_cotangent_laplacian">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.laplacian.</span></span><span class="sig-name descname"><span class="pre">build_cotangent_laplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.laplacian.build_cotangent_laplacian" title="Link to this definition">#</a></dt>
+<dd><p>Build cotangent Laplacian matrix in sparse CSR format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>V</strong> (<em>Tensor</em>) – Vertices (n_verts, 3)</p></li>
+<li><p><strong>F</strong> (<em>Tensor</em>) – Faces (n_faces, 3)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sparse CSR tensor of shape (n_verts, n_verts)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.laplacian.build_uniform_laplacian">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.laplacian.</span></span><span class="sig-name descname"><span class="pre">build_uniform_laplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_verts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.laplacian.build_uniform_laplacian" title="Link to this definition">#</a></dt>
+<dd><p>Build the uniform (graph) Laplacian: L = D - A, where A is the binary
+adjacency matrix and D is the diagonal degree matrix.</p>
+<p>Unlike the cotangent Laplacian this is geometry-independent – it only
+depends on mesh connectivity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>F</strong> (<em>Tensor</em>) – Faces (n_faces, 3), int tensor</p></li>
+<li><p><strong>n_verts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of vertices in the mesh</p></li>
+<li><p><strong>device</strong> (<em>device</em><em> | </em><em>None</em>) – Torch device (inferred from F if None)</p></li>
+<li><p><strong>dtype</strong> (<em>dtype</em><em> | </em><em>None</em>) – Value dtype (default float32)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sparse CSR tensor of shape (n_verts, n_verts)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.laplacian.power_laplacian">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.laplacian.</span></span><span class="sig-name descname"><span class="pre">power_laplacian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.laplacian.power_laplacian" title="Link to this definition">#</a></dt>
+<dd><p>Compute L^order for higher-order Laplacian.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>L</strong> (<em>Tensor</em>) – Sparse Laplacian matrix (CSR format)</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Power to raise L to</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>L^order as sparse CSR tensor</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.laplacian.LaplacianMesh">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.laplacian.</span></span><span class="sig-name descname"><span class="pre">LaplacianMesh</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">V</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">mask_anchors</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">constraint_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'hard'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">soft_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-5</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">jitter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">solver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'cholespy'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.laplacian.LaplacianMesh" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Pure PyTorch implementation of Laplacian mesh editing.
+Supports both hard and soft constraints for deformation.</p>
+<p>Initialize Laplacian mesh editor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>V</strong> (<em>Tensor</em>) – Reference vertices (n_verts, 3)</p></li>
+<li><p><strong>F</strong> (<em>Tensor</em>) – Faces (n_faces, 3)</p></li>
+<li><p><strong>mask_anchors</strong> (<em>Tensor</em>) – Boolean mask (n_verts,) - True for anchors, False for free</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Order of Laplacian (1 or 2)</p></li>
+<li><p><strong>constraint_mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><em>Literal</em></a><em>[</em><em>'hard'</em><em>, </em><em>'soft'</em><em>]</em>) – “hard” or “soft”</p></li>
+<li><p><strong>soft_weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Weight for soft constraints (only used if constraint_mode=”soft”)</p></li>
+<li><p><strong>jitter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small value added to diagonal for numerical stability</p></li>
+<li><p><strong>solver</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><em>Literal</em></a><em>[</em><em>'cholespy'</em><em>, </em><em>'pytorch'</em><em>]</em>) – “cholespy” (pre-factored Cholesky via torch.linalg.cholesky) or
+“pytorch” (torch.sparse.spsolve, requires cuDSS on CUDA)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.laplacian.LaplacianMesh.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Vdef</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.laplacian.LaplacianMesh.solve" title="Link to this definition">#</a></dt>
+<dd><p>Solve for deformed mesh given constraint vertices.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>Vdef</strong> (<em>Tensor</em>) – Target vertices (B, n, 3) or (n, 3)
+For hard constraints: only values at constrained vertices are used
+For soft constraints: constrained vertices pull the solution</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Deformed vertices (B, n, 3) or (n, 3)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-soma.geometry.lbs_warp">
+<span id="warp-backends"></span><h2>Warp backends<a class="headerlink" href="#module-soma.geometry.lbs_warp" title="Link to this heading">#</a></h2>
+<p>Warp-based Linear Blend Skinning with torch.export support.</p>
+<p>Changes from original:
+- Added &#64;torch.library.custom_op decorators for torch.export compatibility
+- Registered fake implementations for shape inference during export
+- Wrapped forward/backward logic in custom operator functions
+- Public API (linear_blend_skinning) unchanged, fully backward compatible
+- Supports dynamic K (any number of bone influences)</p>
+<p>Original implementation used torch.autograd.Function (not exportable).
+Current implementation uses torch.library.custom_op (exportable via torch.export).</p>
+<dl>
+<dt>Example usage:</dt><dd><p>from soma.geometry.lbs_warp import linear_blend_skinning</p>
+<p># Prepare inputs
+vertices = torch.rand(4, 1000, 3, device=’cuda’)  # (batch, num_verts, 3)
+bone_weights = torch.rand(1000, 8, device=’cuda’)  # (num_verts, K) - sparse
+bone_indices = torch.randint(0, 20, (1000, 8), device=’cuda’)  # (num_verts, K)
+bone_transforms = torch.eye(4, device=’cuda’).unsqueeze(0).unsqueeze(0).expand(4, 20, 4, 4)</p>
+<p># Apply skinning
+posed_verts = linear_blend_skinning(vertices, bone_weights, bone_indices, bone_transforms)</p>
+<p># With gradients
+bone_transforms.requires_grad_(True)
+posed_verts = linear_blend_skinning(vertices, bone_weights, bone_indices, bone_transforms)
+posed_verts.sum().backward()  # Compute gradients</p>
+</dd>
+<dt>Export example:</dt><dd><dl class="simple">
+<dt>class LBSModule(torch.nn.Module):</dt><dd><dl class="simple">
+<dt>def __init__(self, bone_weights, bone_indices):</dt><dd><p>super().__init__()
+self.register_buffer(‘bone_weights’, bone_weights)
+self.register_buffer(‘bone_indices’, bone_indices)</p>
+</dd>
+<dt>def forward(self, vertices, bone_transforms):</dt><dd><dl class="simple">
+<dt>return linear_blend_skinning(vertices, self.bone_weights,</dt><dd><p>self.bone_indices, bone_transforms)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>module = LBSModule(bone_weights, bone_indices)
+exported = torch.export.export(module, (vertices, bone_transforms))
+torch.export.save(exported, “lbs.pt2”)</p>
+</dd>
+</dl>
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.lbs_warp.get_kernel">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.lbs_warp.</span></span><span class="sig-name descname"><span class="pre">get_kernel</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">max_bones_count</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">vertices_scalar_dtype</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">weights_dtype</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">indices_dtype</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">vec3_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">wp.vec3</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">mat44_dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">wp.mat44</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.lbs_warp.get_kernel" title="Link to this definition">#</a></dt>
+<dd><p>Generate the kernel for linear blend skinning.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.lbs_warp.linear_blend_skinning">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.lbs_warp.</span></span><span class="sig-name descname"><span class="pre">linear_blend_skinning</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bone_weights</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bone_indices</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bone_transforms</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.lbs_warp.linear_blend_skinning" title="Link to this definition">#</a></dt>
+<dd><p>Apply linear blend skinning to vertices using bone weights and transforms.</p>
+<p>This function is compatible with both regular PyTorch usage and torch.export.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vertices</strong> (<em>Tensor</em>) – (batch_size, num_vertices, 3) vertex positions</p></li>
+<li><p><strong>bone_weights</strong> (<em>Tensor</em>) – (num_vertices, max_bones_per_vertex) bone weights</p></li>
+<li><p><strong>bone_indices</strong> (<em>Tensor</em>) – (num_vertices, max_bones_per_vertex) bone indices</p></li>
+<li><p><strong>bone_transforms</strong> (<em>Tensor</em>) – (batch_size, num_bones, 4, 4) bone transformation matrices</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Transformed vertices of shape (batch_size, num_vertices, 3)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-soma.geometry.align_vectors_warp">Warp-based implementations of geometric transformations for improved GPU performance.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.RodriguesRotationWarp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.align_vectors_warp.</span></span><span class="sig-name descname"><span class="pre">RodriguesRotationWarp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.RodriguesRotationWarp" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Function</span></code></p>
+<p>Differentiable Rodrigues rotation using Warp kernel.</p>
+<p>Computes rotation matrices from pairs of vectors using Rodrigues formula.
+SciPy-compatible: Returns R such that R &#64; B ≈ A.
+Fully differentiable with respect to input vectors.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.RodriguesRotationWarp.forward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.RodriguesRotationWarp.forward" title="Link to this definition">#</a></dt>
+<dd><p>Forward pass using Rodrigues formula.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> – (N, 3) - target vectors</p></li>
+<li><p><strong>B</strong> – (N, 3) - source vectors</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>R</em> – (N, 3, 3) - rotation matrices such that R &#64; B ≈ A</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.RodriguesRotationWarp.backward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_output</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.RodriguesRotationWarp.backward" title="Link to this definition">#</a></dt>
+<dd><p>Backward pass using Warp’s tape.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.AlignVectorsWarp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.align_vectors_warp.</span></span><span class="sig-name descname"><span class="pre">AlignVectorsWarp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.AlignVectorsWarp" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Function</span></code></p>
+<p>Differentiable Warp-based align_vectors using tape for gradients.</p>
+<p>For N&gt;=2 point sets using Kabsch algorithm (covariance + SVD).
+For N=1, use rodrigues_rotation_warp() instead.</p>
+<p>Forward and backward passes both use Warp for full GPU acceleration.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.AlignVectorsWarp.forward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">A_flat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">B_flat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">offsets</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">counts</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.AlignVectorsWarp.forward" title="Link to this definition">#</a></dt>
+<dd><p>Forward pass using Warp kernel with tape recording.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A_flat</strong> – (total_vectors, 3) - flattened target vectors</p></li>
+<li><p><strong>B_flat</strong> – (total_vectors, 3) - flattened source vectors</p></li>
+<li><p><strong>offsets</strong> – (batch_size,) int32 - start index for each batch</p></li>
+<li><p><strong>counts</strong> – (batch_size,) int32 - number of vectors per batch (must be &gt;= 2)</p></li>
+<li><p><strong>method</strong> – str - rotation extraction method (‘auto’, ‘kabsch’, or ‘newton-schulz’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>R</em> – (batch_size, 3, 3) - rotation matrices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.AlignVectorsWarp.backward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grad_output</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.AlignVectorsWarp.backward" title="Link to this definition">#</a></dt>
+<dd><p>Backward pass using Warp’s tape.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.rodrigues_rotation_warp">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.align_vectors_warp.</span></span><span class="sig-name descname"><span class="pre">rodrigues_rotation_warp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.rodrigues_rotation_warp" title="Link to this definition">#</a></dt>
+<dd><p>Compute rotation matrices from vector pairs using Rodrigues formula.</p>
+<p>Differentiable Warp-based implementation.
+SciPy-compatible: Returns rotation R such that R &#64; B ≈ A.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A</strong> (<em>Tensor</em>) – (N, 3) torch tensor - target vectors</p></li>
+<li><p><strong>B</strong> (<em>Tensor</em>) – (N, 3) torch tensor - source vectors</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>R</em> – (N, 3, 3) rotation matrices such that R &#64; B ≈ A</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># target</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># source</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">rodrigues_rotation_warp</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>  <span class="c1"># shape: (100, 3, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Verify: R @ B ≈ A</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.align_vectors_warp">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.align_vectors_warp.</span></span><span class="sig-name descname"><span class="pre">align_vectors_warp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">A_flat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B_flat</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offsets</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">counts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.align_vectors_warp" title="Link to this definition">#</a></dt>
+<dd><p>Differentiable Warp-based batch alignment of vector sets with ragged support.</p>
+<p>Uses auto, Kabsch, or Newton-Schulz rotation extraction for N&gt;=2 point sets.
+For N=1 cases, use rodrigues_rotation_warp() instead.</p>
+<p>Uses Warp kernel with tape for both forward and backward passes.
+Fully GPU-accelerated including gradient computation.</p>
+<p>SciPy-compatible: returns rotation R such that R &#64; B ≈ A.
+Matches the convention in geometry.transforms.align_vectors().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>A_flat</strong> (<em>Tensor</em>) – (total_vectors, 3) torch tensor - flattened target vectors</p></li>
+<li><p><strong>B_flat</strong> (<em>Tensor</em>) – (total_vectors, 3) torch tensor - flattened source vectors</p></li>
+<li><p><strong>offsets</strong> (<em>Tensor</em>) – (batch_size,) torch tensor (int32) - start index for each batch</p></li>
+<li><p><strong>counts</strong> (<em>Tensor</em>) – (batch_size,) torch tensor (int32) - number of vectors per batch (must be &gt;= 2)</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><em>Literal</em></a><em>[</em><em>'auto'</em><em>, </em><em>'kabsch'</em><em>, </em><em>'newton-schulz'</em><em>]</em>) – str - rotation extraction method (‘auto’, ‘kabsch’, or ‘newton-schulz’, default: ‘auto’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>R</em> – (batch_size, 3, 3) rotation matrices such that R &#64; B ≈ A</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Differentiable: gradients flow through both forward and backward passes</p></li>
+<li><p>Uses Warp’s tape mechanism for efficient gradient computation</p></li>
+<li><p>Supports arbitrary batch sizes and variable vector counts (ragged batches)</p></li>
+<li><p>For single vector pairs (N=1), use rodrigues_rotation_warp() instead</p></li>
+</ul>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Single batch with 10 vectors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">offsets</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">10</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">align_vectors_warp</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>  <span class="c1"># shape: (1, 3, 3)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>  <span class="c1"># Gradients computed via Warp tape</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Ragged batch: 5 vectors, 8 vectors, 3 vectors</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_flat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 5+8+3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B_flat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">offsets</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">13</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R</span> <span class="o">=</span> <span class="n">align_vectors_warp</span><span class="p">(</span><span class="n">A_flat</span><span class="p">,</span> <span class="n">B_flat</span><span class="p">,</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>  <span class="c1"># shape: (3, 3, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.align_vectors_warp.</span></span><span class="sig-name descname"><span class="pre">ParallelRodriguesKabschWarp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Function</span></code></p>
+<p>Parallel execution of Rodrigues (N=1) and Kabsch (N&gt;=2) rotations using two CUDA streams.</p>
+<p>This function launches two independent Warp kernels in parallel:
+- Stream 1: Rodrigues rotation for single-child joints (N=1)
+- Stream 2: Covariance + Kabsch for multi-child joints (N&gt;=2)</p>
+<p>Both streams execute concurrently for improved performance when both types of joints exist.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp.forward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rodrigues_tgt</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rodrigues_src</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kabsch_A_flat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kabsch_B_flat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kabsch_offsets</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kabsch_counts</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp.forward" title="Link to this definition">#</a></dt>
+<dd><p>Forward pass with parallel kernel launches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rodrigues_tgt</strong> – (N1, 3) target vectors for Rodrigues</p></li>
+<li><p><strong>rodrigues_src</strong> – (N1, 3) source vectors for Rodrigues</p></li>
+<li><p><strong>kabsch_A_flat</strong> – (N2_total, 3) flattened target vectors for Kabsch</p></li>
+<li><p><strong>kabsch_B_flat</strong> – (N2_total, 3) flattened source vectors for Kabsch</p></li>
+<li><p><strong>kabsch_offsets</strong> – (N2_batches,) offsets for Kabsch ragged batch</p></li>
+<li><p><strong>kabsch_counts</strong> – (N2_batches,) counts for Kabsch ragged batch</p></li>
+<li><p><strong>method</strong> – str - rotation extraction method (‘auto’, ‘kabsch’, or ‘newton-schulz’, default: ‘auto’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>rodrigues_R</em> – (N1, 3, 3) rotation matrices from Rodrigues
+kabsch_R: (N2_batches, 3, 3) rotation matrices from Kabsch</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp.backward">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">ctx</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">grad_rodrigues_R</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">grad_kabsch_R</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp.backward" title="Link to this definition">#</a></dt>
+<dd><p>Backward pass using Warp’s tape.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.align_vectors_warp.parallel_rodrigues_kabsch_warp">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.align_vectors_warp.</span></span><span class="sig-name descname"><span class="pre">parallel_rodrigues_kabsch_warp</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">rodrigues_tgt</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rodrigues_src</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kabsch_A_flat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kabsch_B_flat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kabsch_offsets</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kabsch_counts</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.align_vectors_warp.parallel_rodrigues_kabsch_warp" title="Link to this definition">#</a></dt>
+<dd><p>Execute Rodrigues and Kabsch rotations in parallel using two CUDA streams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rodrigues_tgt</strong> (<em>Tensor</em>) – (N1, 3) target vectors for Rodrigues (can be None if no N=1 joints)</p></li>
+<li><p><strong>rodrigues_src</strong> (<em>Tensor</em>) – (N1, 3) source vectors for Rodrigues (can be None if no N=1 joints)</p></li>
+<li><p><strong>kabsch_A_flat</strong> (<em>Tensor</em>) – (N2_total, 3) flattened target vectors for Kabsch (can be None if no N&gt;=2 joints)</p></li>
+<li><p><strong>kabsch_B_flat</strong> (<em>Tensor</em>) – (N2_total, 3) flattened source vectors for Kabsch (can be None if no N&gt;=2 joints)</p></li>
+<li><p><strong>kabsch_offsets</strong> (<em>Tensor</em>) – (N2_batches,) offsets for Kabsch ragged batch</p></li>
+<li><p><strong>kabsch_counts</strong> (<em>Tensor</em>) – (N2_batches,) counts for Kabsch ragged batch</p></li>
+<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><em>Literal</em></a><em>[</em><em>'auto'</em><em>, </em><em>'kabsch'</em><em>, </em><em>'newton-schulz'</em><em>]</em>) – str - rotation extraction method (‘auto’, ‘kabsch’, or ‘newton-schulz’, default: ‘auto’)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>rodrigues_R</em> – (N1, 3, 3) rotation matrices from Rodrigues (empty tensor if no N=1 joints)
+kabsch_R: (N2_batches, 3, 3) rotation matrices from Kabsch (empty tensor if no N&gt;=2 joints)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Joint with single child (Rodrigues)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tgt1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">src1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Joints with multiple children (Kabsch)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A_flat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># 10+15+5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">B_flat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">,</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">offsets</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">counts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Execute in parallel</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">R1</span><span class="p">,</span> <span class="n">R2</span> <span class="o">=</span> <span class="n">parallel_rodrigues_kabsch_warp</span><span class="p">(</span><span class="n">tgt1</span><span class="p">,</span> <span class="n">src1</span><span class="p">,</span> <span class="n">A_flat</span><span class="p">,</span> <span class="n">B_flat</span><span class="p">,</span> <span class="n">offsets</span><span class="p">,</span> <span class="n">counts</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># R1.shape: (10, 3, 3), R2.shape: (3, 3, 3)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py class" id="module-soma.geometry.chamfer_warp">
+<dt class="sig sig-object py" id="soma.geometry.chamfer_warp.ChamferLoss">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.chamfer_warp.</span></span><span class="sig-name descname"><span class="pre">ChamferLoss</span></span><a class="headerlink" href="#soma.geometry.chamfer_warp.ChamferLoss" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
+<p>Initialize internal Module state, shared by both nn.Module and ScriptModule.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.geometry.chamfer_warp.ChamferLoss.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">src_points</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">target_verts</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">target_faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">refit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.chamfer_warp.ChamferLoss.forward" title="Link to this definition">#</a></dt>
+<dd><p>Compute Chamfer loss from source points to target mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>src_points</strong> – <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">N,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">3)</span></code> source query points.</p></li>
+<li><p><strong>target_verts</strong> – <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">M,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(M,</span> <span class="pre">3)</span></code> target vertices
+(supports batching).</p></li>
+<li><p><strong>target_faces</strong> – <code class="docutils literal notranslate"><span class="pre">(F,</span> <span class="pre">3)</span></code> static topology (optional). If
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, treats target as a point cloud by creating
+degenerate triangles (one per vertex).</p></li>
+<li><p><strong>refit</strong> – if True, rebuild the cached target meshes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<p id="module-soma.geometry.fused_refit_warp">Fused Warp kernel for inverse-LBS refit: LBS + SE3_inv + src/tgt + covariance.</p>
+<p>Replaces per-level: 2 LBS launches + ~10 PyTorch ops + 2 alignment launches
+With: 1 fused launch + 1 Newton-Schulz launch = 2 kernel launches per level.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.geometry.fused_refit_warp.fused_refit_level">
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.fused_refit_warp.</span></span><span class="sig-name descname"><span class="pre">fused_refit_level</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">bind_verts_cat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">sub_bw_cat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">sub_bi_cat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">non_bw_cat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">non_bi_cat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">sub_w_sum_cat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">arm_vids_cat</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_offsets</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_counts</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_id_per_vert</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_indices</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">D</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">target</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">J_level</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rotation_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">reference_rotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">auto_prior_strength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.fused_refit_warp.fused_refit_level" title="Link to this definition">#</a></dt>
+<dd><p>Run fused LBS + covariance + rotation projection for one skeleton level.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bind_verts_cat</span></code> can be unbatched <code class="docutils literal notranslate"><span class="pre">(V_total,</span> <span class="pre">3)</span></code> (single identity)
+or batched <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">V_total,</span> <span class="pre">3)</span></code> (per-sample identity).  Unbatched is
+expanded to <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">V_total,</span> <span class="pre">3)</span></code> for the kernel.</p>
+<p>Returns: R_all (B, J_level, 3, 3) world-space rotations.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="io.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../data_assets.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Data Assets</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-soma.geometry.transforms">Transform and rig utilities</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.compute_covariance"><code class="docutils literal notranslate"><span class="pre">compute_covariance()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.kabsch"><code class="docutils literal notranslate"><span class="pre">kabsch()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.newton_schulz"><code class="docutils literal notranslate"><span class="pre">newton_schulz()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.regularize_covariance_with_reference"><code class="docutils literal notranslate"><span class="pre">regularize_covariance_with_reference()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.rotation_matrices_are_valid"><code class="docutils literal notranslate"><span class="pre">rotation_matrices_are_valid()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.rodrigues_rotation"><code class="docutils literal notranslate"><span class="pre">rodrigues_rotation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.align_vectors"><code class="docutils literal notranslate"><span class="pre">align_vectors()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.SE3_from_Rt"><code class="docutils literal notranslate"><span class="pre">SE3_from_Rt()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.SE3_inverse"><code class="docutils literal notranslate"><span class="pre">SE3_inverse()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.euler_xyz_to_matrix"><code class="docutils literal notranslate"><span class="pre">euler_xyz_to_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.matrix_to_euler_xyz"><code class="docutils literal notranslate"><span class="pre">matrix_to_euler_xyz()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.quaternion_normalize_xyzw"><code class="docutils literal notranslate"><span class="pre">quaternion_normalize_xyzw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.quaternion_conjugate_xyzw"><code class="docutils literal notranslate"><span class="pre">quaternion_conjugate_xyzw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.quaternion_multiply_xyzw"><code class="docutils literal notranslate"><span class="pre">quaternion_multiply_xyzw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.quaternion_xyzw_to_matrix"><code class="docutils literal notranslate"><span class="pre">quaternion_xyzw_to_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.matrix_to_quaternion_xyzw"><code class="docutils literal notranslate"><span class="pre">matrix_to_quaternion_xyzw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.matrix_to_quaternion_xyzw_stable"><code class="docutils literal notranslate"><span class="pre">matrix_to_quaternion_xyzw_stable()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.single_axis_rotation_matrices"><code class="docutils literal notranslate"><span class="pre">single_axis_rotation_matrices()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.quaternion_half_angle_xyzw"><code class="docutils literal notranslate"><span class="pre">quaternion_half_angle_xyzw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.quaternion_twist_angle_xyzw"><code class="docutils literal notranslate"><span class="pre">quaternion_twist_angle_xyzw()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.matrix_to_rotvec"><code class="docutils literal notranslate"><span class="pre">matrix_to_rotvec()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.rotvec_to_matrix"><code class="docutils literal notranslate"><span class="pre">rotvec_to_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.transforms.rotation_6d_to_matrix"><code class="docutils literal notranslate"><span class="pre">rotation_6d_to_matrix()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.joint_world_to_local"><code class="docutils literal notranslate"><span class="pre">joint_world_to_local()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.joint_local_to_world"><code class="docutils literal notranslate"><span class="pre">joint_local_to_world()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.compute_skeleton_levels"><code class="docutils literal notranslate"><span class="pre">compute_skeleton_levels()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.joint_local_to_world_levelorder"><code class="docutils literal notranslate"><span class="pre">joint_local_to_world_levelorder()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.precompute_joint_orient"><code class="docutils literal notranslate"><span class="pre">precompute_joint_orient()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.apply_joint_orient_local"><code class="docutils literal notranslate"><span class="pre">apply_joint_orient_local()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.remove_joint_orient_local"><code class="docutils literal notranslate"><span class="pre">remove_joint_orient_local()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.get_joint_children_ids"><code class="docutils literal notranslate"><span class="pre">get_joint_children_ids()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.get_joint_descendents"><code class="docutils literal notranslate"><span class="pre">get_joint_descendents()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.get_body_part_vertex_ids"><code class="docutils literal notranslate"><span class="pre">get_body_part_vertex_ids()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.PoseMirror_SOMA"><code class="docutils literal notranslate"><span class="pre">PoseMirror_SOMA</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.rig_utils.PoseMirror_MHR"><code class="docutils literal notranslate"><span class="pre">PoseMirror_MHR</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-soma.geometry.lbs">Skinning and skeleton fitting</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.lbs.batch_rodrigues"><code class="docutils literal notranslate"><span class="pre">batch_rodrigues()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.lbs.lbs"><code class="docutils literal notranslate"><span class="pre">lbs()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.batched_skinning.FKTopology"><code class="docutils literal notranslate"><span class="pre">FKTopology</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.batched_skinning.topk_skinning"><code class="docutils literal notranslate"><span class="pre">topk_skinning()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.skeleton_transfer.SkeletonTransfer"><code class="docutils literal notranslate"><span class="pre">SkeletonTransfer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.update_bind"><code class="docutils literal notranslate"><span class="pre">update_bind()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.fit"><code class="docutils literal notranslate"><span class="pre">fit()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.fit_joint_positions"><code class="docutils literal notranslate"><span class="pre">fit_joint_positions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.fit_joint_rotations"><code class="docutils literal notranslate"><span class="pre">fit_joint_rotations()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.skeleton_transfer.SkeletonTransfer.fit_rotations_warp"><code class="docutils literal notranslate"><span class="pre">fit_rotations_warp()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-soma.geometry.barycentric_interp">Interpolation and mesh utilities</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.barycentric_interp.fabricate_tet"><code class="docutils literal notranslate"><span class="pre">fabricate_tet()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.barycentric_interp.compute_barycentric_coords_3d"><code class="docutils literal notranslate"><span class="pre">compute_barycentric_coords_3d()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.barycentric_interp.barycentric_interpolation"><code class="docutils literal notranslate"><span class="pre">barycentric_interpolation()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.barycentric_interp.BarycentricInterpolator"><code class="docutils literal notranslate"><span class="pre">BarycentricInterpolator</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.barycentric_interp.BarycentricInterpolator.compute_correspondence"><code class="docutils literal notranslate"><span class="pre">compute_correspondence()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.barycentric_interp.BarycentricInterpolator.load_correspondence"><code class="docutils literal notranslate"><span class="pre">load_correspondence()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.barycentric_interp.BarycentricInterpolator.save_correspondence"><code class="docutils literal notranslate"><span class="pre">save_correspondence()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.barycentric_interp.BarycentricInterpolator.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.interpolate.RadialBasisFunction"><code class="docutils literal notranslate"><span class="pre">RadialBasisFunction</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.interpolate.RadialBasisFunction.get_basis_weights"><code class="docutils literal notranslate"><span class="pre">get_basis_weights()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.interpolate.RadialBasisFunction.interpolate"><code class="docutils literal notranslate"><span class="pre">interpolate()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.laplacian.cotangent_weights"><code class="docutils literal notranslate"><span class="pre">cotangent_weights()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.laplacian.build_cotangent_laplacian"><code class="docutils literal notranslate"><span class="pre">build_cotangent_laplacian()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.laplacian.build_uniform_laplacian"><code class="docutils literal notranslate"><span class="pre">build_uniform_laplacian()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.laplacian.power_laplacian"><code class="docutils literal notranslate"><span class="pre">power_laplacian()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.laplacian.LaplacianMesh"><code class="docutils literal notranslate"><span class="pre">LaplacianMesh</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.laplacian.LaplacianMesh.solve"><code class="docutils literal notranslate"><span class="pre">solve()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-soma.geometry.lbs_warp">Warp backends</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.lbs_warp.get_kernel"><code class="docutils literal notranslate"><span class="pre">get_kernel()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.lbs_warp.linear_blend_skinning"><code class="docutils literal notranslate"><span class="pre">linear_blend_skinning()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.RodriguesRotationWarp"><code class="docutils literal notranslate"><span class="pre">RodriguesRotationWarp</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.RodriguesRotationWarp.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.RodriguesRotationWarp.backward"><code class="docutils literal notranslate"><span class="pre">backward()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.AlignVectorsWarp"><code class="docutils literal notranslate"><span class="pre">AlignVectorsWarp</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.AlignVectorsWarp.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.AlignVectorsWarp.backward"><code class="docutils literal notranslate"><span class="pre">backward()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.rodrigues_rotation_warp"><code class="docutils literal notranslate"><span class="pre">rodrigues_rotation_warp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.align_vectors_warp"><code class="docutils literal notranslate"><span class="pre">align_vectors_warp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp"><code class="docutils literal notranslate"><span class="pre">ParallelRodriguesKabschWarp</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp.backward"><code class="docutils literal notranslate"><span class="pre">backward()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.align_vectors_warp.parallel_rodrigues_kabsch_warp"><code class="docutils literal notranslate"><span class="pre">parallel_rodrigues_kabsch_warp()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.chamfer_warp.ChamferLoss"><code class="docutils literal notranslate"><span class="pre">ChamferLoss</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.chamfer_warp.ChamferLoss.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.geometry.fused_refit_warp.fused_refit_level"><code class="docutils literal notranslate"><span class="pre">fused_refit_level()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026, NVIDIA.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Page not found - SOMA-X</title>
+  <script>
+(function () {
+  var prefix = "/SOMA-X/";
+  var path = location.pathname;
+  if (path.indexOf(prefix) === 0) {
+    path = path.slice(prefix.length);
+  }
+  if (/^(stable|latest|v\d+\.\d+)(\/|$)/.test(path)) {
+    return;
+  }
+  location.replace(prefix + "latest/" + path + location.search + location.hash);
+})();
+  </script>
+  <style>
+    body {
+      background: #f1f1f1;
+      color: #222;
+      font: 14px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      margin: 0;
+    }
+    .container {
+      margin: 0 auto;
+      max-width: 600px;
+      padding: 32px 16px 40px;
+      text-align: center;
+    }
+    h1 {
+      color: #222;
+      font-size: 120px;
+      font-weight: 800;
+      line-height: 1;
+      margin: 0;
+    }
+    h2 {
+      color: #5a5a5a;
+      font-size: 24px;
+      font-weight: 400;
+      margin: 12px 0 24px;
+    }
+    p {
+      color: #5a5a5a;
+      font-size: 14px;
+    }
+    a { color: #76b900; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>404</h1>
+    <h2>File not found.</h2>
+    <p>The requested page does not exist in this version of the SOMA-X documentation.</p>
+    <p><a href="/SOMA-X/stable/">Latest stable docs</a> &middot; <a href="/SOMA-X/latest/">Development docs</a></p>
+  </div>
+</body>
+</html>

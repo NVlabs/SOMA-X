@@ -1,0 +1,791 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Model Overview &#8212; SOMA-X</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+
+
+
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'model_card';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="canonical" href="https://nvlabs.github.io/SOMA-X/model_card.html" />
+    <link rel="icon" href="_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Bias" href="BIAS.html" />
+    <link rel="prev" title="Changelog" href="changelog.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="SOMA-X - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="SOMA-X - Home"/>
+  
+  
+    <p class="title logo__title">SOMA-X</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVlabs/SOMA-X" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="SOMA-X - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="SOMA-X - Home"/>
+  
+  
+    <p class="title logo__title">SOMA-X</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVlabs/SOMA-X" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Model Overview</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="BIAS.html">Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="EXPLAINABILITY.html">Explainability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="PRIVACY.html">Privacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SAFETY_and_SECURITY.html">Safety and Security</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Model Overview</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="model-overview">
+<h1>Model Overview<a class="headerlink" href="#model-overview" title="Link to this heading">#</a></h1>
+<section id="description">
+<h2>Description:<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
+<p>SOMA (Unifying Parametric Human Body Models) is a unified framework that decouples identity representation from pose parameterization by mapping any supported parametric body model to a single canonical mesh topology and skeleton, enabling a shared Linear Blend Skinning (LBS) pipeline across all backends. SOMA supports six identity backends (SOMA-shape, SMPL, SMPL-X, MHR, ANNY, and GarmentMeasurements), unified under a canonical mesh topology and SOMA skeleton.</p>
+<p>This model is ready for commercial use.</p>
+</section>
+<section id="license-terms-of-use">
+<h2>License/Terms of Use:<a class="headerlink" href="#license-terms-of-use" title="Link to this heading">#</a></h2>
+<p>SOMA is released under the <a class="reference download internal" download="" href="_downloads/3b423627fe21976c3c06e60f78e14ae1/LICENSE"><span class="xref download myst">Apache 2.0 License</span></a>.</p>
+</section>
+<section id="deployment-geography">
+<h2>Deployment Geography:<a class="headerlink" href="#deployment-geography" title="Link to this heading">#</a></h2>
+<p>Global</p>
+</section>
+<section id="use-case">
+<h2>Use Case:<a class="headerlink" href="#use-case" title="Link to this heading">#</a></h2>
+<p>SOMA is intended for use by computer vision researchers, graphics and animation engineers, machine learning engineers, and robotics researchers and companies. Specific use cases include:</p>
+<ul class="simple">
+<li><p><strong>Pose estimation and human reconstruction</strong> — unified pose interface enables seamless identity substitution across backends without retraining.</p></li>
+<li><p><strong>Motion generation and animation</strong> — apply motion capture sequences to any supported identity model using the same axis-angle pose parameterization.</p></li>
+<li><p><strong>Avatar synthesis and digital humans</strong> — freely mix identity sources with SOMA’s pose representation.</p></li>
+<li><p><strong>Simulation and robotics</strong> — lightweight analytical forward pass enables real-time simulation pipelines with diverse body shapes.</p></li>
+</ul>
+</section>
+<section id="expected-release-date">
+<h2>Expected Release Date:<a class="headerlink" href="#expected-release-date" title="Link to this heading">#</a></h2>
+<p>GitHub: 03/16/2026 <br></p>
+</section>
+<section id="reference-s">
+<h2>Reference(s):<a class="headerlink" href="#reference-s" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>SOMA: Unifying Parametric Human Body Models.</p></li>
+<li><p>SMPL: A Skinned Multi-Person Linear Model — Loper et al., 2015</p></li>
+<li><p>SMPL-X: Expressive Body Capture: 3D Hands, Face, and Body from a Single Image — Pavlakos et al., 2019</p></li>
+<li><p>MHR: Momentum Human Rig, Meta</p></li>
+<li><p>ANNY: Anthropometric body model spanning full human lifespan</p></li>
+</ul>
+</section>
+<section id="model-architecture">
+<h2>Model Architecture:<a class="headerlink" href="#model-architecture" title="Link to this heading">#</a></h2>
+<p><strong>Architecture Type:</strong> Analytical / Parametric; optional shallow Multilayer Perceptron (MLP) for pose-dependent surface correctives <br></p>
+<p><strong>Network Architecture:</strong> The core pipeline uses no learned neural network components. It is composed of three closed-form analytical modules:</p>
+<ol class="arabic simple">
+<li><p><strong>Barycentric Mesh Transfer</strong> — sparse barycentric correspondence matrix pre-computed per backend; runtime topology transfer is a single sparse matrix-vector product in O(V_h) time.</p></li>
+<li><p><strong>RBF Skeleton Fitting</strong> — Radial Basis Function regression with Kabsch rotation alignment yields the 77-joint identity-adapted skeleton transforms in a single linear solve per identity.</p></li>
+<li><p><strong>Linear Blend Skinning (LBS)</strong> — standard LBS with joint-orient (T-pose-relative) parameterization; GPU-accelerated via NVIDIA Warp custom kernels with <code class="docutils literal notranslate"><span class="pre">torch.export</span></code>-compatible interface.</p></li>
+</ol>
+<p>Optional: shallow pose-dependent corrective MLP (2 hidden layers, ReLU activations) for surface artifact reduction. <br></p>
+<p><strong>This model was developed independently by NVIDIA.</strong> <br></p>
+<p><strong>Number of model parameters:</strong></p>
+<ul class="simple">
+<li><p>Core analytical pipeline: 0 learned parameters (closed-form)</p></li>
+<li><p>Principal Component Analysis (PCA) for SOMA-shape model: 128 principal components x ~18,000 mid-LOD vertices x 3 = ~3.1 x 10^6 coefficients (pre-fitted, not gradient-trained)</p></li>
+<li><p>Optional pose corrective Multilayer Perceptron (MLP) layers: ~1 × 10^8 parameters (if enabled)</p></li>
+</ul>
+</section>
+<section id="computational-load">
+<h2>Computational Load<a class="headerlink" href="#computational-load" title="Link to this heading">#</a></h2>
+<p><strong>Throughput:</strong> &gt; 7,033 posed meshes/second on NVIDIA A100 80GB (batch size 128, GPU Warp path) <br>
+<strong>Latency:</strong> 2.1 ms per mesh (batch = 1, GPU); 12.1 ms (batch = 1, CPU 32-core) <br>
+<strong>Skeleton fitting:</strong> &lt; 1.68 ms (batch = 1) <br>
+<strong>Training compute:</strong> N/A — core pipeline requires no gradient-based training; PCA shape space fitted offline from body scan data.</p>
+</section>
+<section id="input-s">
+<h2>Input(s):<a class="headerlink" href="#input-s" title="Link to this heading">#</a></h2>
+<p><strong>Input Type(s):</strong> Numerical tensors (floating-point) <br></p>
+<p><strong>Input Format(s):</strong></p>
+<ul class="simple">
+<li><p>Identity coefficients: floating-point tensor, shape <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">K)</span></code> where <code class="docutils literal notranslate"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">128</span></code> for SOMA-shape backend or backend-specific dimensionality for SMPL/SMPL-X/MHR/ANNY/Garment</p></li>
+<li><p>Pose parameters: axis-angle vectors <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3)</span></code> or rotation matrices <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> covering 77 articulated joints (excludes root dummy joint)</p></li>
+<li><p>Optional root translation: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">3)</span></code> in meters</p></li>
+</ul>
+<p><strong>Input Parameters:</strong> One-Dimensional (1D) coefficient vectors; Three-Dimensional (3D) pose tensors <br></p>
+<p><strong>Other Properties Related to Input:</strong></p>
+<ul class="simple">
+<li><p>Identity coefficients should lie within the shape space of the respective backend (no hard clipping, but extreme out-of-distribution values may produce artifact geometry).</p></li>
+<li><p>Pose parameters follow standard axis-angle convention; no clamping is applied.</p></li>
+<li><p>All inputs are standard float32 PyTorch tensors. No pre-processing beyond normalization within each backend’s identity model is required.</p></li>
+</ul>
+</section>
+<section id="output-s">
+<h2>Output(s):<a class="headerlink" href="#output-s" title="Link to this heading">#</a></h2>
+<p><strong>Output Type(s):</strong> Numerical tensors (3D geometry) <br></p>
+<p><strong>Output Format(s):</strong> PyTorch float32 tensors <br></p>
+<p><strong>Output Parameters:</strong> Three-Dimensional (3D) <br></p>
+<ul class="simple">
+<li><p>Posed mesh vertices: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">N_h,</span> <span class="pre">3)</span></code> where <code class="docutils literal notranslate"><span class="pre">N_h</span></code> depends on <code class="docutils literal notranslate"><span class="pre">lod</span></code> (<code class="docutils literal notranslate"><span class="pre">mid</span></code>: 18,056; <code class="docutils literal notranslate"><span class="pre">low</span></code>: 4,505; <code class="docutils literal notranslate"><span class="pre">xlo</span></code>: 612) – world-space vertex positions in <strong>meters</strong></p></li>
+<li><p>Joint positions: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3)</span></code> — world-space 3D joint positions in <strong>meters</strong></p></li>
+<li><p>Rest-shape vertices: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">N_h,</span> <span class="pre">3)</span></code> in meters, with the same LOD-dependent <code class="docutils literal notranslate"><span class="pre">N_h</span></code> (intermediate output, available on request)</p></li>
+</ul>
+<p><strong>Other Properties Related to Output:</strong> All outputs are in meters. Body vertex count <code class="docutils literal notranslate"><span class="pre">N_h</span></code> is selected by <code class="docutils literal notranslate"><span class="pre">SOMALayer(lod=...)</span></code>; <code class="docutils literal notranslate"><span class="pre">low_lod=True</span></code> is the legacy alias for <code class="docutils literal notranslate"><span class="pre">lod=&quot;low&quot;</span></code>. Joint count is fixed at 77.</p>
+<p>Our AI models are designed and/or optimized to run on NVIDIA GPU-accelerated systems. By leveraging NVIDIA’s hardware (GPU cores) and software frameworks (CUDA libraries, NVIDIA Warp), the model achieves real-time throughput exceeding 7,000 meshes per second at batch size 128 on an A100 GPU.</p>
+</section>
+<section id="software-integration">
+<h2>Software Integration:<a class="headerlink" href="#software-integration" title="Link to this heading">#</a></h2>
+<p><strong>Runtime Engine(s):</strong></p>
+<ul class="simple">
+<li><p>NVIDIA Warp (GPU-accelerated LBS kernel, <code class="docutils literal notranslate"><span class="pre">torch.export</span></code>-compatible) <br></p></li>
+<li><p>PyTorch (CPU and GPU fallback) <br></p></li>
+<li><p>N/A — No dependency on TAO, Riva, NeMo, or other NVIDIA SDK runtimes</p></li>
+</ul>
+<p><strong>Supported Hardware Microarchitecture Compatibility:</strong></p>
+<ul class="simple">
+<li><p>NVIDIA Ampere (A100, A30, A40, A10, RTX 3000-series) — tested on A100 80GB <br></p></li>
+<li><p>NVIDIA Hopper (H100) — forward compatible via Warp/CUDA <br></p></li>
+<li><p>NVIDIA Ada Lovelace (RTX 4000-series, L40) <br></p></li>
+<li><p>NVIDIA Turing (T4, RTX 2000-series) <br></p></li>
+<li><p>NVIDIA Volta (V100) <br></p></li>
+<li><p>Any NVIDIA GPU with CUDA support — model is lightweight and runs on any NVIDIA GPU <br></p></li>
+<li><p>CPU only (PyTorch fallback, no CUDA required)</p></li>
+</ul>
+<p><strong>Preferred/Supported Operating System(s):</strong></p>
+<ul class="simple">
+<li><p>Linux <br></p></li>
+<li><p>Windows (via PyTorch CPU/GPU path) <br></p></li>
+</ul>
+</section>
+<section id="model-version-s">
+<h2>Model Version(s):<a class="headerlink" href="#model-version-s" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>SOMA v1.0</strong> — initial public release; includes full-body layer (<code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code>, 77 joints, mid/low/xlo LODs) and all six identity backends.</p></li>
+</ul>
+</section>
+<section id="training-testing-and-evaluation-datasets">
+<h2>Training, Testing, and Evaluation Datasets:<a class="headerlink" href="#training-testing-and-evaluation-datasets" title="Link to this heading">#</a></h2>
+</section>
+<section id="training-dataset">
+<h2>Training Dataset:<a class="headerlink" href="#training-dataset" title="Link to this heading">#</a></h2>
+<p><strong>SOMA-shape Identity Model (Shape PCA):</strong></p>
+<ul class="simple">
+<li><p><strong>SizeUSA</strong> — commercially licensed 3D body scan dataset; largest anthropometric survey of the U.S. population, covering diverse body shapes across age, sex, and BMI groups. Used to compute the 128-component PCA shape space for the SOMA-native identity backend.</p></li>
+<li><p><strong>TripleGangers</strong> — commercially licensed 3D body scan dataset purchased from TripleGangers, containing body scans of 303 individuals. Contributes additional shape diversity to the SOMA-shape PCA.</p></li>
+<li><p><strong>GarmentMeasurement PCA model</strong> — body shape data distilled from the GarmentMeasurement parametric model to augment the shape space with garment-relevant proportions.</p></li>
+</ul>
+<p><strong>Shallow MLP for Pose Correctives:</strong></p>
+<ul class="simple">
+<li><p><strong>Bones RigPlay Dataset</strong>: 80,000 (pose,mesh) pairs samples from Bones RigPlay motion capture dataset owned by NVIDIA.</p></li>
+</ul>
+<p><strong>Data Modality</strong></p>
+<ul class="simple">
+<li><p>Other: 3D meshes and 3D motion data</p></li>
+</ul>
+<p><strong>Non-Audio, Image, Text Training Data Size</strong>: 20,000 3D meshes and 80,000 (pose,mesh) pairs.  <br></p>
+<p><strong>Data Collection Method:</strong> Automatic/Sensors (structured-light 3D body scanners) for SizeUSA and TripleGangers; Synthetic for GarmentMeasurement distillation; motion capture for Bones RigPlay. <br>
+<strong>Labeling Method:</strong> Automatic/Sensors (body landmarks auto-detected from scans) <br></p>
+<p><strong>Dataset License(s):</strong> SizeUSA — commercially licensed (purchased by NVIDIA); TripleGangers — commercially licensed (purchased by NVIDIA); GarmentMeasurement — Generated using the source code; Bones RigPlay - commercially licensed (purchased by NVIDIA)</p>
+</section>
+<section id="testing-dataset">
+<h2>Testing Dataset:<a class="headerlink" href="#testing-dataset" title="Link to this heading">#</a></h2>
+<p>Not applicable</p>
+</section>
+<section id="evaluation-dataset">
+<h2>Evaluation Dataset:<a class="headerlink" href="#evaluation-dataset" title="Link to this heading">#</a></h2>
+<p>Not applicable</p>
+<p>Data Collection Method: Synthetic <br>
+Labeling Method: Automatic <br>
+<strong>Dataset License(s):</strong> N/A</p>
+</section>
+</section>
+<section id="inference">
+<h1>Inference:<a class="headerlink" href="#inference" title="Link to this heading">#</a></h1>
+<p><strong>Acceleration Engine:</strong> NVIDIA Warp (custom LBS kernel, <code class="docutils literal notranslate"><span class="pre">torch.export</span></code>-compatible); PyTorch (fallback) <br>
+<strong>Test Hardware:</strong></p>
+<ul class="simple">
+<li><p>NVIDIA A100 80GB (primary GPU benchmark hardware)</p></li>
+<li><p>32-core AMD EPYC 7763 (CPU benchmark hardware)</p></li>
+</ul>
+<section id="ethical-considerations">
+<h2>Ethical Considerations:<a class="headerlink" href="#ethical-considerations" title="Link to this heading">#</a></h2>
+<p>NVIDIA believes Trustworthy AI is a shared responsibility and we have established policies and practices to enable development for a wide array of AI applications. When downloaded or used in accordance with our terms of service, developers should work with their internal model team to ensure this model meets requirements for the relevant industry and use case and addresses unforeseen product misuse.</p>
+<p>SOMA produces 3D human body meshes in a purely geometric and anonymous form; it does not process images, video, or any personally identifiable data at inference time. Input shape coefficients do not correspond to real individuals unless explicitly constructed to do so. Developers integrating SOMA into applications that may reconstruct or represent real individuals should ensure they have obtained appropriate consent and comply with applicable privacy regulations.</p>
+<p>For more detailed information on ethical considerations for this model, please see the Model Card++ subcards: <a class="reference internal" href="BIAS.html"><span class="std std-doc">BIAS.md</span></a>, <a class="reference internal" href="EXPLAINABILITY.html"><span class="std std-doc">EXPLAINABILITY.md</span></a>, <a class="reference internal" href="SAFETY_and_SECURITY.html"><span class="std std-doc">SAFETY_and_SECURITY.md</span></a>, and <a class="reference internal" href="PRIVACY.html"><span class="std std-doc">PRIVACY.md</span></a>.</p>
+<p>Please report model quality, risk, or security vulnerabilities <a class="reference external" href="https://www.nvidia.com/en-us/support/submit-security-vulnerability/">here</a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="changelog.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Changelog</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="BIAS.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Bias</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Model Overview</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#description">Description:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#license-terms-of-use">License/Terms of Use:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-geography">Deployment Geography:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-case">Use Case:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#expected-release-date">Expected Release Date:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-s">Reference(s):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-architecture">Model Architecture:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computational-load">Computational Load</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-s">Input(s):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#output-s">Output(s):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#software-integration">Software Integration:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-version-s">Model Version(s):</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-testing-and-evaluation-datasets">Training, Testing, and Evaluation Datasets:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#training-dataset">Training Dataset:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing-dataset">Testing Dataset:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-dataset">Evaluation Dataset:</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#inference">Inference:</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ethical-considerations">Ethical Considerations:</a></li>
+</ul>
+</li>
+</ul>
+
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026, NVIDIA.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>
