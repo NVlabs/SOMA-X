@@ -1,0 +1,1047 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>soma.io &#8212; SOMA-X</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+
+
+
+    <script src="../_static/documentation_options.js?v=10f1778b"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/io';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="canonical" href="https://nvlabs.github.io/SOMA-X/api/io.html" />
+    <link rel="icon" href="../_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="soma.geometry" href="geometry.html" />
+    <link rel="prev" title="PoseInversion" href="pose_inversion.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="SOMA-X - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="SOMA-X - Home"/>
+  
+  
+    <p class="title logo__title">SOMA-X</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVlabs/SOMA-X" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="SOMA-X - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="SOMA-X - Home"/>
+  
+  
+    <p class="title logo__title">SOMA-X</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVlabs/SOMA-X" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_card.html">Model Overview</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../BIAS.html">Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../EXPLAINABILITY.html">Explainability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PRIVACY.html">Privacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SAFETY_and_SECURITY.html">Safety and Security</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="soma-io">
+<h1><code class="docutils literal notranslate"><span class="pre">soma.io</span></code><a class="headerlink" href="#soma-io" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">soma.io</span></code> module provides the file-format boundary for the library.</p>
+<p>The main responsibilities are:</p>
+<ul class="simple">
+<li><p>USD mesh and skeleton import/export</p></li>
+<li><p>SOMA NPZ save/load helpers</p></li>
+<li><p>convenience export helpers built around <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></p></li>
+</ul>
+<p id="module-soma.io">I/O helpers for SOMA: NPZ animation files and USD mesh/skeleton I/O.</p>
+<p>An .npz file contains everything needed to replay an animation with
+SOMALayer: identity model type, identity coefficients, poses, root
+translation, and metadata describing the representation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.io.UVPrimvarEntry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">UVPrimvarEntry</span></span><a class="headerlink" href="#soma.io.UVPrimvarEntry" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<p>Serialized UV primvar data returned by <a class="reference internal" href="#soma.io.load_usd_mesh" title="soma.io.load_usd_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_mesh</span></code></a>.</p>
+<p>Behaves like a <code class="docutils literal notranslate"><span class="pre">dict</span></code> for backwards compatibility
+(<code class="docutils literal notranslate"><span class="pre">entry[&quot;coordinates&quot;]</span></code>) while also supporting attribute access
+(<code class="docutils literal notranslate"><span class="pre">entry.coordinates</span></code>).</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.io.SOMANPZData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">SOMANPZData</span></span><a class="headerlink" href="#soma.io.SOMANPZData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<p>Dictionary returned by <a class="reference internal" href="#soma.io.load_soma_npz" title="soma.io.load_soma_npz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_soma_npz</span></code></a>.</p>
+<p>Behaves like a <code class="docutils literal notranslate"><span class="pre">dict</span></code> for backwards compatibility
+(<code class="docutils literal notranslate"><span class="pre">data[&quot;poses&quot;]</span></code>) while also supporting attribute access
+(<code class="docutils literal notranslate"><span class="pre">data.poses</span></code>). Optional fields (<code class="docutils literal notranslate"><span class="pre">scale_params</span></code>, <code class="docutils literal notranslate"><span class="pre">joint_orient</span></code>,
+<code class="docutils literal notranslate"><span class="pre">global_scale</span></code>, <code class="docutils literal notranslate"><span class="pre">hand_type</span></code>) are present only if they were saved.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.io.RigUSDData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">RigUSDData</span></span><a class="headerlink" href="#soma.io.RigUSDData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<p>Dictionary returned by <a class="reference internal" href="#soma.io.load_rig_from_usd" title="soma.io.load_rig_from_usd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_rig_from_usd</span></code></a>.</p>
+<p>Behaves like a <code class="docutils literal notranslate"><span class="pre">dict</span></code> for backwards compatibility
+(<code class="docutils literal notranslate"><span class="pre">rig[&quot;joint_names&quot;]</span></code>) while also supporting attribute access
+(<code class="docutils literal notranslate"><span class="pre">rig.joint_names</span></code>). Mesh-related fields (<code class="docutils literal notranslate"><span class="pre">face_vert_indices</span></code>,
+<code class="docutils literal notranslate"><span class="pre">face_vert_counts</span></code>, <code class="docutils literal notranslate"><span class="pre">uv_data</span></code>) are present only when the body skin
+mesh carries polygon/UV data.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.list_usd_meshes">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">list_usd_meshes</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usd_file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.list_usd_meshes" title="Link to this definition">#</a></dt>
+<dd><p>Return prim paths of all Mesh prims in a USD file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of prim path strings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_usd_mesh">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_usd_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usd_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_usd_mesh" title="Link to this definition">#</a></dt>
+<dd><p>Load a mesh from a USD file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p></li>
+<li><p><strong>mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Prim path of the mesh (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;/Root/Mesh&quot;</span></code>).
+A leading <code class="docutils literal notranslate"><span class="pre">/</span></code> is added if missing.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><code class="docutils literal notranslate"><span class="pre">(vertices,</span> <span class="pre">face_vert_indices,</span> <span class="pre">face_vert_counts,</span> <span class="pre">uv_data)</span></code> where</p>
+<ul class="simple">
+<li><p><em>vertices</em>: <code class="docutils literal notranslate"><span class="pre">(V,</span> <span class="pre">3)</span></code> float32</p></li>
+<li><p><em>face_vert_indices</em>: <code class="docutils literal notranslate"><span class="pre">(sum(counts),)</span></code> int32 — flattened</p></li>
+<li><p><em>face_vert_counts</em>: <code class="docutils literal notranslate"><span class="pre">(F,)</span></code> int32 — verts-per-face</p></li>
+<li><p><em>uv_data</em>: <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">{&quot;coordinates&quot;:</span> <span class="pre">(M,2),</span> <span class="pre">&quot;indices&quot;:</span> <span class="pre">...,</span> <span class="pre">&quot;interpolation&quot;:</span> <span class="pre">str}}</span></code></p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>, <a class="reference internal" href="#soma.io.UVPrimvarEntry" title="soma.io.UVPrimvarEntry"><em>UVPrimvarEntry</em></a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.write_usd_mesh">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">write_usd_mesh</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">usd_file_path</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">mesh_name</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">face_vert_indices</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">face_vert_counts</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">uv_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.io.write_usd_mesh" title="Link to this definition">#</a></dt>
+<dd><p>Write a mesh to a new USD file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Output path.</p></li>
+<li><p><strong>mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Prim path for the mesh.</p></li>
+<li><p><strong>vertices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – <code class="docutils literal notranslate"><span class="pre">(V,</span> <span class="pre">3)</span></code> vertex positions.</p></li>
+<li><p><strong>face_vert_indices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Flattened face-vertex indices.</p></li>
+<li><p><strong>face_vert_counts</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Verts-per-face array.</p></li>
+<li><p><strong>uv_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em> | </em><em>None</em>) – Optional UV sets (same format as <a class="reference internal" href="#soma.io.load_usd_mesh" title="soma.io.load_usd_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_mesh</span></code></a> output).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.fan_triangulate">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">fan_triangulate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">face_vert_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face_vert_counts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.fan_triangulate" title="Link to this definition">#</a></dt>
+<dd><p>Convert a polygon soup to triangles via fan triangulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>face_vert_indices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Flattened face-vertex indices.</p></li>
+<li><p><strong>face_vert_counts</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Verts-per-face array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(F_tri,</span> <span class="pre">3)</span></code> int32 triangle array.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_usd_skeleton">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_usd_skeleton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usd_file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_usd_skeleton" title="Link to this definition">#</a></dt>
+<dd><p>Extract skeleton from a USD file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple <code class="docutils literal notranslate"><span class="pre">(joint_paths,</span> <span class="pre">bind_transforms,</span> <span class="pre">parent_ids)</span></code>.
+<code class="docutils literal notranslate"><span class="pre">joint_paths</span></code> is the list of J joint path strings (for example
+<code class="docutils literal notranslate"><span class="pre">&quot;Root/Hips&quot;</span></code>), <code class="docutils literal notranslate"><span class="pre">bind_transforms</span></code> is a <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> float32 array
+of world-space bind transforms in USD row-major convention
+(<code class="docutils literal notranslate"><span class="pre">point</span> <span class="pre">*</span> <span class="pre">M</span></code>), and <code class="docutils literal notranslate"><span class="pre">parent_ids</span></code> contains the J parent indices
+with <code class="docutils literal notranslate"><span class="pre">-1</span></code> for the root.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)">str</a>], <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_usd_animation">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_usd_animation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usd_file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_usd_animation" title="Link to this definition">#</a></dt>
+<dd><p>Extract SkelAnimation rotations and translations from a USD file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><code class="docutils literal notranslate"><span class="pre">(rot_mats,</span> <span class="pre">translations)</span></code> where</p>
+<ul class="simple">
+<li><p><em>rot_mats</em>: <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> float32 — local rotation matrices</p></li>
+<li><p><em>translations</em>: <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">3)</span></code> float32 — local translations</p></li>
+</ul>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if no SkelAnimation is found.</p>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_usd_skinning">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_usd_skinning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usd_file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_prim_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_usd_skinning" title="Link to this definition">#</a></dt>
+<dd><p>Extract skinning weights from a skinned mesh in a USD file.</p>
+<p>The mesh binding may define its own joint order (a subset of the skeleton
+joints).  The returned weight matrix is indexed by the <strong>skeleton</strong> joint
+order so it aligns with <a class="reference internal" href="#soma.io.load_usd_skeleton" title="soma.io.load_usd_skeleton"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_skeleton</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p></li>
+<li><p><strong>mesh_prim_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Prim path of the mesh to read skinning from.  If
+<code class="docutils literal notranslate"><span class="pre">None</span></code>, the first Mesh prim in the file is used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><code class="docutils literal notranslate"><span class="pre">(skinning_weights,</span> <span class="pre">num_joints)</span></code> where</p>
+<ul class="simple">
+<li><p><em>skinning_weights</em>: <code class="docutils literal notranslate"><span class="pre">(V,</span> <span class="pre">J_skel)</span></code> float32 dense weight matrix</p></li>
+<li><p><em>num_joints</em>: number of skeleton joints</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.missing_soma_neutral_rig_keys">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">missing_soma_neutral_rig_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.missing_soma_neutral_rig_keys" title="Link to this definition">#</a></dt>
+<dd><p>Return rig keys absent from a loaded <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code> mapping.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.find_lod_skin_mesh_name">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">find_lod_skin_mesh_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usd_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lod</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.find_lod_skin_mesh_name" title="Link to this definition">#</a></dt>
+<dd><p>Find the skinned mesh leaf name for a body LOD in a UsdSkel asset.</p>
+<p>The nvHuman publishes use naming conventions such as <code class="docutils literal notranslate"><span class="pre">c_skin_xlo</span></code> or
+<code class="docutils literal notranslate"><span class="pre">c_bodyRig_xlo</span></code>.  This helper keeps the runtime tolerant to small naming
+differences while still requiring a skinned mesh, not just any mesh whose
+name contains the LOD token.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_lod_rig_from_usd">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_lod_rig_from_usd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usd_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lod</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skin_mesh_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_lod_rig_from_usd" title="Link to this definition">#</a></dt>
+<dd><p>Load rig data for a specific body LOD from a UsdSkel USD file.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_rig_from_usd">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_rig_from_usd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">usd_path</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skin_mesh_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_rig_from_usd" title="Link to this definition">#</a></dt>
+<dd><p>Load SOMA template rig data from a UsdSkel USD file.</p>
+<p>Extracts the joint hierarchy, bind/T-pose transforms, bind-shape vertex
+positions, and skinning weights from the USD skeleton.  Returns the
+rig-related keys that used to be stored in <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code> so they
+can be merged with the slim core asset when initializing
+<a class="reference internal" href="somalayer.html#soma.soma.SOMALayer" title="soma.soma.SOMALayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SOMALayer</span></code></a>.</p>
+<p>Shape PCA data (<code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">shapedirs</span></code>, <code class="docutils literal notranslate"><span class="pre">eigenvalues</span></code>) and mesh
+topology (<code class="docutils literal notranslate"><span class="pre">triangles</span></code>, <code class="docutils literal notranslate"><span class="pre">triangles_low</span></code>, LOD maps, facial segments)
+are not included; they must still be loaded from <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>usd_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, <code class="docutils literal notranslate"><span class="pre">.usdc</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usd</span></code> template rig.</p></li>
+<li><p><strong>skin_mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Name of the <code class="docutils literal notranslate"><span class="pre">UsdGeomMesh</span></code> prim holding the body
+skin (leaf path component, not full path). If <code class="docutils literal notranslate"><span class="pre">None</span></code> (the
+default), look for <code class="docutils literal notranslate"><span class="pre">DEFAULT_SKIN_MESH_NAME</span></code> first, and
+fall back to the first <code class="docutils literal notranslate"><span class="pre">UsdGeomMesh</span></code> descendant of any
+<code class="docutils literal notranslate"><span class="pre">UsdSkelRoot</span></code>. Pass an explicit name to pin the search.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with rig keys supplied by <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> – <code class="docutils literal notranslate"><span class="pre">joint_names</span></code>, <code class="docutils literal notranslate"><span class="pre">joint_parent_ids</span></code>, <code class="docutils literal notranslate"><span class="pre">bind_pose_world</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bind_pose_local</span></code>, <code class="docutils literal notranslate"><span class="pre">t_pose_world</span></code>, <code class="docutils literal notranslate"><span class="pre">t_pose_local</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bind_shape</span></code>, <code class="docutils literal notranslate"><span class="pre">skinning_weights_data</span></code>,
+<code class="docutils literal notranslate"><span class="pre">skinning_weights_indices</span></code>, <code class="docutils literal notranslate"><span class="pre">skinning_weights_indptr</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">skinning_weights_shape</span></code>. When the body skin mesh carries polygon
+or UV data, the result also includes <code class="docutils literal notranslate"><span class="pre">face_vert_indices</span></code>,
+<code class="docutils literal notranslate"><span class="pre">face_vert_counts</span></code>, and <code class="docutils literal notranslate"><span class="pre">uv_data</span></code> for <a class="reference internal" href="#soma.io.save_soma_usd" title="soma.io.save_soma_usd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save_soma_usd</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#FileNotFoundError" title="(in Python v3.14)"><strong>FileNotFoundError</strong></a> – if the USD file does not exist.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – if the file cannot be opened, has no
+    <code class="docutils literal notranslate"><span class="pre">UsdSkelSkeleton</span></code>, has no <code class="docutils literal notranslate"><span class="pre">bindTransforms</span></code>, has joint/
+    transform count mismatches, or has malformed skinning primvars.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/library/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – if the skin mesh cannot be located under
+    <em>skin_mesh_name</em> (or the auto-discovery fallback), or has
+    no points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#soma.io.RigUSDData" title="soma.io.RigUSDData"><em>RigUSDData</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.add_npz_args">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">add_npz_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.add_npz_args" title="Link to this definition">#</a></dt>
+<dd><p>Add common NPZ output arguments to an argparse parser.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_soma_npz">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_soma_npz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_soma_npz" title="Link to this definition">#</a></dt>
+<dd><p>Load a SOMA animation .npz saved by <code class="xref py py-obj docutils literal notranslate"><span class="pre">save_soma_npz</span></code>.</p>
+<p>Returns a dict with the following keys:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">poses</span></code>: <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">J,</span> <span class="pre">3)</span></code> rotvec or <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">J,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> matrices.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transl</span></code>: <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">3)</span></code> root translation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">joint_names</span></code>: list of <em>J</em> joint name strings.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">identity_model_type</span></code>: e.g. <code class="docutils literal notranslate"><span class="pre">&quot;mhr&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;smpl&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">identity_coeffs</span></code>: <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">C)</span></code> or <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">C)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rotation_repr</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;rotvec&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;matrix&quot;</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">absolute_pose</span></code>: bool — True if poses are absolute (no joint orient).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unit</span></code>: unit label string (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;meters&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">keep_root</span></code>: bool — whether the Root joint (index 0) is included.</p></li>
+</ul>
+<p>Optional keys (present only if saved):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scale_params</span></code>: <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">S)</span></code> or <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">S)</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">joint_orient</span></code>: <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> per-joint orient (present when
+<code class="docutils literal notranslate"><span class="pre">absolute_pose=False</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">global_scale</span></code>: scalar uniform scale factor.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hand_type</span></code>: <code class="docutils literal notranslate"><span class="pre">&quot;left&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;right&quot;</span></code> (absent for body animations).</p></li>
+</ul>
+<p>Any extra arrays stored via <em>extra_arrays</em> are included as-is.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the <code class="docutils literal notranslate"><span class="pre">.npz</span></code> file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of numpy arrays and Python scalars.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#soma.io.SOMANPZData" title="soma.io.SOMANPZData"><em>SOMANPZData</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.save_soma_usd">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">save_soma_usd</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">out_path</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rotations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">root_translation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_names</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">joint_parent_ids</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bind_transforms_world</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">bind_transforms_local</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">rest_shape</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">faces</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">face_vert_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">face_vert_counts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">uv_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">skinning_weights</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'meters'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">topk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">root_joint_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">skin_mesh_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">DEFAULT_SKIN_MESH_NAME</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.io.save_soma_usd" title="Link to this definition">#</a></dt>
+<dd><p>Save a SOMA skeletal rig (and optionally animation) to a USD file with UsdSkel.</p>
+<p>When <em>rotations</em> and <em>root_translation</em> are omitted, only the static rig is
+written (skeleton bind pose + skinned mesh) with no SkelAnimation prim.</p>
+<p>The rotations and root_translation should come directly from
+<a class="reference internal" href="pose_inversion.html#soma.pose_inversion.PoseInversion.fit" title="soma.pose_inversion.PoseInversion.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a> (local-space,
+<code class="docutils literal notranslate"><span class="pre">absolute_pose=True</span></code> convention).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Output <code class="docutils literal notranslate"><span class="pre">.usd</span></code>, <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usdc</span></code> file path.</p></li>
+<li><p><strong>rotations</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – (N, J, 3, 3) local rotation matrices, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for a static rig.</p></li>
+<li><p><strong>root_translation</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – (N, 3) root joint local translation, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for a static rig.</p></li>
+<li><p><strong>joint_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – list of J joint name strings (including Root).</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (J,) parent index array.</p></li>
+<li><p><strong>bind_transforms_world</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (J, 4, 4) or (1, J, 4, 4) world-space bind transforms.</p></li>
+<li><p><strong>bind_transforms_local</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (J, 4, 4) or (1, J, 4, 4) local-space bind transforms.</p></li>
+<li><p><strong>rest_shape</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (V, 3) bind-pose vertex positions.</p></li>
+<li><p><strong>faces</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – (F, 3) triangle face indices.  Used as fallback when
+<em>face_vert_indices</em>/<em>face_vert_counts</em> are not provided.</p></li>
+<li><p><strong>face_vert_indices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – Flattened polygon face-vertex indices (e.g. quads from
+the template USD).  Takes priority over <em>faces</em> when provided.</p></li>
+<li><p><strong>face_vert_counts</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – Per-face vertex counts matching <em>face_vert_indices</em>.</p></li>
+<li><p><strong>uv_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference internal" href="#soma.io.UVPrimvarEntry" title="soma.io.UVPrimvarEntry"><em>UVPrimvarEntry</em></a><em>] </em><em>| </em><em>None</em>) – Optional UV sets in nested-dict format
+<code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">{&quot;coordinates&quot;:</span> <span class="pre">(M,2),</span> <span class="pre">&quot;indices&quot;:</span> <span class="pre">...,</span> <span class="pre">&quot;interpolation&quot;:</span> <span class="pre">str}}</span></code>,
+as returned by <a class="reference internal" href="#soma.io.load_usd_mesh" title="soma.io.load_usd_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_mesh</span></code></a> or <a class="reference internal" href="#soma.io.load_rig_from_usd" title="soma.io.load_rig_from_usd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_rig_from_usd</span></code></a>.</p></li>
+<li><p><strong>skinning_weights</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (V, J) dense skinning weights.</p></li>
+<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;meters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;centimeters&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;millimeters&quot;</span></code>.</p></li>
+<li><p><strong>fps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Frames per second (timeCodesPerSecond).</p></li>
+<li><p><strong>topk</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Max joint influences per vertex for sparse skinning.</p></li>
+<li><p><strong>root_joint_idx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>None</em>) – Index of the joint that receives root_translation.
+Defaults to 1 (SOMA body Hips); pass 0 for hand models.</p></li>
+<li><p><strong>skin_mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Leaf name for the skinned mesh prim under the
+<code class="docutils literal notranslate"><span class="pre">UsdSkelRoot</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">DEFAULT_SKIN_MESH_NAME</span></code> so that
+files written here round-trip cleanly through
+<a class="reference internal" href="#soma.io.load_rig_from_usd" title="soma.io.load_rig_from_usd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_rig_from_usd</span></code></a>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.save_vertex_animation_usd">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">save_vertex_animation_usd</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">out_path</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">faces</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'meters'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">fps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30.0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">prim_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'/Mesh'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.io.save_vertex_animation_usd" title="Link to this definition">#</a></dt>
+<dd><p>Save a mesh with per-frame vertex positions to USD.</p>
+<p>No skeleton or skinning – just animated <code class="docutils literal notranslate"><span class="pre">Points</span></code> on a <code class="docutils literal notranslate"><span class="pre">Mesh</span></code> prim.
+Useful for exporting target meshes, blendshape sequences, or any
+topology-constant vertex animation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Output <code class="docutils literal notranslate"><span class="pre">.usd</span></code>, <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usdc</span></code> file path.</p></li>
+<li><p><strong>vertices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (N, V, 3) per-frame vertex positions.</p></li>
+<li><p><strong>faces</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (F, 3) triangle face indices (constant across frames).</p></li>
+<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;meters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;centimeters&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;millimeters&quot;</span></code>.</p></li>
+<li><p><strong>fps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Frames per second.</p></li>
+<li><p><strong>prim_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – USD prim path for the mesh (default <code class="docutils literal notranslate"><span class="pre">&quot;/Mesh&quot;</span></code>).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pose_inversion.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="geometry.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.UVPrimvarEntry"><code class="docutils literal notranslate"><span class="pre">UVPrimvarEntry</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.SOMANPZData"><code class="docutils literal notranslate"><span class="pre">SOMANPZData</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.RigUSDData"><code class="docutils literal notranslate"><span class="pre">RigUSDData</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.list_usd_meshes"><code class="docutils literal notranslate"><span class="pre">list_usd_meshes()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_mesh"><code class="docutils literal notranslate"><span class="pre">load_usd_mesh()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.write_usd_mesh"><code class="docutils literal notranslate"><span class="pre">write_usd_mesh()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.fan_triangulate"><code class="docutils literal notranslate"><span class="pre">fan_triangulate()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_skeleton"><code class="docutils literal notranslate"><span class="pre">load_usd_skeleton()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_animation"><code class="docutils literal notranslate"><span class="pre">load_usd_animation()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_skinning"><code class="docutils literal notranslate"><span class="pre">load_usd_skinning()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.missing_soma_neutral_rig_keys"><code class="docutils literal notranslate"><span class="pre">missing_soma_neutral_rig_keys()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.find_lod_skin_mesh_name"><code class="docutils literal notranslate"><span class="pre">find_lod_skin_mesh_name()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_lod_rig_from_usd"><code class="docutils literal notranslate"><span class="pre">load_lod_rig_from_usd()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_rig_from_usd"><code class="docutils literal notranslate"><span class="pre">load_rig_from_usd()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.add_npz_args"><code class="docutils literal notranslate"><span class="pre">add_npz_args()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_soma_npz"><code class="docutils literal notranslate"><span class="pre">load_soma_npz()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.save_soma_usd"><code class="docutils literal notranslate"><span class="pre">save_soma_usd()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.save_vertex_animation_usd"><code class="docutils literal notranslate"><span class="pre">save_vertex_animation_usd()</span></code></a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026, NVIDIA.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

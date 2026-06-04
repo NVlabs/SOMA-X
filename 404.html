@@ -14,7 +14,7 @@
   if (/^(stable|latest|v\d+\.\d+)(\/|$)/.test(path)) {
     return;
   }
-  location.replace(prefix + "latest/" + path + location.search + location.hash);
+  location.replace(prefix + "stable/" + path + location.search + location.hash);
 })();
   </script>
   <style>
