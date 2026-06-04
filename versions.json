@@ -3,5 +3,10 @@
     "name": "latest (main)",
     "version": "latest",
     "url": "https://nvlabs.github.io/SOMA-X/latest/"
+  },
+  {
+    "version": "0.2",
+    "url": "https://nvlabs.github.io/SOMA-X/v0.2/",
+    "name": "0.2 (prerelease)"
   }
 ]

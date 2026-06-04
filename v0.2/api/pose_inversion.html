@@ -1,0 +1,814 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>PoseInversion &#8212; SOMA-X</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+
+
+
+    <script src="../_static/documentation_options.js?v=10f1778b"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/pose_inversion';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+
+    <link rel="canonical" href="https://nvlabs.github.io/SOMA-X/api/pose_inversion.html" />
+    <link rel="icon" href="../_static/favicon.png"/>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="soma.io" href="io.html" />
+    <link rel="prev" title="SOMALayer" href="somalayer.html" />
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.2" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="SOMA-X - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="SOMA-X - Home"/>
+  
+  
+    <p class="title logo__title">SOMA-X</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVlabs/SOMA-X" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="SOMA-X - Home"/>
+    <img src="../_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="SOMA-X - Home"/>
+  
+  
+    <p class="title logo__title">SOMA-X</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/NVlabs/SOMA-X" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="index.html">API Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../model_card.html">Model Overview</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../BIAS.html">Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../EXPLAINABILITY.html">Explainability</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../PRIVACY.html">Privacy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SAFETY_and_SECURITY.html">Safety and Security</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="poseinversion">
+<h1><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code><a class="headerlink" href="#poseinversion" title="Link to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code> is the inverse-fitting utility used by the conversion tools in this
+repository.</p>
+<p>It fits SOMA-compatible skeleton rotations from posed vertices and supports:</p>
+<ul class="simple">
+<li><p>analytical inverse-LBS refinement</p></li>
+<li><p>optional Lie algebra Gauss-Newton refinement</p></li>
+<li><p>optional autograd-based refinement through FK + LBS</p></li>
+</ul>
+<p>This makes it the key API for conversions such as SMPL-to-SOMA and MHR-to-SOMA.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.pose_inversion.</span></span><span class="sig-name descname"><span class="pre">PoseInversion</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">soma_layer</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">low_lod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">skeleton_transfer_rotation_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">refit_rotation_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Invert posed vertices to a layer’s skeleton rotations.</p>
+<p>Accepts vertices in the wrapped layer topology. For <code class="xref py py-class docutils literal notranslate"><span class="pre">SOMALayer</span></code>,
+it also accepts supported identity-model native topologies (MHR, SMPL,
+etc.) and transfers them through the identity model’s barycentric
+interpolator. All translational inputs and outputs are in the wrapped
+layer’s <code class="docutils literal notranslate"><span class="pre">output_unit</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>soma_layer</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a>) – A <a class="reference internal" href="somalayer.html#soma.soma.SOMALayer" title="soma.soma.SOMALayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SOMALayer</span></code></a> instance (any LOD).</p></li>
+<li><p><strong>low_lod</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Use low-LOD SOMA topology (4505 verts) for the iterative
+refit.  This is ~4x fewer vertices than mid-LOD (18056) with
+negligible accuracy loss (~0.006 cm).  When <em>True</em> and the
+given <em>soma_layer</em> is mid-LOD, a second low-LOD SOMALayer is
+created internally for the refit.  XLO layers keep their own
+topology because there is no direct xlo-to-low vertex transfer.
+Default <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+<li><p><strong>skeleton_transfer_rotation_method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – rotation extraction method used
+by the initial <code class="xref py py-class docutils literal notranslate"><span class="pre">SkeletonTransfer</span></code> pose estimate. <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code>
+uses a Newton-Schulz-first reference-gauge policy.</p></li>
+<li><p><strong>refit_rotation_method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – rotation extraction method used by the
+analytical inverse-LBS refit. <code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code> applies
+a weak reference-rotation gauge to the local Procrustes covariance,
+then uses SVD only as a final validity projection if Newton-Schulz
+does not produce a rotation. <code class="docutils literal notranslate"><span class="pre">&quot;kabsch&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;newton-schulz&quot;</span></code>
+remain available for diagnostics.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">inv</span> <span class="o">=</span> <span class="n">PoseInversion</span><span class="p">(</span><span class="n">soma_layer</span><span class="p">)</span>
+<span class="n">inv</span><span class="o">.</span><span class="n">prepare_identity</span><span class="p">(</span><span class="n">identity_coeffs</span><span class="p">,</span> <span class="n">scale_params</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">inv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">posed_vertices</span><span class="p">)</span>  <span class="c1"># any supported topology, in soma_layer.output_unit</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion.transfer_to_soma">
+<span class="sig-name descname"><span class="pre">transfer_to_soma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion.transfer_to_soma" title="Link to this definition">#</a></dt>
+<dd><p>Transfer vertices from identity-model topology to SOMA topology.</p>
+<p>If vertices are already on SOMA topology, returns them unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vertices</strong> (<em>Tensor</em>) – (B, V, 3) or (V, 3) in any supported topology.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>(B, V_soma, 3) vertices on SOMA topology.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Tensor</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion.prepare_identity">
+<span class="sig-name descname"><span class="pre">prepare_identity</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">identity_coeffs</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">scale_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">repose_to_bind_pose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion.prepare_identity" title="Link to this definition">#</a></dt>
+<dd><p>Set up rig from identity parameters.</p>
+<p>Supports both single identity <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">C)</span></code> and batched identities
+<code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">C)</span></code>.  Structural caches (sparse weights, groups, levels)
+are built once on the first call and reused on subsequent calls.
+Per-identity bind data (<code class="docutils literal notranslate"><span class="pre">bind_local_t</span></code>, <code class="docutils literal notranslate"><span class="pre">W_bind_inv</span></code>,
+<code class="docutils literal notranslate"><span class="pre">bind_verts</span></code>) is updated every call.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>identity_coeffs</strong> (<em>Tensor</em>) – (1, C) or (B, C) identity coefficients.</p></li>
+<li><p><strong>scale_params</strong> (<em>Tensor</em><em> | </em><em>None</em>) – (1, S) or (B, S) optional scale parameters.</p></li>
+<li><p><strong>repose_to_bind_pose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True (default), transform the rest
+shape into SOMA’s bind pose.  Set to False when the
+target vertices are posed relative to the identity
+model’s native rest pose (e.g. MHR).</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a><em>] </em><em>| </em><em>None</em>) – optional dict passed to the identity model’s <code class="docutils literal notranslate"><span class="pre">get_rest_shape</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">posed_vertices</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">body_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">finger_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">full_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">lie_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">lie_lambda</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-1</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">autograd_iters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">autograd_lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5e-3</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">autograd_translation_lr_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">autograd_pose_prior</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">autograd_leaf_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">autograd_pose_prior_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">constrain_1dof</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">leaf_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion.fit" title="Link to this definition">#</a></dt>
+<dd><p>Fit SOMA skeleton rotations to posed vertices.</p>
+<p>Supports several modes depending on the iteration arguments:</p>
+<ul class="simple">
+<li><p><strong>Analytical + Lie algebra Gauss-Newton</strong> (default):
+<code class="docutils literal notranslate"><span class="pre">body_iters=2,</span> <span class="pre">full_iters=1,</span> <span class="pre">lie_iters=3</span></code>.  The analytical
+solve gives a fast warm start, then Lie-GN solves all active joint
+rotations simultaneously via a dense FK-coupled normal equation.</p></li>
+<li><p><strong>Analytical only</strong>: <code class="docutils literal notranslate"><span class="pre">lie_iters=0</span></code>.</p></li>
+<li><p><strong>Lie algebra Gauss-Newton only</strong>:
+<code class="docutils literal notranslate"><span class="pre">body_iters=0,</span> <span class="pre">full_iters=0,</span> <span class="pre">lie_iters=5</span></code>.</p></li>
+<li><p><strong>Autograd FK only</strong>:
+<code class="docutils literal notranslate"><span class="pre">body_iters=0,</span> <span class="pre">full_iters=0,</span> <span class="pre">lie_iters=0,</span> <span class="pre">autograd_iters=10</span></code>.
+Slow but controllable (e.g. extra weights on extremities).</p></li>
+<li><p><strong>Default + autograd FK</strong>: <code class="docutils literal notranslate"><span class="pre">autograd_iters=10</span></code>.  The default
+analytical + Lie-GN solve warm-starts autograd refinement.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>posed_vertices</strong> (<em>Tensor</em>) – (B, V, 3) vertices on any supported topology.</p></li>
+<li><p><strong>body_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – analytical iterations for body chain (default: 2).</p></li>
+<li><p><strong>finger_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – analytical iterations for finger chain (default: 0).</p></li>
+<li><p><strong>full_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – analytical iterations for all joints (default: 1).</p></li>
+<li><p><strong>lie_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Lie algebra Gauss-Newton iterations (default: 3).
+When &gt; 0, runs a dense batched Gauss-Newton solve in SO(3)
+after the analytical solver.  Each iter solves a (3J x 3J)
+system for all joint twists simultaneously.</p></li>
+<li><p><strong>lie_lambda</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Tikhonov regularisation for the Lie-GN normal
+equations (default: 1e-1).</p></li>
+<li><p><strong>autograd_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Adam optimization steps through FK + LBS (default: 0).
+When &gt; 0, runs autograd refinement after the analytical solve.</p></li>
+<li><p><strong>autograd_lr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – learning rate for autograd Adam (default: 5e-3).</p></li>
+<li><p><strong>autograd_translation_lr_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – multiplier for the root-translation
+Adam learning rate.  Useful because translations are optimized
+in layer output units while rotations use unitless 6D
+parameters.</p></li>
+<li><p><strong>autograd_pose_prior</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – local-rotation prior weight for autograd FK.
+Penalizes deviation from the initial local rotation matrices.
+0.0 disables it.</p></li>
+<li><p><strong>autograd_leaf_weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>] </em><em>| </em><em>None</em>) – optional vertex weighting used only by the
+autograd FK stage.  This lets the analytical/Lie warm start
+remain unweighted while the refinement emphasizes contact
+regions.</p></li>
+<li><p><strong>autograd_pose_prior_weights</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>] </em><em>| </em><em>None</em>) – optional per-joint multipliers for
+the autograd pose prior.  Values &gt; 1 stiffen a joint relative
+to the warm start; values &lt; 1 let it move more.</p></li>
+<li><p><strong>constrain_1dof</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – apply 1-DOF constraints on elbows/knees
+(analytical only).</p></li>
+<li><p><strong>leaf_weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em>]</em>) – importance multiplier for extremity vertices.
+Float for uniform (e.g. 3.0), or dict for per-group
+(e.g. <code class="docutils literal notranslate"><span class="pre">{&quot;head&quot;:</span> <span class="pre">2,</span> <span class="pre">&quot;hands&quot;:</span> <span class="pre">2,</span> <span class="pre">&quot;feet&quot;:</span> <span class="pre">5,</span> <span class="pre">&quot;heels&quot;:</span> <span class="pre">10}</span></code>).
+1.0 = uniform (default).</p></li>
+<li><p><strong>batch_size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>None</em>) – process in chunks of this size.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict with <code class="docutils literal notranslate"><span class="pre">rotations</span></code> (B, J, 3, 3),
+<code class="docutils literal notranslate"><span class="pre">root_translation</span></code> (B, 3), and
+<code class="docutils literal notranslate"><span class="pre">per_vertex_error</span></code> (B, V) L2 error per vertex.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>PoseInversionResult</em></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion.roundtrip">
+<span class="sig-name descname"><span class="pre">roundtrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">posed_vertices</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion.roundtrip" title="Link to this definition">#</a></dt>
+<dd><p>Invert and forward for verification.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(soma_vertices, result) where soma_vertices is (B, V_soma, 3).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>PoseInversionResult</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="somalayer.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="io.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion.transfer_to_soma"><code class="docutils literal notranslate"><span class="pre">transfer_to_soma()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion.prepare_identity"><code class="docutils literal notranslate"><span class="pre">prepare_identity()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion.fit"><code class="docutils literal notranslate"><span class="pre">fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion.roundtrip"><code class="docutils literal notranslate"><span class="pre">roundtrip()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="../_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2026, NVIDIA.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>
