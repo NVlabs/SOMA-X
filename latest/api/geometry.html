@@ -44,7 +44,7 @@
 
 
 
-    <script src="../_static/documentation_options.js?v=938c9ccc"></script>
+    <script src="../_static/documentation_options.js?v=37f418d5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -1390,7 +1390,7 @@ skinning weights, and skeleton structure remain the same.</p>
 </dl>
 <dl class="py function">
 <dt class="sig sig-object py" id="soma.geometry.barycentric_interp.fabricate_tet">
-<span class="sig-prename descclassname"><span class="pre">soma.geometry.barycentric_interp.</span></span><span class="sig-name descname"><span class="pre">fabricate_tet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.fabricate_tet" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">soma.geometry.barycentric_interp.</span></span><span class="sig-name descname"><span class="pre">fabricate_tet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'area'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.fabricate_tet" title="Link to this definition">#</a></dt>
 <dd><p>Fabricate a tetrahedron from triangle vertices by adding a point
 perpendicular to the triangle plane.</p>
 <dl class="field-list simple">
@@ -1399,6 +1399,8 @@ perpendicular to the triangle plane.</p>
 <li><p><strong>p0</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – First triangle vertex, shape (…, 3)</p></li>
 <li><p><strong>p1</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Second triangle vertex, shape (…, 3)</p></li>
 <li><p><strong>p2</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>) – Third triangle vertex, shape (…, 3)</p></li>
+<li><p><strong>normal_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;area&quot;</span></code> uses the legacy raw cross-product normal.
+<code class="docutils literal notranslate"><span class="pre">&quot;edge&quot;</span></code> uses a unit normal scaled by local mean edge length.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1457,7 +1459,17 @@ perpendicular to the triangle plane.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="soma.geometry.barycentric_interp.BarycentricInterpolator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.barycentric_interp.</span></span><span class="sig-name descname"><span class="pre">BarycentricInterpolator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">V_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">F_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_dst</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correspondence_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.BarycentricInterpolator" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.barycentric_interp.</span></span><span class="sig-name descname"><span class="pre">BarycentricInterpolator</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">V_src</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">F_src</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">V_dst</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">correspondence_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">tet_normal_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'area'</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.barycentric_interp.BarycentricInterpolator" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Barycentric interpolation for transferring deformations from source to target mesh.
 Uses tetrahedral mesh construction and 3D barycentric coordinates.</p>
@@ -1469,6 +1481,9 @@ Uses tetrahedral mesh construction and 3D barycentric coordinates.</p>
 <li><p><strong>F_src</strong> (<em>Tensor</em>) – Source mesh faces, (n_faces, 3) - torch tensor</p></li>
 <li><p><strong>V_dst</strong> (<em>Tensor</em>) – Target mesh vertices, (n_dst_verts, 3) - torch tensor</p></li>
 <li><p><strong>correspondence_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Optional path to load precomputed correspondence</p></li>
+<li><p><strong>tet_normal_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Height scale for fabricated tetrahedra. <code class="docutils literal notranslate"><span class="pre">&quot;area&quot;</span></code>
+preserves legacy behavior; <code class="docutils literal notranslate"><span class="pre">&quot;edge&quot;</span></code> uses a local edge-length
+normal height.</p></li>
 </ul>
 </dd>
 </dl>
