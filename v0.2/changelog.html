@@ -444,17 +444,21 @@
                   
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
-<section id="v0-2-0">
-<h2>v0.2.0<a class="headerlink" href="#v0-2-0" title="Link to this heading">#</a></h2>
-<p>SOMA-X v0.2.0 is a substantial full-body update focused on deformation quality,
-procedural rig controls, body model interoperability, updated rig assets, and
-public documentation.</p>
+<section id="v0-2-1">
+<h2>v0.2.1<a class="headerlink" href="#v0-2-1" title="Link to this heading">#</a></h2>
+<p>SOMA-X v0.2.1 is the recommended 0.2 series release. The 0.2 series is a
+substantial full-body update focused on deformation quality, procedural rig
+controls, body model interoperability, updated rig assets, corrective-model
+support, and public documentation. New in v0.2.1, SOMA-X adds a corrective
+model path for procedural twist-joint rigs.</p>
 <section id="highlights">
 <h3>Highlights<a class="headerlink" href="#highlights" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Added procedural transforms that drive twist joints for improved full-body
 deformations, with Blender and Maya reference implementations for DCC
 evaluation.</p></li>
+<li><p>New in v0.2.1: added corrective-model support that is aware of procedural
+twist joints, including corrected bind reposing for twist-rig workflows.</p></li>
 <li><p>Added extra-low body LOD support for lightweight rendering and fitting
 workflows.</p></li>
 <li><p>Added pose conversion utilities for interoperability across SOMA, SMPL, and
@@ -471,6 +475,8 @@ identity/auxiliary-geometry metadata.</p></li>
 <ul class="simple">
 <li><p>Added procedural transform support for driving twist joints, improving
 deformation quality in articulated body motion through <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code>.</p></li>
+<li><p>Added corrective-model execution for twist-joint-aware SOMA body rigs and
+extra-low LOD paths.</p></li>
 <li><p>Added native SOMA body bone-scaling support and flexible identity-preparation
 controls.</p></li>
 <li><p>Improved PoseInversion with more stable rotation alignment and solve paths.</p></li>
@@ -498,7 +504,8 @@ while <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.
 geometry information, and associated metadata.</p></li>
 <li><p>Added <code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code> as a portable sidecar describing the
 procedural twist-joint transforms used by the runtime and DCC references.</p></li>
-<li><p>Updated public asset metadata for the v0.2.0 release.</p></li>
+<li><p>Added the corrective model asset for twist-joint-aware body rigs.</p></li>
+<li><p>Updated public asset metadata for the 0.2 series release.</p></li>
 </ul>
 </section>
 <section id="dcc-tooling">
@@ -527,13 +534,120 @@ environments; they are not identity-generation or auto-rigging tools.</p></li>
 <section id="packaging-and-release-process">
 <h3>Packaging and Release Process<a class="headerlink" href="#packaging-and-release-process" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p>Package version is <code class="docutils literal notranslate"><span class="pre">py-soma-x==0.2.0</span></code>.</p></li>
+<li><p>Package version is <code class="docutils literal notranslate"><span class="pre">py-soma-x==0.2.1</span></code>.</p></li>
 <li><p>Added release automation for docs, package builds, PyPI Trusted Publishing,
 and public mirror validation.</p></li>
 </ul>
 </section>
 <section id="upgrade-notes">
 <h3>Upgrade Notes<a class="headerlink" href="#upgrade-notes" title="Link to this heading">#</a></h3>
+<ul>
+<li><p>Existing <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> usage remains source-compatible for common full-body
+workflows.</p></li>
+<li><p>Users can continue installing optional third-party identity-model support with
+the documented extras and provider-specific assets.</p></li>
+<li><p>Procedural-control workflows require the updated v0.2 assets and sidecar
+files.</p></li>
+<li><p>v0.2.1 is the first 0.2 series package with corrective-model support for
+procedural twist-joint rigs.</p></li>
+<li><p>The PyPI package should be installed or upgraded with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>py-soma-x<span class="o">==</span><span class="m">0</span>.2.1
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
+</section>
+<section id="v0-2-0">
+<h2>v0.2.0<a class="headerlink" href="#v0-2-0" title="Link to this heading">#</a></h2>
+<p>SOMA-X v0.2.0 is a substantial full-body update focused on deformation quality,
+procedural rig controls, body model interoperability, updated rig assets, and
+public documentation.</p>
+<section id="id1">
+<h3>Highlights<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added procedural transforms that drive twist joints for improved full-body
+deformations, with Blender and Maya reference implementations for DCC
+evaluation.</p></li>
+<li><p>Added extra-low body LOD support for lightweight rendering and fitting
+workflows.</p></li>
+<li><p>Added pose conversion utilities for interoperability across SOMA, SMPL, and
+SMPL-X workflows.</p></li>
+<li><p>Improved PoseInversion, skinning, geometry utilities, and runtime stability
+for full-body use cases.</p></li>
+<li><p>Reorganized public SOMA assets around standard 3D rig data and SOMA-specific
+identity/auxiliary-geometry metadata.</p></li>
+<li><p>Added public API documentation and package-release automation.</p></li>
+</ul>
+</section>
+<section id="id2">
+<h3>Full-Body Runtime and Geometry<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added procedural transform support for driving twist joints, improving
+deformation quality in articulated body motion through <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code>.</p></li>
+<li><p>Added native SOMA body bone-scaling support and flexible identity-preparation
+controls.</p></li>
+<li><p>Improved PoseInversion with more stable rotation alignment and solve paths.</p></li>
+<li><p>Split and clarified batched skinning/FK APIs.</p></li>
+<li><p>Added support for an extra-low SOMA body LOD.</p></li>
+</ul>
+</section>
+<section id="id3">
+<h3>Model Interoperability<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">tools/pose_converter.py</span></code> for transferring pose data across SOMA, SMPL, and
+SMPL-X workflows, including SOMA procedural pose outputs and native
+SMPL/SMPL-X pose parameter formats.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">soma.smpl.transfer</span></code> helpers for programmatic pose-transfer workflows
+across SOMA and SMPL-family model layers.</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Assets<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> as a standard USD representation of the SOMA
+rig, including updated twist-joint and LOD information for 3D/DCC pipelines.</p></li>
+<li><p>Reorganized the public asset split so standard rigging data lives in USD,
+while <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code> carries identity shape model information, auxiliary
+geometry information, and associated metadata.</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code> as a portable sidecar describing the
+procedural twist-joint transforms used by the runtime and DCC references.</p></li>
+<li><p>Updated public asset metadata for the v0.2.0 release.</p></li>
+</ul>
+</section>
+<section id="id5">
+<h3>DCC Tooling<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added Blender and Maya reference implementations under
+<code class="docutils literal notranslate"><span class="pre">tools/soma_procedural_blender</span></code> and <code class="docutils literal notranslate"><span class="pre">tools/soma_procedural_maya</span></code>.</p></li>
+<li><p>These tools demonstrate and validate procedural twist transforms in DCC
+environments; they are not identity-generation or auto-rigging tools.</p></li>
+</ul>
+</section>
+<section id="id6">
+<h3>Documentation<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Added public API documentation for core SOMA-X modules.</p></li>
+<li><p>Added documentation for data assets, procedural controls, and geometry APIs.</p></li>
+<li><p>Added versioned GitHub Pages deployment support:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">/latest/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/v0.2/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/stable/</span></code></p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="id7">
+<h3>Packaging and Release Process<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Package version is <code class="docutils literal notranslate"><span class="pre">py-soma-x==0.2.0</span></code>.</p></li>
+<li><p>Added release automation for docs, package builds, PyPI Trusted Publishing,
+and public mirror validation.</p></li>
+</ul>
+</section>
+<section id="id8">
+<h3>Upgrade Notes<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <ul>
 <li><p>Existing <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> usage remains source-compatible for common full-body
 workflows.</p></li>
@@ -611,7 +725,7 @@ twist joints are on.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-0">v0.2.0</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-1">v0.2.1</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#highlights">Highlights</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#full-body-runtime-and-geometry">Full-Body Runtime and Geometry</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#model-interoperability">Model Interoperability</a></li>
@@ -620,6 +734,17 @@ twist joints are on.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#packaging-and-release-process">Packaging and Release Process</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#upgrade-notes">Upgrade Notes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-0">v0.2.0</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Highlights</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Full-Body Runtime and Geometry</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Model Interoperability</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Assets</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">DCC Tooling</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Documentation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Packaging and Release Process</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Upgrade Notes</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#known-limitations">Known Limitations</a></li>
 </ul>
 </li>

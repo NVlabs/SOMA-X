@@ -600,7 +600,7 @@ arm local-X twist to axis X, left leg local-X twist to negative axis Y, and
 right leg local-X twist to positive axis Y. The JSON translation matrix places
 twist helpers along the fitted public segment, preserving identity and
 body-part stretch instead of trusting independently fitted twist translations.
-Pose correctives are rejected in twist mode for this round.</p>
+Pose correctives are supported only in this procedural-transform mode.</p>
 </section>
 <section id="pose-tensor-poses">
 <h2>Pose tensor (<code class="docutils literal notranslate"><span class="pre">poses</span></code>)<a class="headerlink" href="#pose-tensor-poses" title="Link to this heading">#</a></h2>
@@ -710,8 +710,10 @@ other inactive joints are not exposed.</p></td>
 <section id="correctives">
 <h2>Correctives<a class="headerlink" href="#correctives" title="Link to this heading">#</a></h2>
 <p>Pose-dependent corrective vertex offsets are applied by default
-(<code class="docutils literal notranslate"><span class="pre">apply_correctives=True</span></code> on <code class="docutils literal notranslate"><span class="pre">pose()</span></code> / <code class="docutils literal notranslate"><span class="pre">forward()</span></code>). Pass <code class="docutils literal notranslate"><span class="pre">False</span></code>
-for a pure LBS output.</p>
+(<code class="docutils literal notranslate"><span class="pre">apply_correctives=True</span></code> on <code class="docutils literal notranslate"><span class="pre">pose()</span></code> / <code class="docutils literal notranslate"><span class="pre">forward()</span></code>) when a corrective
+checkpoint is loaded. Body correctives require procedural transforms. Pass
+<code class="docutils literal notranslate"><span class="pre">apply_correctives=False</span></code> for a pure LBS output, or construct with
+<code class="docutils literal notranslate"><span class="pre">correctives_model_path=None</span></code> to skip loading the checkpoint entirely.</p>
 </section>
 <section id="units">
 <h2>Units<a class="headerlink" href="#units" title="Link to this heading">#</a></h2>
@@ -736,7 +738,8 @@ forward axis <code class="docutils literal notranslate"><span class="pre">+Z</sp
 <dd><em class="sig-param"><span class="n"><span class="pre">lod</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">template_rig_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">enable_procedural_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
-<dd><em class="sig-param"><span class="n"><span class="pre">load_correctives_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">load_correctives_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">correctives_model_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_DEFAULT_CORRECTIVES_MODEL_PATH</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer" title="Link to this definition">#</a></dt>
@@ -796,9 +799,11 @@ template.</p></li>
 v0026 twist-joint rig and drive SOMA-owned twist joints from the
 JSON procedural definition. <code class="docutils literal notranslate"><span class="pre">False</span></code> opts out to the legacy
 78-joint public rig.</p></li>
-<li><p><strong>load_correctives_model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">False</span></code>, skip loading the pose-corrective
-checkpoint. Use this for pure LBS/profile paths that always pass
-<code class="docutils literal notranslate"><span class="pre">apply_correctives=False</span></code>.</p></li>
+<li><p><strong>load_correctives_model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>) – Deprecated compatibility alias. Use
+<code class="docutils literal notranslate"><span class="pre">correctives_model_path=None</span></code> instead of <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
+<li><p><strong>correctives_model_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Path to a pose-corrective checkpoint. Defaults
+to <code class="docutils literal notranslate"><span class="pre">data_root/correctives_model.pt</span></code> when procedural transforms
+are enabled. Pass <code class="docutils literal notranslate"><span class="pre">None</span></code> to skip loading correctives.</p></li>
 </ul>
 </dd>
 </dl>
