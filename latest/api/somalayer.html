@@ -28,8 +28,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
@@ -37,14 +37,14 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
 
 
-    <script src="../_static/documentation_options.js?v=37f418d5"></script>
+    <script src="../_static/documentation_options.js?v=000c92bf"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -52,7 +52,7 @@
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/somalayer';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -568,7 +568,7 @@ procedural mode <code class="docutils literal notranslate"><span class="pre">rig
 </section>
 <section id="procedural-transforms">
 <h2>Procedural transforms<a class="headerlink" href="#procedural-transforms" title="Link to this heading">#</a></h2>
-<p>By default, SOMALayer keeps the expanded v0026 nvHuman twist-joint skeleton from
+<p>By default, SOMALayer keeps the expanded v0027 SOMA twist-joint skeleton from
 the universal <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> template, or from an explicit
 <code class="docutils literal notranslate"><span class="pre">template_rig_path</span></code> override. Passing <code class="docutils literal notranslate"><span class="pre">enable_procedural_transforms=False</span></code>
 opts out to the legacy 78-joint rig derived from that same template by pruning
@@ -691,7 +691,9 @@ selected via the <code class="docutils literal notranslate"><span class="pre">id
 and <code class="docutils literal notranslate"><span class="pre">layer.scale_param_segments</span></code> gives matching <code class="docutils literal notranslate"><span class="pre">(parent,</span> <span class="pre">child)</span></code>
 local-translation edges. Each value multiplies that edge’s local
 parent-to-child translation; 1.0 = no change. Hip/shoulder-width and
-other inactive joints are not exposed.</p></td>
+other inactive joints are not exposed. Legacy 56-value tensors remain
+accepted and receive unit scales for the appended left/right Foot and
+ToeBase controls.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">anny</span></code></p></td>
 <td><p>data-driven</p></td>
@@ -791,12 +793,12 @@ to pass <code class="docutils literal notranslate"><span class="pre">model_path<
 <code class="docutils literal notranslate"><span class="pre">&quot;xlo&quot;</span></code> loads mesh topology, bind shape, skinning
 weights, and UVs from
 the xlo mesh in <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> in <code class="docutils literal notranslate"><span class="pre">data_root</span></code>.</p></li>
-<li><p><strong>template_rig_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Optional override path to a v0026 nvHuman
-<code class="docutils literal notranslate"><span class="pre">nvHuman_male_skel.usda</span></code> twist-joint rig. If omitted,
+<li><p><strong>template_rig_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Optional override path to a v0027 SOMA
+twist-joint template. If omitted,
 <code class="docutils literal notranslate"><span class="pre">data_root/SOMA_template_rig.usda</span></code> is used as the universal
 template.</p></li>
 <li><p><strong>enable_procedural_transforms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), keep the expanded
-v0026 twist-joint rig and drive SOMA-owned twist joints from the
+v0027 twist-joint rig and drive SOMA-owned twist joints from the
 JSON procedural definition. <code class="docutils literal notranslate"><span class="pre">False</span></code> opts out to the legacy
 78-joint public rig.</p></li>
 <li><p><strong>load_correctives_model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>) – Deprecated compatibility alias. Use
@@ -890,9 +892,11 @@ per frame.</p>
 <li><p><strong>scale_params</strong> (<em>Tensor</em><em> | </em><em>None</em>) – backend-dependent per-identity scale tensor
 (SOMA: (B, layer.num_scale_params), active bone-length
 scale ratios ordered by <code class="docutils literal notranslate"><span class="pre">layer.scale_param_names</span></code> and
-described by <code class="docutils literal notranslate"><span class="pre">layer.scale_param_segments</span></code>; MHR: (B, 68),
-required; Anny: optional local-change adjustments; other
-backends: unused). See class docstring.</p></li>
+described by <code class="docutils literal notranslate"><span class="pre">layer.scale_param_segments</span></code>; legacy SOMA
+(B, 56) tensors are accepted with unit appended Foot/ToeBase
+scales;
+MHR: (B, 68), required; Anny: optional local-change
+adjustments; other backends: unused). See class docstring.</p></li>
 <li><p><strong>repose_to_bind_pose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, rebind skinning to the bind pose
 after fitting. Keep enabled when <code class="code docutils literal notranslate"><span class="pre">apply_correctives</span></code> is used.</p></li>
 <li><p><strong>global_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>Tensor</em>) – uniform scale scalar or (B,) tensor. Default 1.0.</p></li>
@@ -983,9 +987,11 @@ remaining entries = joint-local articulation.</p></li>
 <li><p><strong>scale_params</strong> (<em>Tensor</em><em> | </em><em>None</em>) – backend-dependent per-identity scale tensor
 (SOMA: (B, layer.num_scale_params), active bone-length
 scale ratios ordered by <code class="docutils literal notranslate"><span class="pre">layer.scale_param_names</span></code> and
-described by <code class="docutils literal notranslate"><span class="pre">layer.scale_param_segments</span></code>; MHR: (B, 68),
-required; Anny: optional local-change adjustments; other
-backends: unused). See class docstring.</p></li>
+described by <code class="docutils literal notranslate"><span class="pre">layer.scale_param_segments</span></code>; legacy SOMA
+(B, 56) tensors are accepted with unit appended Foot/ToeBase
+scales;
+MHR: (B, 68), required; Anny: optional local-change
+adjustments; other backends: unused). See class docstring.</p></li>
 <li><p><strong>transl</strong> (<em>Tensor</em><em> | </em><em>None</em>) – (B, 3) Hips translation in <code class="code docutils literal notranslate"><span class="pre">output_unit</span></code>.
 If None, Hips stays at origin.</p></li>
 <li><p><strong>pose2rot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – convert axis-angle to rot matrices if True.</p></li>
@@ -1111,8 +1117,8 @@ intentionally not returned.</p></li>
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
 
 
   <footer class="bd-footer">

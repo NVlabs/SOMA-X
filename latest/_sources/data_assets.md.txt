@@ -2,8 +2,8 @@
 
 SOMA ships the following model assets in `assets/`, loaded at layer `__init__` time (callers typically do not touch them directly):
 
-- [`SOMA_template_rig.usda`](#soma_template_rigusda) -- **required rig source** (joint hierarchy, bind/T-pose, bind-shape, skinning weights). This is the v0026 nvHuman template with SOMA procedural twist joints.
-- [`SOMA_procedural_transforms.json`](#soma_procedural_transformsjson) -- portable procedural-control definition for the v0026 twist setup. The filename is intentionally unsuffixed; the schema version is inside the file.
+- [`SOMA_template_rig.usda`](#soma_template_rigusda) -- **required rig source** (joint hierarchy, bind/T-pose, bind-shape, skinning weights). This is the v0027 SOMA template with procedural twist joints.
+- [`SOMA_procedural_transforms.json`](#soma_procedural_transformsjson) -- portable procedural-control definition for the v0027 twist setup. The filename is intentionally unsuffixed; the schema version is inside the file.
 - [`SOMA_neutral.npz`](#soma_neutralnpz) -- PCA shape model, mesh topology, UVs, LOD maps, semantic segments, and metadata.
 - [Per-backend model folders](#per-backend-model-folders) -- native identity models for `mhr`, `smpl` / `smplx`, `anny`, `garment`, each with OBJ pairs used to compute the mesh correspondence to SOMA topology.
 
@@ -13,7 +13,7 @@ SOMA ships the following model assets in `assets/`, loaded at layer `__init__` t
 
 UsdSkel file holding the canonical body rig. Loaded by {py:func}`~soma.io.load_lod_rig_from_usd` during `SOMALayer.__init__`. This is the **source of truth** for the rig; the slim `SOMA_neutral.npz` no longer stores the rig fallback fields. Procedural-control topology and parameter metadata are loaded from `SOMA_procedural_transforms.json`.
 
-The checked-in template is the v0026 nvHuman `nvHuman_male_skel.usda` publish with SOMA procedural twist joints and updated skin weights. By default, `SOMALayer` keeps the expanded template skeleton and the public pose input remains the current 77 controllable SOMA joints. Passing `enable_procedural_transforms=False` derives the legacy 78-joint public rig in memory by pruning procedural/auxiliary joints and aggregating each removed joint's skinning weights to its nearest kept parent. `SOMA_procedural_transforms.json` defines procedural topology, rotation extraction, and sparse parameter matrices.
+The checked-in template is the v0027 SOMA template with procedural twist joints and updated skin weights. By default, `SOMALayer` keeps the expanded template skeleton and the public pose input remains the current 77 controllable SOMA joints. Passing `enable_procedural_transforms=False` derives the legacy 78-joint public rig in memory by pruning procedural/auxiliary joints and aggregating each removed joint's skinning weights to its nearest kept parent. `SOMA_procedural_transforms.json` defines procedural topology, rotation extraction, and sparse parameter matrices.
 
 Keys supplied by the USD:
 
@@ -46,7 +46,7 @@ Procedural mode uses a single SOMA-owned procedural parameter transform with com
 
 Declarative procedural-control definition loaded by `SOMALayer` from
 `data_root`. It is the authoritative source for supported extraction modes,
-public 78-joint derivation from the 122-joint template, twist segments, sparse
+public 78-joint derivation from the 110-joint template, twist segments, sparse
 rotation and translation parameter matrices, rotation extraction policy, and
 evaluation order. `SOMALayer` requires this sidecar unless
 `enable_procedural_transforms=False`; there is no
@@ -102,9 +102,9 @@ A ~1:4 vertex subset for faster inference (`SOMALayer(..., lod="low")`; legacy a
 
 ### Extra-low LOD USD asset
 
-`SOMALayer(..., lod="xlo")` returns 612 body vertices with the same SOMA skeleton and identity backends, but loads the extra-low mesh topology, bind vertices, skinning weights, and UVs from the xlo mesh in `assets/SOMA_template_rig.usda`. Unlike `lod="low"`, xlo is not a strict vertex-index subset of the mid mesh. Runtime identity shapes and pose correctives are transferred from the mid SOMA bind geometry to xlo with barycentric interpolation. Identity-dependent skeleton fitting still uses the low-LOD mesh from the same v0026 USD internally, because direct xlo fitting is too sparse around limbs for stable joint placement across random body shapes.
+`SOMALayer(..., lod="xlo")` returns 612 body vertices with the same SOMA skeleton and identity backends, but loads the extra-low mesh topology, bind vertices, skinning weights, and UVs from the xlo mesh in `assets/SOMA_template_rig.usda`. Unlike `lod="low"`, xlo is not a strict vertex-index subset of the mid mesh. Runtime identity shapes and pose correctives are transferred from the mid SOMA bind geometry to xlo with barycentric interpolation. Identity-dependent skeleton fitting still uses the low-LOD mesh from the same v0027 USD internally, because direct xlo fitting is too sparse around limbs for stable joint placement across random body shapes.
 
-The expected asset is the versioned nvHuman v0026 USD publish, stored under the canonical `SOMA_template_rig.usda` filename. The loader auto-detects skinned LOD meshes using names such as `c_skin_mid`, `c_skin_lo`, and `c_skin_xlo`.
+The expected asset is the v0027 SOMA USD template, stored under the canonical `SOMA_template_rig.usda` filename. The loader auto-detects skinned LOD meshes using names such as `c_skin_mid`, `c_skin_lo`, and `c_skin_xlo`.
 
 ### Semantic segments (vertex id lists)
 

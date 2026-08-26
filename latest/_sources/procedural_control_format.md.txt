@@ -12,7 +12,7 @@ scope for the current sidecar format.
 
 ## Scope
 
-The current schema describes the v0026 nvHuman template twist setup consumed by
+The current schema describes the v0027 SOMA template twist setup consumed by
 `SOMALayer` when procedural transforms are enabled. It is declarative: consumers
 resolve stable joint names to indices, validate the definition, compile numeric
 buffers, and evaluate the same ordered transform without running arbitrary
@@ -40,7 +40,7 @@ Python code.
 
 ## Evaluation Semantics
 
-Public rig derivation keeps the named 78 main SOMA joints from the 122-joint template.
+Public rig derivation keeps the named 78 main SOMA joints from the 110-joint template.
 All other template joints are removed by remapping their parent to the nearest
 kept ancestor and adding their skinning-weight column into that kept ancestor
 before the removed column is dropped.
@@ -120,7 +120,7 @@ The supported extraction modes define `c^(m)` as follows:
   from the relative virtual segment orientation. Reverse-compensation segments
   use inherited start-joint twist where declared by the sidecar.
 
-The checked-in v0026 SOMA sidecar declares all three modes and uses
+The checked-in v0027 SOMA sidecar declares all three modes and uses
 `aligned_x_swing_twist` globally.
 
 The rotation matrix rows are generated twist joints and columns are public SOMA

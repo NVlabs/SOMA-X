@@ -28,8 +28,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
@@ -37,14 +37,14 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
 
 
-    <script src="_static/documentation_options.js?v=37f418d5"></script>
+    <script src="_static/documentation_options.js?v=000c92bf"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -52,7 +52,7 @@
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'data_assets';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -446,8 +446,8 @@
 <h1>Data Assets<a class="headerlink" href="#data-assets" title="Link to this heading">#</a></h1>
 <p>SOMA ships the following model assets in <code class="docutils literal notranslate"><span class="pre">assets/</span></code>, loaded at layer <code class="docutils literal notranslate"><span class="pre">__init__</span></code> time (callers typically do not touch them directly):</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#soma-template-rig-usda"><code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code></a> – <strong>required rig source</strong> (joint hierarchy, bind/T-pose, bind-shape, skinning weights). This is the v0026 nvHuman template with SOMA procedural twist joints.</p></li>
-<li><p><a class="reference internal" href="#soma-procedural-transforms-json"><code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code></a> – portable procedural-control definition for the v0026 twist setup. The filename is intentionally unsuffixed; the schema version is inside the file.</p></li>
+<li><p><a class="reference internal" href="#soma-template-rig-usda"><code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code></a> – <strong>required rig source</strong> (joint hierarchy, bind/T-pose, bind-shape, skinning weights). This is the v0027 SOMA template with procedural twist joints.</p></li>
+<li><p><a class="reference internal" href="#soma-procedural-transforms-json"><code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code></a> – portable procedural-control definition for the v0027 twist setup. The filename is intentionally unsuffixed; the schema version is inside the file.</p></li>
 <li><p><a class="reference internal" href="#soma-neutral-npz"><code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code></a> – PCA shape model, mesh topology, UVs, LOD maps, semantic segments, and metadata.</p></li>
 <li><p><a class="reference internal" href="#per-backend-model-folders">Per-backend model folders</a> – native identity models for <code class="docutils literal notranslate"><span class="pre">mhr</span></code>, <code class="docutils literal notranslate"><span class="pre">smpl</span></code> / <code class="docutils literal notranslate"><span class="pre">smplx</span></code>, <code class="docutils literal notranslate"><span class="pre">anny</span></code>, <code class="docutils literal notranslate"><span class="pre">garment</span></code>, each with OBJ pairs used to compute the mesh correspondence to SOMA topology.</p></li>
 </ul>
@@ -455,7 +455,7 @@
 <section id="soma-template-rig-usda">
 <h2><code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code><a class="headerlink" href="#soma-template-rig-usda" title="Link to this heading">#</a></h2>
 <p>UsdSkel file holding the canonical body rig. Loaded by <a class="reference internal" href="api/io.html#soma.io.load_lod_rig_from_usd" title="soma.io.load_lod_rig_from_usd"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_lod_rig_from_usd()</span></code></a> during <code class="docutils literal notranslate"><span class="pre">SOMALayer.__init__</span></code>. This is the <strong>source of truth</strong> for the rig; the slim <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code> no longer stores the rig fallback fields. Procedural-control topology and parameter metadata are loaded from <code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code>.</p>
-<p>The checked-in template is the v0026 nvHuman <code class="docutils literal notranslate"><span class="pre">nvHuman_male_skel.usda</span></code> publish with SOMA procedural twist joints and updated skin weights. By default, <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> keeps the expanded template skeleton and the public pose input remains the current 77 controllable SOMA joints. Passing <code class="docutils literal notranslate"><span class="pre">enable_procedural_transforms=False</span></code> derives the legacy 78-joint public rig in memory by pruning procedural/auxiliary joints and aggregating each removed joint’s skinning weights to its nearest kept parent. <code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code> defines procedural topology, rotation extraction, and sparse parameter matrices.</p>
+<p>The checked-in template is the v0027 SOMA template with procedural twist joints and updated skin weights. By default, <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> keeps the expanded template skeleton and the public pose input remains the current 77 controllable SOMA joints. Passing <code class="docutils literal notranslate"><span class="pre">enable_procedural_transforms=False</span></code> derives the legacy 78-joint public rig in memory by pruning procedural/auxiliary joints and aggregating each removed joint’s skinning weights to its nearest kept parent. <code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code> defines procedural topology, rotation extraction, and sparse parameter matrices.</p>
 <p>Keys supplied by the USD:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">joint_names</span></code>, <code class="docutils literal notranslate"><span class="pre">joint_parent_ids</span></code></p></li>
@@ -486,7 +486,7 @@
 <h2><code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code><a class="headerlink" href="#soma-procedural-transforms-json" title="Link to this heading">#</a></h2>
 <p>Declarative procedural-control definition loaded by <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> from
 <code class="docutils literal notranslate"><span class="pre">data_root</span></code>. It is the authoritative source for supported extraction modes,
-public 78-joint derivation from the 122-joint template, twist segments, sparse
+public 78-joint derivation from the 110-joint template, twist segments, sparse
 rotation and translation parameter matrices, rotation extraction policy, and
 evaluation order. <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> requires this sidecar unless
 <code class="docutils literal notranslate"><span class="pre">enable_procedural_transforms=False</span></code>; there is no
@@ -635,8 +635,8 @@ non-Python consumer plan.</p>
 </section>
 <section id="extra-low-lod-usd-asset">
 <h3>Extra-low LOD USD asset<a class="headerlink" href="#extra-low-lod-usd-asset" title="Link to this heading">#</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">SOMALayer(...,</span> <span class="pre">lod=&quot;xlo&quot;)</span></code> returns 612 body vertices with the same SOMA skeleton and identity backends, but loads the extra-low mesh topology, bind vertices, skinning weights, and UVs from the xlo mesh in <code class="docutils literal notranslate"><span class="pre">assets/SOMA_template_rig.usda</span></code>. Unlike <code class="docutils literal notranslate"><span class="pre">lod=&quot;low&quot;</span></code>, xlo is not a strict vertex-index subset of the mid mesh. Runtime identity shapes and pose correctives are transferred from the mid SOMA bind geometry to xlo with barycentric interpolation. Identity-dependent skeleton fitting still uses the low-LOD mesh from the same v0026 USD internally, because direct xlo fitting is too sparse around limbs for stable joint placement across random body shapes.</p>
-<p>The expected asset is the versioned nvHuman v0026 USD publish, stored under the canonical <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> filename. The loader auto-detects skinned LOD meshes using names such as <code class="docutils literal notranslate"><span class="pre">c_skin_mid</span></code>, <code class="docutils literal notranslate"><span class="pre">c_skin_lo</span></code>, and <code class="docutils literal notranslate"><span class="pre">c_skin_xlo</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SOMALayer(...,</span> <span class="pre">lod=&quot;xlo&quot;)</span></code> returns 612 body vertices with the same SOMA skeleton and identity backends, but loads the extra-low mesh topology, bind vertices, skinning weights, and UVs from the xlo mesh in <code class="docutils literal notranslate"><span class="pre">assets/SOMA_template_rig.usda</span></code>. Unlike <code class="docutils literal notranslate"><span class="pre">lod=&quot;low&quot;</span></code>, xlo is not a strict vertex-index subset of the mid mesh. Runtime identity shapes and pose correctives are transferred from the mid SOMA bind geometry to xlo with barycentric interpolation. Identity-dependent skeleton fitting still uses the low-LOD mesh from the same v0027 USD internally, because direct xlo fitting is too sparse around limbs for stable joint placement across random body shapes.</p>
+<p>The expected asset is the v0027 SOMA USD template, stored under the canonical <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> filename. The loader auto-detects skinned LOD meshes using names such as <code class="docutils literal notranslate"><span class="pre">c_skin_mid</span></code>, <code class="docutils literal notranslate"><span class="pre">c_skin_lo</span></code>, and <code class="docutils literal notranslate"><span class="pre">c_skin_xlo</span></code>.</p>
 </section>
 <section id="semantic-segments-vertex-id-lists">
 <h3>Semantic segments (vertex id lists)<a class="headerlink" href="#semantic-segments-vertex-id-lists" title="Link to this heading">#</a></h3>
@@ -871,8 +871,8 @@ python<span class="w"> </span>tools/convert_gm_pca_to_npz.py<span class="w"> </s
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
 
 
   <footer class="bd-footer">

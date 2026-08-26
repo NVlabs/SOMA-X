@@ -28,8 +28,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css?v=933278ad" />
@@ -37,14 +37,14 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
 
 
 
-    <script src="_static/documentation_options.js?v=37f418d5"></script>
+    <script src="_static/documentation_options.js?v=000c92bf"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,7 +53,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'procedural_control_format';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.18.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
         DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'latest';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
@@ -455,7 +455,7 @@ reference, and other consumers should load this file alongside
 scope for the current sidecar format.</p>
 <section id="scope">
 <h2>Scope<a class="headerlink" href="#scope" title="Link to this heading">#</a></h2>
-<p>The current schema describes the v0026 nvHuman template twist setup consumed by
+<p>The current schema describes the v0027 SOMA template twist setup consumed by
 <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> when procedural transforms are enabled. It is declarative: consumers
 resolve stable joint names to indices, validate the definition, compile numeric
 buffers, and evaluate the same ordered transform without running arbitrary
@@ -485,7 +485,7 @@ matrices with float32 values.</p></li>
 </section>
 <section id="evaluation-semantics">
 <h2>Evaluation Semantics<a class="headerlink" href="#evaluation-semantics" title="Link to this heading">#</a></h2>
-<p>Public rig derivation keeps the named 78 main SOMA joints from the 122-joint template.
+<p>Public rig derivation keeps the named 78 main SOMA joints from the 110-joint template.
 All other template joints are removed by remapping their parent to the nearest
 kept ancestor and adding their skinning-weight column into that kept ancestor
 before the removed column is dropped.</p>
@@ -518,9 +518,9 @@ PoseInversion output with joint orient baked in.</p>
 row. A global string applies to every procedural joint. The object form supports
 mixed extractors with <code class="docutils literal notranslate"><span class="pre">default</span></code> and <code class="docutils literal notranslate"><span class="pre">per_procedural_joint</span></code> overrides:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;default&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local_x_euler&quot;</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">&quot;per_procedural_joint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;LeftForeArmTwist2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;local_x_swing_twist&quot;</span>
+<span class="w">  </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local_x_euler"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"per_procedural_joint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"LeftForeArmTwist2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local_x_swing_twist"</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -546,7 +546,7 @@ source world transforms and bind alignment, then extracts X-axis swing/twist
 from the relative virtual segment orientation. Reverse-compensation segments
 use inherited start-joint twist where declared by the sidecar.</p></li>
 </ul>
-<p>The checked-in v0026 SOMA sidecar declares all three modes and uses
+<p>The checked-in v0027 SOMA sidecar declares all three modes and uses
 <code class="docutils literal notranslate"><span class="pre">aligned_x_swing_twist</span></code> globally.</p>
 <p>The rotation matrix rows are generated twist joints and columns are public SOMA
 joints. The translation matrix keeps identity rows by default and overrides twist
@@ -658,8 +658,8 @@ expanded skeleton to that runtime’s FK/LBS implementation.</p></li>
   
 
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
 
 
   <footer class="bd-footer">
