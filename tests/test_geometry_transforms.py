@@ -8,7 +8,10 @@ from soma.geometry.transforms import (
     euler_xyz_to_matrix,
     matrix_to_quaternion_xyzw,
     matrix_to_quaternion_xyzw_stable,
+    project_rotations_to_so3,
     quaternion_conjugate_xyzw,
+    quaternion_exp_xyzw,
+    quaternion_log_xyzw,
     quaternion_multiply_xyzw,
     quaternion_normalize_xyzw,
     quaternion_twist_angle_xyzw,
@@ -81,7 +84,7 @@ def test_single_axis_rotation_matrices_match_rodrigues():
 
     for axis in (0, 1, 2):
         rotvec = torch.zeros(3, 3, dtype=torch.float32)
-        rotvec[:, axis] = (angles[0] * signs)
+        rotvec[:, axis] = angles[0] * signs
         expected = batch_rodrigues(rotvec).unsqueeze(0)
         actual = single_axis_rotation_matrices(angles, axis, signs)
 
@@ -113,6 +116,40 @@ def test_quaternion_xyzw_conjugate_is_inverse_for_unit_quaternions():
         atol=1e-6,
         rtol=1e-6,
     )
+
+
+def test_quaternion_xyzw_log_exp_round_trips_shortest_arc():
+    rotvecs = torch.tensor(
+        [
+            [0.1, -0.2, 0.3],
+            [torch.pi - 1e-5, 0.0, 0.0],
+            [0.0, -torch.pi + 1e-5, 0.0],
+        ],
+        dtype=torch.float64,
+    )
+
+    quaternions = quaternion_exp_xyzw(rotvecs)
+    recovered = quaternion_log_xyzw(quaternions)
+
+    torch.testing.assert_close(recovered, rotvecs, atol=1e-9, rtol=1e-9)
+
+
+def test_quaternion_xyzw_log_uses_short_arc_across_sign_flips():
+    rotvec = torch.tensor([[0.0, 0.0, 0.25]], dtype=torch.float64)
+    quaternion = quaternion_exp_xyzw(rotvec)
+
+    recovered = quaternion_log_xyzw(-quaternion)
+
+    torch.testing.assert_close(recovered, rotvec, atol=1e-12, rtol=1e-12)
+
+
+def test_project_rotations_to_so3_fixes_reflections():
+    reflection = torch.diag(torch.tensor([-1.0, 1.0, 1.0], dtype=torch.float64))
+
+    projected = project_rotations_to_so3(reflection)
+
+    torch.testing.assert_close(projected.transpose(-2, -1) @ projected, torch.eye(3).double())
+    torch.testing.assert_close(torch.linalg.det(projected), torch.tensor(1.0, dtype=torch.float64))
 
 
 def test_quaternion_twist_angle_xyzw_extracts_per_axis_twist():

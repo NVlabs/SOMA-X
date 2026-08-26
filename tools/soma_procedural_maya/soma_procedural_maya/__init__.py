@@ -17,6 +17,8 @@ from .maya_reference import (
     find_repo_definition,
     find_repo_template_asset,
     load_template_usd_rig,
+    pose_template_rig_to_bind_pose,
+    restore_template_rig_pose,
     setup_template_rig_scene,
 )
 
@@ -31,6 +33,8 @@ __all__ = [
     "find_repo_definition",
     "find_repo_template_asset",
     "load_template_usd_rig",
+    "pose_template_rig_to_bind_pose",
+    "restore_template_rig_pose",
     "compile_translation_rows",
     "load_definition",
     "setup_template_rig_scene",

@@ -91,7 +91,7 @@ procedural mode ``rig_data`` is the expanded internal skinning skeleton.
 Procedural transforms
 ---------------------
 
-By default, SOMALayer keeps the expanded v0026 nvHuman twist-joint skeleton from
+By default, SOMALayer keeps the expanded v0027 SOMA twist-joint skeleton from
 the universal ``SOMA_template_rig.usda`` template, or from an explicit
 ``template_rig_path`` override. Passing ``enable_procedural_transforms=False``
 opts out to the legacy 78-joint rig derived from that same template by pruning
@@ -199,7 +199,9 @@ Backend-dependent. Pass ``None`` to skip.
        and ``layer.scale_param_segments`` gives matching ``(parent, child)``
        local-translation edges. Each value multiplies that edge's local
        parent-to-child translation; 1.0 = no change. Hip/shoulder-width and
-       other inactive joints are not exposed.
+       other inactive joints are not exposed. Legacy 56-value tensors remain
+       accepted and receive unit scales for the appended left/right Foot and
+       ToeBase controls.
    * - ``anny``
      - data-driven
      - ``prepare_identity()``
@@ -420,7 +422,8 @@ class SOMALayer(nn.Module):
     ``scale_params`` semantics.
     """
 
-    NUM_BONE_SCALE_PARAMS = 56  # Active public-joint local translation scales.
+    LEGACY_NUM_BONE_SCALE_PARAMS = 56
+    NUM_BONE_SCALE_PARAMS = 60  # Active public-joint local translation scales.
     BODY_BONE_SCALE_JOINT_NAMES = (
         "LeftArm",
         "LeftForeArm",
@@ -442,6 +445,12 @@ class SOMALayer(nn.Module):
         "RightHandMiddle",
         "RightHandRing",
         "RightHandPinky",
+    )
+    FOOT_BONE_SCALE_JOINT_NAMES = (
+        "LeftFoot",
+        "RightFoot",
+        "LeftToeBase",
+        "RightToeBase",
     )
 
     def __init__(
@@ -490,12 +499,12 @@ class SOMALayer(nn.Module):
                 ``"xlo"`` loads mesh topology, bind shape, skinning
                 weights, and UVs from
                 the xlo mesh in ``SOMA_template_rig.usda`` in ``data_root``.
-            template_rig_path: Optional override path to a v0026 nvHuman
-                ``nvHuman_male_skel.usda`` twist-joint rig. If omitted,
+            template_rig_path: Optional override path to a v0027 SOMA
+                twist-joint template. If omitted,
                 ``data_root/SOMA_template_rig.usda`` is used as the universal
                 template.
             enable_procedural_transforms: If ``True`` (default), keep the expanded
-                v0026 twist-joint rig and drive SOMA-owned twist joints from the
+                v0027 twist-joint rig and drive SOMA-owned twist joints from the
                 JSON procedural definition. ``False`` opts out to the legacy
                 78-joint public rig.
             load_correctives_model: Deprecated compatibility alias. Use
@@ -631,8 +640,8 @@ class SOMALayer(nn.Module):
             if not xlo_usd_rig.exists():
                 raise FileNotFoundError(
                     f"XLO LOD requested, but '{SOMA_XLO_TEMPLATE_RIG_FILENAME}' "
-                    f"was not found in '{data_root}'. Copy the versioned nvHuman "
-                    "v0026 minimal USD into the assets directory under the "
+                    f"was not found in '{data_root}'. Copy the versioned SOMA "
+                    "v0027 template USD into the assets directory under the "
                     "canonical SOMA template filename."
                 )
             xlo_skeleton_lod_rig_data = template_lod_rigs["low"]
@@ -896,10 +905,30 @@ class SOMALayer(nn.Module):
             torch.tensor(public_parent_ids, dtype=self.joint_parent_ids.dtype, device=device),
             persistent=False,
         )
-        bone_scale_public_joint_indices = [
+        legacy_bone_scale_public_joint_indices = [
             idx
             for idx, name in enumerate(self._public_joint_names)
             if self._is_body_bone_scale_joint(str(name))
+        ]
+        if len(legacy_bone_scale_public_joint_indices) != self.LEGACY_NUM_BONE_SCALE_PARAMS:
+            raise RuntimeError(
+                "Unexpected legacy SOMA bone-scale parameter layout: "
+                f"expected {self.LEGACY_NUM_BONE_SCALE_PARAMS}, "
+                f"got {len(legacy_bone_scale_public_joint_indices)}"
+            )
+        missing_lower_limb_scale_joints = [
+            name
+            for name in self.FOOT_BONE_SCALE_JOINT_NAMES
+            if name not in public_name_to_idx
+        ]
+        if missing_lower_limb_scale_joints:
+            raise RuntimeError(
+                "SOMA public rig is missing foot-scaling joints: "
+                f"{missing_lower_limb_scale_joints}"
+            )
+        bone_scale_public_joint_indices = [
+            *legacy_bone_scale_public_joint_indices,
+            *(public_name_to_idx[name] for name in self.FOOT_BONE_SCALE_JOINT_NAMES),
         ]
         self.soma_bone_scale_param_names = tuple(
             str(self._public_joint_names[idx]) for idx in bone_scale_public_joint_indices
@@ -947,6 +976,7 @@ class SOMALayer(nn.Module):
                 translation_entries=procedural_translation_entries,
                 target_t_pose_world=self.rig_data["t_pose_world"],
                 target_joint_parent_ids=self.rig_data["joint_parent_ids"],
+                target_bind_pose_world=self.rig_data["bind_pose_world"],
             ).to(device)
         self.register_buffer("excluded_vert_ids", facial_inner_geometry, persistent=False)
         # Backward-compatible alias
@@ -1262,16 +1292,28 @@ class SOMALayer(nn.Module):
             name.startswith(prefix) for prefix in cls.FINGER_BONE_SCALE_JOINT_PREFIXES
         )
 
-    def _validate_soma_bone_scales(self, bone_scales: torch.Tensor | None) -> None:
+    def _normalize_soma_bone_scales(
+        self,
+        bone_scales: torch.Tensor | None,
+    ) -> torch.Tensor | None:
         if self.identity_model_type != "soma" or bone_scales is None:
-            return
+            return bone_scales
         expected = self.num_scale_params
-        if bone_scales.ndim != 2 or bone_scales.shape[1] != expected:
+        legacy = self.LEGACY_NUM_BONE_SCALE_PARAMS
+        if bone_scales.ndim != 2 or bone_scales.shape[1] not in (expected, legacy):
             raise ValueError(
                 "SOMA scale_params must have shape "
-                f"(B, {expected}); got {tuple(bone_scales.shape)}. "
+                f"(B, {expected}) or legacy shape (B, {legacy}); "
+                f"got {tuple(bone_scales.shape)}. "
                 "Use layer.scale_param_names for the active control order."
             )
+        if bone_scales.shape[1] == legacy:
+            appended_scales = bone_scales.new_ones(
+                bone_scales.shape[0],
+                expected - legacy,
+            )
+            return torch.cat((bone_scales, appended_scales), dim=1)
+        return bone_scales
 
     def _pose_batch_bone_scales(
         self,
@@ -1281,8 +1323,9 @@ class SOMALayer(nn.Module):
     ) -> torch.Tensor | None:
         if self.identity_model_type != "soma" or self._cached_scale_params is None:
             return None
-        bone_scales = self._cached_scale_params.to(dtype=dtype, device=device)
-        self._validate_soma_bone_scales(bone_scales)
+        bone_scales = self._normalize_soma_bone_scales(self._cached_scale_params)
+        assert bone_scales is not None
+        bone_scales = bone_scales.to(dtype=dtype, device=device)
         if bone_scales.shape[0] == 1 and batch_size > 1:
             return bone_scales.expand(batch_size, -1)
         if bone_scales.shape[0] != batch_size:
@@ -1380,16 +1423,18 @@ class SOMALayer(nn.Module):
             scale_params: backend-dependent per-identity scale tensor
                 (SOMA: (B, layer.num_scale_params), active bone-length
                 scale ratios ordered by ``layer.scale_param_names`` and
-                described by ``layer.scale_param_segments``; MHR: (B, 68),
-                required; Anny: optional local-change adjustments; other
-                backends: unused). See class docstring.
+                described by ``layer.scale_param_segments``; legacy SOMA
+                (B, 56) tensors are accepted with unit appended Foot/ToeBase
+                scales;
+                MHR: (B, 68), required; Anny: optional local-change
+                adjustments; other backends: unused). See class docstring.
             repose_to_bind_pose: if True, rebind skinning to the bind pose
                 after fitting. Keep enabled when `apply_correctives` is used.
             global_scale: uniform scale scalar or (B,) tensor. Default 1.0.
             kwargs: optional dict forwarded to the identity model's
                 `get_rest_shape`.
         """
-        self._validate_soma_bone_scales(scale_params)
+        scale_params = self._normalize_soma_bone_scales(scale_params)
         identity_scale_params = None if self.identity_model_type == "soma" else scale_params
         self._cached_identity_rest_shape = self.identity_model(
             identity_coeffs, identity_scale_params, kwargs=kwargs, global_scale=global_scale
@@ -1410,11 +1455,9 @@ class SOMALayer(nn.Module):
                 public_bind_transforms = self.public_bind_transforms_world(
                     self._cached_bind_transforms_world
                 )
-                self._cached_rest_shape, public_bind_transforms = (
-                    self._repose_public_bind_pose(
-                        public_bind_transforms,
-                        self._cached_rest_shape,
-                    )
+                self._cached_rest_shape, public_bind_transforms = self._repose_public_bind_pose(
+                    public_bind_transforms,
+                    self._cached_rest_shape,
                 )
                 public_bind_transforms = self._pin_virtual_root_to_origin(public_bind_transforms)
                 self._cached_bind_transforms_world = self._expand_public_bind_transforms(
@@ -1627,9 +1670,11 @@ class SOMALayer(nn.Module):
             scale_params: backend-dependent per-identity scale tensor
                 (SOMA: (B, layer.num_scale_params), active bone-length
                 scale ratios ordered by ``layer.scale_param_names`` and
-                described by ``layer.scale_param_segments``; MHR: (B, 68),
-                required; Anny: optional local-change adjustments; other
-                backends: unused). See class docstring.
+                described by ``layer.scale_param_segments``; legacy SOMA
+                (B, 56) tensors are accepted with unit appended Foot/ToeBase
+                scales;
+                MHR: (B, 68), required; Anny: optional local-change
+                adjustments; other backends: unused). See class docstring.
             transl: (B, 3) Hips translation in `output_unit`.
                 If None, Hips stays at origin.
             pose2rot: convert axis-angle to rot matrices if True.
@@ -1661,7 +1706,7 @@ class SOMALayer(nn.Module):
         self.prepare_identity(
             identity_coeffs,
             scale_params,
-            repose_to_bind_pose=apply_correctives,
+            repose_to_bind_pose=apply_correctives or self.procedural_transforms is not None,
             global_scale=global_scale,
             kwargs=kwargs,
         )

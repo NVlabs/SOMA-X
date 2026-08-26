@@ -649,7 +649,15 @@ def test_soma_layer_soma_bone_scaling_scales_public_bones(
     assert len(layer.scale_param_segments) == layer.num_scale_params
     assert layer.soma_bone_scale_param_names == layer.scale_param_names
     assert layer.soma_bone_scale_param_segments == layer.scale_param_segments
-    for active_name in ("LeftHand", "LeftShin", "RightHandIndexEnd"):
+    for active_name in (
+        "LeftHand",
+        "LeftShin",
+        "RightHandIndexEnd",
+        "LeftFoot",
+        "RightFoot",
+        "LeftToeBase",
+        "RightToeBase",
+    ):
         assert active_name in layer.scale_param_names
     for inactive_name in (
         "Head",
@@ -657,14 +665,23 @@ def test_soma_layer_soma_bone_scaling_scales_public_bones(
         "RightShoulder",
         "LeftLeg",
         "RightLeg",
-        "LeftFoot",
-        "LeftToeBase",
         "LeftToeEnd",
-        "RightFoot",
-        "RightToeBase",
         "RightToeEnd",
     ):
         assert inactive_name not in layer.scale_param_names
+    assert layer.scale_param_names[-4:] == (
+        "LeftFoot",
+        "RightFoot",
+        "LeftToeBase",
+        "RightToeBase",
+    )
+    assert layer.scale_param_segments[-4:] == (
+        ("LeftShin", "LeftFoot"),
+        ("RightShin", "RightFoot"),
+        ("LeftFoot", "LeftToeBase"),
+        ("RightFoot", "RightToeBase"),
+    )
+    assert layer.scale_param_names[layer.LEGACY_NUM_BONE_SCALE_PARAMS - 1] == "RightShin"
 
     with torch.no_grad():
         layer.prepare_identity(identity)
@@ -674,6 +691,28 @@ def test_soma_layer_soma_bone_scaling_scales_public_bones(
 
     torch.testing.assert_close(unchanged["joints"], ref["joints"], atol=1e-6, rtol=1e-6)
     torch.testing.assert_close(unchanged["vertices"], ref["vertices"], atol=1e-6, rtol=1e-6)
+
+    legacy_scales = ones[:, : layer.LEGACY_NUM_BONE_SCALE_PARAMS].clone()
+    legacy_scales[:, -1] = 1.1
+    current_equivalent_scales = ones.clone()
+    current_equivalent_scales[:, layer.scale_param_names.index("RightShin")] = 1.1
+    with torch.no_grad():
+        layer.prepare_identity(identity, scale_params=legacy_scales)
+        legacy_output = layer.pose(poses, apply_correctives=False)
+        layer.prepare_identity(identity, scale_params=current_equivalent_scales)
+        current_equivalent_output = layer.pose(poses, apply_correctives=False)
+    torch.testing.assert_close(
+        legacy_output["joints"],
+        current_equivalent_output["joints"],
+        atol=1e-6,
+        rtol=1e-6,
+    )
+    torch.testing.assert_close(
+        legacy_output["vertices"],
+        current_equivalent_output["vertices"],
+        atol=1e-6,
+        rtol=1e-6,
+    )
 
     public_names = layer.public_joint_names
     left_forearm_joint = public_names.index("LeftForeArm") - 1
@@ -696,5 +735,83 @@ def test_soma_layer_soma_bone_scaling_scales_public_bones(
     assert scaled_length.item() == pytest.approx(base_length.item() * 1.5, rel=1e-4)
     assert not torch.allclose(scaled_out["vertices"], unchanged["vertices"])
 
-    with pytest.raises(ValueError, match=rf"\(B, {layer.num_scale_params}\)"):
+    left_shin_joint = public_names.index("LeftShin") - 1
+    left_foot_joint = public_names.index("LeftFoot") - 1
+    left_toe_joint = public_names.index("LeftToeBase") - 1
+    left_toe_end_joint = public_names.index("LeftToeEnd") - 1
+    left_foot_scale_idx = layer.scale_param_names.index("LeftFoot")
+    lower_leg_scaled = ones.clone()
+    lower_leg_scaled[:, left_foot_scale_idx] = 1.25
+    with torch.no_grad():
+        layer.prepare_identity(identity, scale_params=lower_leg_scaled)
+        lower_leg_scaled_out = layer.pose(poses, apply_correctives=False)
+    base_lower_leg_length = torch.linalg.norm(
+        unchanged["joints"][0, left_foot_joint] - unchanged["joints"][0, left_shin_joint]
+    )
+    scaled_lower_leg_length = torch.linalg.norm(
+        lower_leg_scaled_out["joints"][0, left_foot_joint]
+        - lower_leg_scaled_out["joints"][0, left_shin_joint]
+    )
+    base_foot_length = torch.linalg.norm(
+        unchanged["joints"][0, left_toe_joint] - unchanged["joints"][0, left_foot_joint]
+    )
+    lower_leg_scaled_foot_length = torch.linalg.norm(
+        lower_leg_scaled_out["joints"][0, left_toe_joint]
+        - lower_leg_scaled_out["joints"][0, left_foot_joint]
+    )
+    assert scaled_lower_leg_length.item() == pytest.approx(
+        base_lower_leg_length.item() * 1.25,
+        rel=1e-4,
+    )
+    torch.testing.assert_close(
+        lower_leg_scaled_foot_length,
+        base_foot_length,
+        atol=1e-6,
+        rtol=1e-6,
+    )
+    assert not torch.allclose(lower_leg_scaled_out["vertices"], unchanged["vertices"])
+
+    left_toe_scale_idx = layer.scale_param_names.index("LeftToeBase")
+    toe_scaled = ones.clone()
+    toe_scaled[:, left_toe_scale_idx] = 1.25
+    with torch.no_grad():
+        layer.prepare_identity(identity, scale_params=toe_scaled)
+        toe_scaled_out = layer.pose(poses, apply_correctives=False)
+    scaled_foot_length = torch.linalg.norm(
+        toe_scaled_out["joints"][0, left_toe_joint] - toe_scaled_out["joints"][0, left_foot_joint]
+    )
+    base_toe_length = torch.linalg.norm(
+        unchanged["joints"][0, left_toe_end_joint] - unchanged["joints"][0, left_toe_joint]
+    )
+    scaled_toe_length = torch.linalg.norm(
+        toe_scaled_out["joints"][0, left_toe_end_joint]
+        - toe_scaled_out["joints"][0, left_toe_joint]
+    )
+    assert scaled_foot_length.item() == pytest.approx(base_foot_length.item() * 1.25, rel=1e-4)
+    torch.testing.assert_close(scaled_toe_length, base_toe_length, atol=1e-6, rtol=1e-6)
+    assert not torch.allclose(toe_scaled_out["vertices"], unchanged["vertices"])
+
+    trainable_scales = ones.clone().requires_grad_(True)
+    layer.prepare_identity(identity, scale_params=trainable_scales)
+    trainable_out = layer.pose(poses, apply_correctives=False)
+    trainable_out["vertices"].square().sum().backward()
+    lower_limb_gradients = trainable_scales.grad[
+        0,
+        [
+            layer.scale_param_names.index("LeftFoot"),
+            layer.scale_param_names.index("RightFoot"),
+            layer.scale_param_names.index("LeftToeBase"),
+            layer.scale_param_names.index("RightToeBase"),
+        ],
+    ]
+    assert torch.isfinite(lower_limb_gradients).all()
+    assert torch.count_nonzero(lower_limb_gradients) == 4
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            rf"\(B, {layer.num_scale_params}\).*legacy shape "
+            rf"\(B, {layer.LEGACY_NUM_BONE_SCALE_PARAMS}\)"
+        ),
+    ):
         layer.prepare_identity(identity, scale_params=torch.ones(1, 77))

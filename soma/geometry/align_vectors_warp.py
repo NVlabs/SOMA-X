@@ -453,6 +453,12 @@ _compute_newton_schulz_fp64 = _create_newton_schulz_kernel(wp.float64, wp.vec3d,
 def _create_newton_schulz_auto_kernel(dtype_scalar, dtype_vec, dtype_mat):
     """Factory to create degenerate-safe Newton-Schulz auto kernels."""
 
+    # wp.svd3() does not support fp16 reliably, so reflected fp16 covariances
+    # use the same fp32 promotion as the dedicated Kabsch kernel.
+    svd_scalar = wp.float32 if dtype_scalar == wp.float16 else dtype_scalar
+    svd_vec = wp.vec3 if dtype_scalar == wp.float16 else dtype_vec
+    svd_mat = wp.mat33 if dtype_scalar == wp.float16 else dtype_mat
+
     @wp.kernel
     def compute_rotations_auto(
         cov_matrices: wp.array(dtype=dtype_mat),
@@ -483,6 +489,40 @@ def _create_newton_schulz_auto_kernel(dtype_scalar, dtype_vec, dtype_mat):
             H[2, 0], H[2, 1], H[2, 2] + prior,
         )
         # fmt: on
+
+        # A reflected covariance needs Kabsch's singular-vector correction.
+        # Flipping a fixed Newton-Schulz output column is not the nearest SO(3)
+        # projection and can select a substantially different rotation.
+        # Compute the sign in the promoted SVD precision as fp16 determinant
+        # evaluation can select the wrong branch for reflected inputs.
+        # fmt: off
+        H_svd = svd_mat(
+            svd_scalar(H[0, 0]), svd_scalar(H[0, 1]), svd_scalar(H[0, 2]),
+            svd_scalar(H[1, 0]), svd_scalar(H[1, 1]), svd_scalar(H[1, 2]),
+            svd_scalar(H[2, 0]), svd_scalar(H[2, 1]), svd_scalar(H[2, 2]),
+        )
+        # fmt: on
+        if wp.determinant(H_svd) < svd_scalar(0.0):
+            U = svd_mat()
+            S = svd_vec()
+            V = svd_mat()
+            wp.svd3(H_svd, U, S, V)
+            # fmt: off
+            correction = svd_mat(
+                svd_scalar(1.0), svd_scalar(0.0), svd_scalar(0.0),
+                svd_scalar(0.0), svd_scalar(1.0), svd_scalar(0.0),
+                svd_scalar(0.0), svd_scalar(0.0), svd_scalar(-1.0),
+            )
+            # fmt: on
+            R_svd = U * correction * wp.transpose(V)
+            # fmt: off
+            out_rotations[tid] = dtype_mat(
+                dtype_scalar(R_svd[0, 0]), dtype_scalar(R_svd[0, 1]), dtype_scalar(R_svd[0, 2]),
+                dtype_scalar(R_svd[1, 0]), dtype_scalar(R_svd[1, 1]), dtype_scalar(R_svd[1, 2]),
+                dtype_scalar(R_svd[2, 0]), dtype_scalar(R_svd[2, 1]), dtype_scalar(R_svd[2, 2]),
+            )
+            # fmt: on
+            return
 
         row0_sum = wp.abs(H[0, 0]) + wp.abs(H[0, 1]) + wp.abs(H[0, 2])
         row1_sum = wp.abs(H[1, 0]) + wp.abs(H[1, 1]) + wp.abs(H[1, 2])

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.1.0",
-  "definition_name": "SOMA v0026 procedural twist controls",
+  "definition_name": "SOMA v0027 procedural twist controls",
   "modes": [
     "local_x_euler",
     "local_x_swing_twist",
@@ -8,9 +8,9 @@
   ],
   "template_asset": {
     "file": "SOMA_template_rig.usda",
-    "source": "nvHuman_male_skel.usda",
-    "published_version": "v0026",
-    "joint_count": 122
+    "source": "SOMA_template_rig.usda",
+    "published_version": "v0027",
+    "joint_count": 110
   },
   "conventions": {
     "units": "centimeters",

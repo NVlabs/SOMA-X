@@ -59,7 +59,12 @@ print(node)
 
 The setup path imports the USD under `SOMA_templateRig_PROC_GRP` when it is not
 already present, connects all public joints to the node inputs, and connects all
-generated twist joints through matrix helpers. The node output combines local
+generated twist joints through matrix helpers. Before wiring the bind inputs,
+setup temporarily poses the public skeleton to USD `bindTransforms`, records
+those world matrices, and restores the imported rest/T pose. The template USD
+must author both `restTransforms` and `bindTransforms`.
+
+The node output combines local
 procedural twist rotation with world-space interpolated translation, so setup
 wraps the output rotation with the imported twist joint and parent static world
 orientations to match SOMA's joint-orient application, and drives local
@@ -77,6 +82,9 @@ The node expects main SOMA joint matrices in the same order as
 - `inputWorldMatrix[index]`: world transform matrix for main joint `index`.
   The translation block is multiplied by the sidecar translation parameter
   matrix. If left unconnected, identity matrices are used.
+- `inputBindWorldMatrix[index]`: world-space USD skin bind transform for main
+  joint `index`. Aligned twist is zero relative to this pose, independently of
+  the imported rest/T pose.
 - `outputTransform[index]`: generated transform matrix for procedural twist
   joint `index`, ordered by the sidecar segment `twist_joints` list.
 

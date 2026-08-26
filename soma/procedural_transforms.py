@@ -516,7 +516,7 @@ def derive_soma_rig_without_procedural_joints(
 ) -> dict[str, Any]:
     """Derive the public SOMA rig and aggregate removed joint weights to parents.
 
-    The v0026 template with twist joints is the universal source rig. This helper
+    The v0027 template with twist joints is the universal source rig. This helper
     derives the legacy public rig on the fly by pruning generated procedural and
     auxiliary joints, remapping hierarchy indices, and moving each pruned joint's
     skin weights to its nearest kept parent.
@@ -781,6 +781,7 @@ class SOMAProceduralParameterTransform(nn.Module):
         translation_entries: Sequence[SOMANamedMatrixEntry] | None = None,
         target_t_pose_world: torch.Tensor | np.ndarray | None = None,
         target_joint_parent_ids: Sequence[int] | torch.Tensor | np.ndarray | None = None,
+        target_bind_pose_world: torch.Tensor | np.ndarray | None = None,
     ) -> None:
         super().__init__()
         source_names = _name_list(source_joint_names)
@@ -885,6 +886,18 @@ class SOMAProceduralParameterTransform(nn.Module):
                 raise ValueError(
                     "target_t_pose_world must have the same joint count as target_joint_names"
                 )
+        if target_bind_pose_world is not None:
+            if isinstance(target_bind_pose_world, np.ndarray):
+                target_bind_pose_world = torch.from_numpy(target_bind_pose_world)
+            if target_bind_pose_world.shape[-2:] != (4, 4):
+                raise ValueError(
+                    "target_bind_pose_world must have shape (J, 4, 4), "
+                    f"got {target_bind_pose_world.shape}"
+                )
+            if target_bind_pose_world.shape[0] != len(target_names):
+                raise ValueError(
+                    "target_bind_pose_world must have the same joint count as target_joint_names"
+                )
         if target_joint_parent_ids is not None:
             target_joint_parent_ids = torch.as_tensor(target_joint_parent_ids, dtype=torch.long)
             if target_joint_parent_ids.shape != (len(target_names),):
@@ -934,12 +947,11 @@ class SOMAProceduralParameterTransform(nn.Module):
             twist_parent_target_ids = [
                 int(target_joint_parent_ids[target_by_name[name]].item()) for name in twist_names
             ]
-        if target_t_pose_world is not None and target_joint_parent_ids is not None:
+        if target_joint_parent_ids is not None:
             source_target_ids = torch.tensor(
                 [target_by_name[name] for name in source_names],
                 dtype=torch.long,
             )
-            source_t_pose_world = target_t_pose_world[source_target_ids].to(dtype=torch.float32)
             source_target_id_to_source_id = {
                 int(target_idx): source_idx
                 for source_idx, target_idx in enumerate(source_target_ids.tolist())
@@ -954,12 +966,22 @@ class SOMAProceduralParameterTransform(nn.Module):
                     parent_idx = next_parent_idx
                 source_parent_list.append(source_target_id_to_source_id.get(parent_idx, 0))
             source_parent_ids = torch.tensor(source_parent_list, dtype=torch.long)
-            source_t_pose_local = joint_world_to_local(source_t_pose_world, source_parent_ids)
-            source_joint_orient, source_joint_orient_parent_t = precompute_joint_orient(
-                source_t_pose_world,
-                source_parent_ids,
-            )
-            bind_quaternions = matrix_to_quaternion_xyzw(source_t_pose_world[..., :3, :3])
+            if target_t_pose_world is not None:
+                source_t_pose_world = target_t_pose_world[source_target_ids].to(dtype=torch.float32)
+            if target_bind_pose_world is not None:
+                source_bind_pose_world = target_bind_pose_world[source_target_ids].to(
+                    dtype=torch.float32
+                )
+            else:
+                source_bind_pose_world = None
+            if source_t_pose_world is not None:
+                source_t_pose_local = joint_world_to_local(source_t_pose_world, source_parent_ids)
+                source_joint_orient, source_joint_orient_parent_t = precompute_joint_orient(
+                    source_t_pose_world,
+                    source_parent_ids,
+                )
+            if source_bind_pose_world is not None:
+                bind_quaternions = matrix_to_quaternion_xyzw(source_bind_pose_world[..., :3, :3])
             for segment in segments:
                 start_idx = source_by_name[segment.start_joint]
                 end_idx = source_by_name[segment.end_joint]
@@ -973,11 +995,12 @@ class SOMAProceduralParameterTransform(nn.Module):
                 segment_reverse_mask.append(bool(segment.reverse))
             segment_start_ids_t = torch.tensor(segment_start_ids, dtype=torch.long)
             segment_end_ids_t = torch.tensor(segment_end_ids, dtype=torch.long)
-            bind_align_quaternions = _bind_alignment_quaternions(
-                source_t_pose_world,
-                segment_start_ids_t,
-                segment_end_ids_t,
-            )
+            if source_bind_pose_world is not None:
+                bind_align_quaternions = _bind_alignment_quaternions(
+                    source_bind_pose_world,
+                    segment_start_ids_t,
+                    segment_end_ids_t,
+                )
             segment_ids = list(range(len(segment_start_ids)))
             aligned_virtual_segment_ids = segment_ids + segment_ids + segment_ids
             aligned_virtual_joint_ids = segment_end_ids + segment_start_ids + segment_parent_ids
@@ -1218,9 +1241,9 @@ class SOMAProceduralParameterTransform(nn.Module):
     ) -> torch.Tensor:
         if self.source_bind_quaternions.numel() == 0:
             raise RuntimeError(
-                "aligned_x_swing_twist requires bind data from target_t_pose_world "
+                "aligned_x_swing_twist requires bind data from target_bind_pose_world "
                 "and target_joint_parent_ids"
-        )
+            )
         device = source_world_transforms.device
         dtype = source_world_transforms.dtype
         bind_quaternions = self.source_bind_quaternions.to(dtype=dtype, device=device)

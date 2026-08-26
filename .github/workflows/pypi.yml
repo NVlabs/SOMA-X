@@ -22,6 +22,8 @@ jobs:
   build:
     name: Build distributions
     runs-on: ubuntu-latest
+    outputs:
+      package-version: ${{ steps.version.outputs.package_version }}
     permissions:
       contents: read
     steps:
@@ -52,6 +54,14 @@ jobs:
           fi
           echo "package_version=$package_version" >> "$GITHUB_OUTPUT"
           echo "Package version: $package_version"
+
+      - name: Build and verify Hugging Face asset stage
+        run: |
+          python tools/ci/package_hf_assets.py \
+            --output "$RUNNER_TEMP/hf-stage" \
+            --release-tag "v${{ steps.version.outputs.package_version }}" \
+            --public-commit "$GITHUB_SHA"
+          python tools/ci/verify_hf_assets.py "$RUNNER_TEMP/hf-stage"
 
       - name: Install build tools
         run: |
@@ -86,9 +96,83 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  publish-huggingface:
+    name: Publish assets to Hugging Face
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    environment:
+      name: huggingface
+      url: https://huggingface.co/nvidia/SOMA-X
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Hugging Face client
+        run: python -m pip install "huggingface_hub==1.19.0"
+
+      - name: Build and verify Hugging Face asset stage
+        run: |
+          python tools/ci/package_hf_assets.py \
+            --output "$RUNNER_TEMP/hf-stage" \
+            --release-tag "$GITHUB_REF_NAME" \
+            --public-commit "$GITHUB_SHA"
+          python tools/ci/verify_hf_assets.py "$RUNNER_TEMP/hf-stage"
+
+      - name: Exchange GitHub OIDC identity for a scoped Hub token
+        env:
+          HF_OIDC_RESOURCE: nvidia/SOMA-X
+        run: echo "HF_TOKEN=$(hf auth token)" >> "$GITHUB_ENV"
+
+      - name: Publish and tag Hugging Face assets
+        run: |
+          python tools/ci/publish_hf_assets.py \
+            --stage "$RUNNER_TEMP/hf-stage" \
+            --repo-id nvidia/SOMA-X \
+            --release-tag "$GITHUB_REF_NAME"
+
+  verify-huggingface:
+    name: Verify published Hugging Face assets
+    needs: publish-huggingface
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout verification tools
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install Hugging Face client
+        run: python -m pip install "huggingface_hub==1.19.0"
+
+      - name: Download and verify immutable release
+        run: |
+          hf download nvidia/SOMA-X \
+            --revision "$GITHUB_REF_NAME" \
+            --local-dir "$RUNNER_TEMP/hf-download"
+          python tools/ci/verify_hf_assets.py \
+            --allow-download-cache "$RUNNER_TEMP/hf-download"
+
   publish-testpypi:
     name: Publish to TestPyPI
-    needs: build
+    needs:
+      - build
+      - verify-huggingface
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     environment:

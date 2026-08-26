@@ -14,14 +14,15 @@ SAM 3D Body model_params layout (204 floats):
   [136:204] = body-part scale parameters (68)
 
 Usage:
-    python -m tools.mhr2soma --input ../nvhuman/data/sam_3d_body/data/coco_train
-    python -m tools.mhr2soma --input ../nvhuman/data/sam_3d_body/data/coco_train --output-npz out/coco_soma.npz
-    python -m tools.mhr2soma --input ../nvhuman/data/sam_3d_body/data/coco_train/000000.parquet --max-samples 100
+    python -m tools.mhr2soma --input /path/to/sam_3d_body/coco_train
+    python -m tools.mhr2soma --input /path/to/sam_3d_body/coco_train --output-npz out/coco_soma.npz
+    python -m tools.mhr2soma --input /path/to/sam_3d_body/coco_train/000000.parquet --max-samples 100
 """
 
 import argparse
 import logging
 import sys
+from dataclasses import replace
 from pathlib import Path
 
 import numpy as np
@@ -38,6 +39,7 @@ from soma.pose_inversion import (  # noqa: E402
     _bind_joint_positions_from_cache,
     _heel_vertex_ids,
 )
+from soma.rts_smoothing import RTS_SMOOTHING_PRESETS, smooth_pose  # noqa: E402
 from soma.soma import SOMALayer  # noqa: E402
 from soma.units import Unit  # noqa: E402
 from tools.conversion_utils import add_inversion_args, export_soma_npz  # noqa: E402
@@ -447,6 +449,38 @@ def main():
         help="Rear heel vertex weight used only by autograd FK.",
     )
     parser.add_argument("--fps", type=int, default=4, help="Video frame rate (default: 4).")
+    parser.add_argument(
+        "--smooth",
+        action="store_true",
+        help="Apply reusable SO(3) RTS smoothing to SOMA rotations and root translation.",
+    )
+    parser.add_argument(
+        "--smooth-preset",
+        choices=tuple(RTS_SMOOTHING_PRESETS),
+        default="default",
+        help="RTS smoothing preset (default: default).",
+    )
+    parser.add_argument(
+        "--smooth-fps",
+        type=float,
+        default=None,
+        help="Source frame rate for RTS smoothing dynamics (default: --fps).",
+    )
+    parser.add_argument(
+        "--smooth-include-limbs",
+        action="store_true",
+        help="Apply faster hand gains to limb joints as well as hand/finger joints.",
+    )
+    parser.add_argument(
+        "--smooth-no-hand-gains",
+        action="store_true",
+        help="Use body RTS gains for every joint.",
+    )
+    parser.add_argument(
+        "--no-smooth-root",
+        action="store_true",
+        help="Keep root translation unchanged when --smooth is enabled.",
+    )
     add_logging_args(parser)
     args = parser.parse_args()
     configure_logging(args)
@@ -635,9 +669,39 @@ def main():
         unit_label,
     )
 
+    if args.smooth:
+        smooth_config = replace(
+            RTS_SMOOTHING_PRESETS[args.smooth_preset],
+            fps=float(args.smooth_fps if args.smooth_fps is not None else args.fps),
+            smooth_root_translation=not args.no_smooth_root,
+        )
+        logger.info(
+            "\nApplying SO(3) RTS smoothing "
+            f"(preset={args.smooth_preset}, fps={smooth_config.fps:g})..."
+        )
+        rotations, root_transl = smooth_pose(
+            rotations,
+            root_transl,
+            soma_layer=soma,
+            config=smooth_config,
+            rotation_convention="absolute",
+            output_rotation_convention="absolute",
+            use_hand_gains=not args.smooth_no_hand_gains,
+            include_limb_gains=args.smooth_include_limbs,
+        )
+
     # --- Save output ---
     if args.output_npz:
         extra_arrays = {"bone_length_flexibles": bone_length_flexibles}
+        if args.smooth:
+            extra_arrays.update(
+                {
+                    "rts_smoothing": np.array("so3_error_state"),
+                    "rts_smoothing_preset": np.array(args.smooth_preset),
+                    "rts_smoothing_fps": np.float32(smooth_config.fps),
+                    "rts_smoothing_root_enabled": np.bool_(not args.no_smooth_root),
+                }
+            )
         if rotation_drift is not None:
             extra_arrays["local_rotation_drift_deg"] = torch.rad2deg(rotation_drift).numpy()
         export_soma_npz(

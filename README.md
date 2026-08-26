@@ -184,6 +184,8 @@ soma = SOMALayer(
 # scale_params: (B, soma.num_scale_params) - Optional, depending on model type.
 # For native SOMA bone scales, soma.scale_param_names defines active child joints,
 # and soma.scale_param_segments defines the matching local parent-to-child edges.
+# The final four native SOMA controls scale the left/right lower legs and feet.
+# Legacy 56-value native SOMA tensors remain accepted with unit foot scales.
 output = soma(poses, identity, scale_params=scale_params)
 vertices = output["vertices"]
 ```
@@ -226,7 +228,7 @@ This will generate example animation videos for the selected models in the `out/
 
 **Full-body demo options:**
 - `--identity-model-type`: Comma-separated list of models (options: `soma`, `mhr`, `anny`, `smplx`, `smpl`, `garment`, default: all)
-- `--lod`: Body mesh LOD to render (`mid`, `low`, or `xlo`; default: `mid`). The `xlo` mesh uses its own USD topology/skinning and uses the v0026 low-LOD mesh for identity skeleton fitting.
+- `--lod`: Body mesh LOD to render (`mid`, `low`, or `xlo`; default: `mid`). The `xlo` mesh uses its own USD topology/skinning and uses the v0027 low-LOD mesh for identity skeleton fitting.
 - `--random-shape`: Smoothly animate random body shapes instead of neutral shape
 - `--motion-file`: Path to custom motion file (default: `assets/ROM5.npy`)
 - `--image-size`: Render resolution (default: 1920)

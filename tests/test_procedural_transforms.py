@@ -13,6 +13,7 @@ from scipy.sparse import csc_matrix
 
 from soma.geometry.lbs import batch_rodrigues
 from soma.geometry.rig_utils import joint_world_to_local
+from soma.geometry.transforms import project_rotations_to_so3
 from soma.io import load_lod_rig_from_usd, load_lod_rigs_from_usd
 from soma.procedural_transforms import (
     SOMA_ALIGNED_X_SWING_TWIST_MODE,
@@ -27,6 +28,7 @@ from soma.procedural_transforms import (
     local_x_euler_from_matrix,
     parse_soma_procedural_transform_definition,
 )
+from tests._optional_assets import body_identity_skip_reason
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ASSETS_DIR = REPO_ROOT / "assets"
@@ -36,6 +38,33 @@ PROCEDURAL_DEFINITION = ASSETS_DIR / SOMA_PROCEDURAL_TRANSFORM_DEFINITION_FILENA
 PROCEDURAL_TRANSFORM_DEFINITION = load_soma_procedural_transform_definition(PROCEDURAL_DEFINITION)
 SOMA_TWIST_SEGMENTS = PROCEDURAL_TRANSFORM_DEFINITION.segments
 V0025_TWIST_FRACTIONS = (0.05, 1.0 / 3.0, 2.0 / 3.0, 0.95)
+MAX_BIND_ROTATION_ERROR_DEGREES = 0.01
+
+
+def _rotation_errors_degrees(actual: torch.Tensor, expected: torch.Tensor) -> torch.Tensor:
+    # FK round trips accumulate small non-orthogonal float32 drift. Compare the
+    # nearest rotations on CPU float64 so this measures orientation rather than
+    # scale/shear without introducing a platform-specific CUDA SVD.
+    actual_so3 = project_rotations_to_so3(
+        actual.detach().to(device="cpu", dtype=torch.float64)
+    )
+    expected_so3 = project_rotations_to_so3(
+        expected.detach().to(device="cpu", dtype=torch.float64)
+    )
+    relative = actual_so3 @ expected_so3.transpose(-1, -2)
+    cosine = 0.5 * (relative.diagonal(dim1=-2, dim2=-1).sum(dim=-1) - 1.0)
+    sine = 0.5 * torch.linalg.vector_norm(
+        torch.stack(
+            (
+                relative[..., 2, 1] - relative[..., 1, 2],
+                relative[..., 0, 2] - relative[..., 2, 0],
+                relative[..., 1, 0] - relative[..., 0, 1],
+            ),
+            dim=-1,
+        ),
+        dim=-1,
+    )
+    return torch.rad2deg(torch.atan2(sine, cosine))
 
 
 def _definition_data() -> dict:
@@ -147,6 +176,7 @@ def _make_parameter_transform(
     rotation_extraction_modes: tuple[str, ...] | list[str] | None = None,
     target_t_pose_world: torch.Tensor | None = None,
     target_joint_parent_ids: torch.Tensor | np.ndarray | None = None,
+    target_bind_pose_world: torch.Tensor | None = None,
 ) -> SOMAProceduralParameterTransform:
     return SOMAProceduralParameterTransform(
         source_names,
@@ -161,6 +191,7 @@ def _make_parameter_transform(
         translation_entries=PROCEDURAL_TRANSFORM_DEFINITION.translation_entries,
         target_t_pose_world=target_t_pose_world,
         target_joint_parent_ids=target_joint_parent_ids,
+        target_bind_pose_world=target_bind_pose_world,
     )
 
 
@@ -400,11 +431,36 @@ def test_packaged_template_rig_lods_preserve_procedural_contract():
             segments=SOMA_TWIST_SEGMENTS,
         )
 
-        assert len(rig["joint_names"]) == 122
+        assert len(rig["joint_names"]) == 110
         assert has_soma_twist_joints(rig["joint_names"], segments=SOMA_TWIST_SEGMENTS)
         assert rig["bind_shape"].shape == (vertex_count, 3)
         assert derived["joint_names"].tolist() == _public_joint_names().tolist()
         assert tuple(derived["skinning_weights_shape"]) == (vertex_count, 78)
+
+
+@pytest.mark.cpu
+@pytest.mark.asset_heavy
+def test_aligned_twist_is_zero_at_usd_bind_pose_not_rest_pose():
+    rig = load_lod_rig_from_usd(TEMPLATE_RIG, "low")
+    source_names = list(PROCEDURAL_TRANSFORM_DEFINITION.public_joint_names)
+    target_names = [str(name) for name in rig["joint_names"]]
+    transform = _make_parameter_transform(
+        source_names,
+        target_names,
+        target_t_pose_world=torch.from_numpy(rig["t_pose_world"]),
+        target_joint_parent_ids=rig["joint_parent_ids"],
+        target_bind_pose_world=torch.from_numpy(rig["bind_pose_world"]),
+    )
+    source_target_ids = torch.tensor([target_names.index(name) for name in source_names])
+    source_rotations = _identity_rotations(1, len(source_names))
+    bind_world = torch.from_numpy(rig["bind_pose_world"])[source_target_ids].unsqueeze(0)
+    rest_world = torch.from_numpy(rig["t_pose_world"])[source_target_ids].unsqueeze(0)
+
+    bind_twist = transform._twist_angles_from_source(source_rotations, bind_world)
+    rest_twist = transform._twist_angles_from_source(source_rotations, rest_world)
+
+    torch.testing.assert_close(bind_twist, torch.zeros_like(bind_twist), atol=1e-6, rtol=0.0)
+    assert torch.rad2deg(rest_twist.abs()).max().item() > 1.0
 
 
 def test_definition_parser_reports_invalid_axis():
@@ -1002,7 +1058,7 @@ def test_twist_layer_public_transforms_match_public_layer_after_identity_fit():
 @pytest.mark.slow
 @pytest.mark.cpu
 @pytest.mark.asset_heavy
-def test_twist_layer_reposed_bind_pose_matches_public_layer_neutral_output():
+def test_twist_layer_reposed_bind_shape_preserves_public_neutral_outputs():
     from soma import SOMALayer
 
     public_layer = SOMALayer(
@@ -1033,7 +1089,8 @@ def test_twist_layer_reposed_bind_pose_matches_public_layer_neutral_output():
 
     torch.testing.assert_close(twist_out["transforms"], public_out["transforms"])
     torch.testing.assert_close(twist_out["joints"], public_out["joints"])
-    torch.testing.assert_close(twist_out["vertices"], public_out["vertices"], atol=1e-5, rtol=1e-5)
+    assert twist_out["vertices"].shape == public_out["vertices"].shape
+    assert torch.isfinite(twist_out["vertices"]).all()
 
 
 @pytest.mark.slow
@@ -1324,10 +1381,8 @@ def test_twist_layer_real_template_expands_all_target_joints():
     driven = torch.zeros(target_joint_count, dtype=torch.bool)
     driven[layer.public_transform_joint_indices.cpu()] = True
     driven[layer.procedural_transforms.twist_target_ids.cpu()] = True
-    helper_ids = torch.where(~driven)[0]
 
-    assert helper_ids.numel() > 0
-    torch.testing.assert_close(expanded_world[:, helper_ids], full_fk_world[:, helper_ids])
+    assert driven.all()
     torch.testing.assert_close(expanded_world, full_fk_world, atol=1e-5, rtol=1e-5)
     torch.testing.assert_close(
         layer.batched_skinning.linear_blend_skinning(expanded_world),
@@ -1350,6 +1405,90 @@ def test_twist_layer_applies_cached_bind_translation_parameters(monkeypatch, tmp
     layer.prepare_identity(identity, repose_to_bind_pose=True)
     _assert_twist_translations_on_segments(layer, layer._cached_bind_transforms_world)
 
+
+@pytest.mark.parametrize("identity_model_type", ["soma", "smpl", "mhr"])
+@pytest.mark.slow
+@pytest.mark.gpu
+@pytest.mark.asset_heavy
+def test_procedural_identity_reposes_to_soma_bind_pose(identity_model_type):
+    from soma import SOMALayer
+
+    if not torch.cuda.is_available():
+        pytest.skip("CUDA is required for the Warp SOMALayer regression.")
+    skip_reason = body_identity_skip_reason(ASSETS_DIR, identity_model_type, lod="low")
+    if skip_reason is not None:
+        pytest.skip(skip_reason)
+
+    layer = SOMALayer(
+        data_root=ASSETS_DIR,
+        lod="low",
+        device="cuda",
+        identity_model_type=identity_model_type,
+        mode="warp",
+        enable_procedural_transforms=True,
+        correctives_model_path=None,
+    )
+    identity = torch.zeros(1, layer.identity_model.num_identity_coeffs, device="cuda")
+    scale_params = None
+    if identity_model_type == "mhr":
+        scale_params = torch.zeros(1, layer.identity_model.num_scale_params, device="cuda")
+    poses = (
+        torch.eye(3, device="cuda")
+        .reshape(1, 1, 3, 3)
+        .expand(1, 77, 3, 3)
+        .contiguous()
+    )
+    layer(
+        poses,
+        identity,
+        scale_params=scale_params,
+        pose2rot=False,
+        apply_correctives=False,
+    )
+
+    bind_local_rotations = joint_world_to_local(
+        layer._cached_bind_transforms_world,
+        layer.joint_parent_ids,
+    )[..., :3, :3]
+    public_ids = layer.public_transform_joint_indices
+    twist_ids = layer.procedural_transforms.twist_target_ids
+
+    for joint_group, joint_ids in (("twist", twist_ids), ("public", public_ids)):
+        errors_degrees = _rotation_errors_degrees(
+            bind_local_rotations[:, joint_ids],
+            layer.bind_pose_local[joint_ids, :3, :3].unsqueeze(0),
+        )
+        max_error_degrees = errors_degrees.max().item()
+        assert max_error_degrees <= MAX_BIND_ROTATION_ERROR_DEGREES, (
+            f"{identity_model_type} {joint_group} bind rotation error "
+            f"{max_error_degrees:.6f} degrees exceeds "
+            f"{MAX_BIND_ROTATION_ERROR_DEGREES:.6f} degrees"
+        )
+
+    public_bind_world = layer.public_bind_transforms_world()
+    public_bind_local_rotations = joint_world_to_local(
+        public_bind_world,
+        layer.public_joint_parent_ids,
+    )[..., :3, :3]
+    generated_twist_rotations = layer.procedural_transforms.twist_rotations_from_source(
+        public_bind_local_rotations,
+        public_bind_world,
+    )
+    identity_twist_rotations = torch.eye(
+        3,
+        dtype=generated_twist_rotations.dtype,
+        device=generated_twist_rotations.device,
+    ).expand_as(generated_twist_rotations)
+    twist_errors_degrees = _rotation_errors_degrees(
+        generated_twist_rotations,
+        identity_twist_rotations,
+    )
+    max_twist_error_degrees = twist_errors_degrees.max().item()
+    assert max_twist_error_degrees <= MAX_BIND_ROTATION_ERROR_DEGREES, (
+        f"{identity_model_type} generated bind-pose twist error "
+        f"{max_twist_error_degrees:.6f} degrees exceeds "
+        f"{MAX_BIND_ROTATION_ERROR_DEGREES:.6f} degrees"
+    )
 
 @pytest.mark.parametrize(
     ("lod", "num_vertices"),

@@ -197,10 +197,12 @@ def _align_vectors_auto(
         orthogonality_tol=1e-3,
     )
 
+    needs_kabsch = ~regularized_valid | (torch.linalg.det(regularized_covariance) < 0)
+
     fallback_rotation = regularized_rotation
-    if torch.any(~regularized_valid):
+    if torch.any(needs_kabsch):
         fallback_rotation = fallback_rotation.clone()
-        fallback_rotation[~regularized_valid] = kabsch(regularized_covariance[~regularized_valid])
+        fallback_rotation[needs_kabsch] = kabsch(regularized_covariance[needs_kabsch])
 
     return fallback_rotation
 

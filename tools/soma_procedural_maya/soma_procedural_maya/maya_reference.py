@@ -72,6 +72,109 @@ def _resolve_nodes_by_leaf(cmds: Any, root: str, names: set[str]) -> dict[str, s
     return resolved
 
 
+def _load_usd_skeleton_poses(
+    template_asset_path: str | Path,
+) -> tuple[tuple[str, ...], tuple[list[float], ...], tuple[list[float], ...]]:
+    from pxr import Usd, UsdSkel
+
+    stage = Usd.Stage.Open(str(template_asset_path))
+    if not stage:
+        raise RuntimeError(f"Failed to open USD template rig: {template_asset_path}")
+    skeleton_prim = next((prim for prim in stage.Traverse() if prim.IsA(UsdSkel.Skeleton)), None)
+    if skeleton_prim is None:
+        raise RuntimeError(f"No UsdSkelSkeleton found in {template_asset_path}")
+
+    skeleton = UsdSkel.Skeleton(skeleton_prim)
+    joint_paths = skeleton.GetJointsAttr().Get()
+    bind_transforms = skeleton.GetBindTransformsAttr().Get()
+    rest_transforms = skeleton.GetRestTransformsAttr().Get()
+    if not joint_paths:
+        raise RuntimeError(f"USD skeleton has no joints in {template_asset_path}")
+    if bind_transforms is None or len(bind_transforms) != len(joint_paths):
+        raise RuntimeError(
+            f"USD skeleton must have one bindTransform per joint in {template_asset_path}"
+        )
+    if rest_transforms is None or len(rest_transforms) != len(joint_paths):
+        raise RuntimeError(
+            f"USD skeleton must have one restTransform per joint in {template_asset_path}"
+        )
+
+    joint_names = tuple(str(path).rsplit("/", 1)[-1] for path in joint_paths)
+    if len(set(joint_names)) != len(joint_names):
+        raise RuntimeError(f"USD skeleton has duplicate joint leaf names in {template_asset_path}")
+    bind_world = tuple(
+        [float(transform[row][column]) for row in range(4) for column in range(4)]
+        for transform in bind_transforms
+    )
+    rest_local = tuple(
+        [float(transform[row][column]) for row in range(4) for column in range(4)]
+        for transform in rest_transforms
+    )
+    return joint_names, bind_world, rest_local
+
+
+def pose_template_rig_to_bind_pose(
+    template_asset_path: str | Path,
+    rig_root: str = DEFAULT_TEMPLATE_RIG_GROUP,
+    joint_names: set[str] | None = None,
+) -> dict[str, list[float]]:
+    """Pose an imported template skeleton to its USD bind transforms.
+
+    Returns the previous world matrices, which can be passed to
+    :func:`restore_template_rig_pose`. The USD asset must author both
+    ``restTransforms`` and ``bindTransforms`` so the two poses cannot be
+    accidentally conflated.
+    """
+
+    from maya import cmds
+
+    usd_joint_names, bind_world, _rest_local = _load_usd_skeleton_poses(template_asset_path)
+    if joint_names is None:
+        selected = tuple(zip(usd_joint_names, bind_world, strict=True))
+    else:
+        unknown = sorted(joint_names - set(usd_joint_names))
+        if unknown:
+            raise ValueError(f"Requested joints are not present in the USD skeleton: {unknown}")
+        selected = tuple(
+            (name, matrix)
+            for name, matrix in zip(usd_joint_names, bind_world, strict=True)
+            if name in joint_names
+        )
+    selected_names = tuple(name for name, _matrix in selected)
+    resolved = _resolve_nodes_by_leaf(cmds, rig_root, set(selected_names))
+    missing = [name for name in selected_names if name not in resolved]
+    if missing:
+        raise ValueError(f"Could not resolve imported SOMA joints for bind pose: {missing}")
+
+    previous_world = {
+        name: [float(value) for value in cmds.getAttr(f"{resolved[name]}.worldMatrix[0]")]
+        for name in selected_names
+    }
+    try:
+        for name, matrix in selected:
+            cmds.xform(resolved[name], worldSpace=True, matrix=matrix)
+    except Exception:
+        restore_template_rig_pose(previous_world, rig_root=rig_root)
+        raise
+    return previous_world
+
+
+def restore_template_rig_pose(
+    world_matrices: dict[str, list[float]],
+    rig_root: str = DEFAULT_TEMPLATE_RIG_GROUP,
+) -> None:
+    """Restore world matrices returned by :func:`pose_template_rig_to_bind_pose`."""
+
+    from maya import cmds
+
+    resolved = _resolve_nodes_by_leaf(cmds, rig_root, set(world_matrices))
+    missing = [name for name in world_matrices if name not in resolved]
+    if missing:
+        raise ValueError(f"Could not resolve imported SOMA joints for pose restore: {missing}")
+    for name, matrix in world_matrices.items():
+        cmds.xform(resolved[name], worldSpace=True, matrix=matrix)
+
+
 def _matrix_to_list(matrix: Any) -> list[float]:
     return [float(matrix.getElement(row, column)) for row in range(4) for column in range(4)]
 
@@ -283,6 +386,7 @@ def connect_procedural_node_to_rig(
     definition_path: str | Path | None = None,
     rig_root: str = DEFAULT_TEMPLATE_RIG_GROUP,
     node_name: str = "SOMA_proceduralTransforms_live",
+    template_asset_path: str | Path | None = None,
 ) -> dict[str, Any]:
     """Wire a SOMA procedural node to an imported template rig.
 
@@ -304,6 +408,15 @@ def connect_procedural_node_to_rig(
             )
     definition_path = Path(definition_path).resolve()
     definition = load_definition(definition_path)
+    if template_asset_path is None:
+        attr = f"{rig_root}.somaProceduralTemplateAsset"
+        if not cmds.objExists(attr):
+            raise ValueError(
+                "Could not determine the template USD used by the imported rig. "
+                "Pass template_asset_path explicitly."
+            )
+        template_asset_path = cmds.getAttr(attr)
+    template_asset_path = Path(template_asset_path).resolve()
     wanted = set(definition.public_joint_names) | set(definition.twist_joint_names)
     resolved = _resolve_nodes_by_leaf(cmds, rig_root, wanted)
 
@@ -326,6 +439,21 @@ def connect_procedural_node_to_rig(
             create_locators=False,
         )
 
+    previous_world = pose_template_rig_to_bind_pose(
+        template_asset_path,
+        rig_root=rig_root,
+        joint_names=set(definition.public_joint_names),
+    )
+    try:
+        bind_world = {
+            joint_name: [
+                float(value) for value in cmds.getAttr(f"{resolved[joint_name]}.worldMatrix[0]")
+            ]
+            for joint_name in definition.public_joint_names
+        }
+    finally:
+        restore_template_rig_pose(previous_world, rig_root=rig_root)
+
     for index, joint_name in enumerate(definition.public_joint_names):
         joint = resolved[joint_name]
         cmds.connectAttr(f"{joint}.matrix", f"{network}.inputLocalMatrix[{index}]", force=True)
@@ -337,7 +465,7 @@ def connect_procedural_node_to_rig(
         bind_matrix = _create_hold_matrix(
             cmds,
             f"SOMA_{joint_name}_procBindWorld_hm",
-            list(cmds.getAttr(f"{joint}.worldMatrix[0]")),
+            bind_world[joint_name],
         )
         _set_string_attr(cmds, bind_matrix, "somaDefinitionNode", network)
         _set_string_attr(cmds, bind_matrix, "somaPublicJoint", joint_name)
@@ -408,6 +536,7 @@ def setup_template_rig_scene(
         definition_path=definition_path,
         rig_root=load_summary["rig_root"],
         node_name=node_name,
+        template_asset_path=load_summary["template_asset_path"],
     )
     cmds.select(wire_summary["procedural_node"], replace=True)
     return {**load_summary, **wire_summary}

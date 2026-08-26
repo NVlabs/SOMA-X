@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.2.2
+
+Changes from v0.2.1:
+
+- Updates `SOMA_template_rig.usda` with a simplified SOMA template that removes
+  unused helper joints and reduces the asset from approximately 345 MB to 28 MB
+  while preserving the public pose interface.
+- Fixes procedural twist evaluation to use the USD skin bind pose and correctly
+  reposes SMPL and SMPL-X identities when procedural transforms are enabled.
+- Adds reusable RTS pose smoothing through `soma.rts_smoothing.smooth_pose()`
+  and the `--smooth` options in `tools/mhr2soma.py`.
+- Adds four native SOMA foot-scaling controls while continuing to accept
+  legacy 56-value scale tensors.
+- Improves automatic alignment and PoseInversion robustness for reflected
+  inputs.
+
 ## v0.2.1
 
 SOMA-X v0.2.1 is the recommended 0.2 series release. The 0.2 series is a

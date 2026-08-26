@@ -172,6 +172,22 @@ def rotation_matrices_are_valid(
     return finite & det_valid & ortho_valid
 
 
+def project_rotations_to_so3(rotations: torch.Tensor) -> torch.Tensor:
+    """Project matrices to the nearest proper rotations."""
+    if rotations.shape[-2:] != (3, 3):
+        raise ValueError(f"Expected (...,3,3), got {rotations.shape}")
+
+    u, _, vh = torch.linalg.svd(rotations)
+    projected = u @ vh
+    det = torch.linalg.det(projected)
+    det_mask = det < 0
+    if torch.any(det_mask).item():
+        u = u.clone()
+        u[..., :, -1] = torch.where(det_mask[..., None], -u[..., :, -1], u[..., :, -1])
+        projected = u @ vh
+    return projected
+
+
 def rodrigues_rotation(a: torch.Tensor, b: torch.Tensor, eps: float = 1e-8) -> torch.Tensor:
     """Compute rotation matrix that aligns vector b to vector a.
 
@@ -288,9 +304,10 @@ def align_vectors(
         )
         R = newton_schulz(H_auto, num_iters=NEWTON_SCHULZ_ITERS, eps=eps)
         valid = rotation_matrices_are_valid(R)
-        if torch.all(valid):
+        needs_kabsch = ~valid | (torch.linalg.det(H_auto) < 0)
+        if not torch.any(needs_kabsch):
             return R
-        return torch.where(valid[..., None, None], R, kabsch(H_auto))
+        return torch.where(needs_kabsch[..., None, None], kabsch(H_auto), R)
     elif method == "kabsch":
         return kabsch(H)
     else:
@@ -403,6 +420,12 @@ def quaternion_normalize_xyzw(quaternion: torch.Tensor, eps: float = 1e-12) -> t
     return quaternion / quaternion.norm(dim=-1, keepdim=True).clamp_min(eps)
 
 
+def quaternion_standardize_xyzw(quaternion: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
+    """Normalize XYZW quaternions and choose the non-negative-w representative."""
+    q = quaternion_normalize_xyzw(quaternion, eps=eps)
+    return torch.where(q[..., 3:] < 0.0, -q, q)
+
+
 def quaternion_conjugate_xyzw(quaternion: torch.Tensor) -> torch.Tensor:
     """Return the conjugate of XYZW quaternions."""
     if quaternion.shape[-1] != 4:
@@ -435,6 +458,45 @@ def quaternion_multiply_xyzw(a: torch.Tensor, b: torch.Tensor) -> torch.Tensor:
         ),
         dim=-1,
     )
+
+
+def quaternion_log_xyzw(quaternion: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
+    """Map XYZW unit quaternions to rotation vectors using the shortest arc."""
+    q = quaternion_standardize_xyzw(quaternion, eps=eps)
+    vec = q[..., :3]
+    w = q[..., 3].clamp(-1.0, 1.0)
+    vec_norm = torch.linalg.norm(vec, dim=-1)
+    angle = 2.0 * torch.atan2(vec_norm, w)
+
+    small = vec_norm < eps
+    factor = torch.where(
+        small,
+        2.0 / w.clamp_min(eps),
+        angle / vec_norm.clamp_min(eps),
+    )
+    return vec * factor[..., None]
+
+
+def quaternion_exp_xyzw(rotvec: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
+    """Map rotation vectors to XYZW unit quaternions."""
+    if rotvec.shape[-1] != 3:
+        raise ValueError(f"Expected (...,3), got {rotvec.shape}")
+
+    theta = torch.linalg.norm(rotvec, dim=-1)
+    half_theta = 0.5 * theta
+    theta2 = theta * theta
+    theta4 = theta2 * theta2
+    small = theta < 1e-6
+    imag_scale = torch.where(
+        small,
+        0.5 - theta2 / 48.0 + theta4 / 3840.0,
+        torch.sin(half_theta) / theta.clamp_min(eps),
+    )
+    quaternion = torch.cat(
+        (rotvec * imag_scale[..., None], torch.cos(half_theta)[..., None]),
+        dim=-1,
+    )
+    return quaternion_standardize_xyzw(quaternion, eps=eps)
 
 
 def quaternion_xyzw_to_matrix(quaternion: torch.Tensor, eps: float = 1e-12) -> torch.Tensor:
@@ -575,8 +637,7 @@ def quaternion_half_angle_xyzw(quaternion: torch.Tensor, eps: float = 1e-12) -> 
     extracting twist angles near 180 degrees without an unstable full-angle
     projection.
     """
-    q = quaternion_normalize_xyzw(quaternion, eps=eps)
-    q = torch.where(q[..., 3:] < 0.0, -q, q)
+    q = quaternion_standardize_xyzw(quaternion, eps=eps)
     return quaternion_normalize_xyzw(
         torch.cat((q[..., :3], q[..., 3:] + 1.0), dim=-1),
         eps=eps,

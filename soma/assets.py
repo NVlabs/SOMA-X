@@ -8,7 +8,7 @@ from pathlib import Path
 REPO_ID = "nvidia/soma-x"
 
 
-def get_assets_dir(revision: str = "main", cache_dir: str | Path | None = None) -> Path:
+def get_assets_dir(revision: str = "v0.2.2", cache_dir: str | Path | None = None) -> Path:
     """Download (or retrieve from cache) the SOMA asset directory from HuggingFace.
 
     Uses ``huggingface_hub.snapshot_download`` which preserves the repository
@@ -16,7 +16,8 @@ def get_assets_dir(revision: str = "main", cache_dir: str | Path | None = None) 
     Subsequent calls with the same *revision* are instant (no network access).
 
     Args:
-        revision: Git revision (branch, tag, or commit hash) to download.
+        revision: Git revision (branch, tag, or commit hash) to download. Defaults
+            to the immutable asset tag matching this package release.
         cache_dir: Override the default HuggingFace cache directory.
 
     Returns:

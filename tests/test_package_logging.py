@@ -7,7 +7,8 @@ from pathlib import Path
 
 import numpy as np
 
-from soma.io import save_soma_npz
+from soma.io import load_soma_npz, save_soma_npz
+from soma.soma import SOMALayer
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SOMA_ROOT = REPO_ROOT / "soma"
@@ -49,3 +50,27 @@ def test_save_soma_npz_logs_summary_without_stdout(tmp_path, caplog, capsys):
     assert "Saved:" in caplog.text
     assert "identity_model_type: soma" in caplog.text
     assert "joint_names: 2 joints" in caplog.text
+
+
+def test_save_load_soma_npz_preserves_native_scale_params(tmp_path):
+    out_path = tmp_path / "native_scales.npz"
+    scale_params = np.linspace(
+        0.75,
+        1.25,
+        SOMALayer.NUM_BONE_SCALE_PARAMS,
+        dtype=np.float32,
+    )[None]
+    save_soma_npz(
+        out_path,
+        np.zeros((1, 2, 3), dtype=np.float32),
+        np.zeros((1, 3), dtype=np.float32),
+        joint_names=["Root", "Hips"],
+        identity_model_type="soma",
+        identity_coeffs=np.zeros((1, 128), dtype=np.float32),
+        scale_params=scale_params,
+        keep_root=True,
+    )
+
+    loaded = load_soma_npz(out_path)
+
+    np.testing.assert_array_equal(loaded.scale_params, scale_params)

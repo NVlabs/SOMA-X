@@ -262,6 +262,23 @@ def newton_schulz_auto_from_flat_cov(
     R_ref = reference_rotations[tid]
     H = H + R_ref * (prior_strength * rank_weight * prior_scale)
 
+    # A reflected covariance needs Kabsch's singular-vector correction.
+    # Flipping a fixed Newton-Schulz output column can select the wrong rotation.
+    if wp.determinant(H) < 0.0:
+        U = wp.mat33()
+        S = wp.vec3()
+        V = wp.mat33()
+        wp.svd3(H, U, S, V)
+        # fmt: off
+        correction = wp.mat33(
+            1.0, 0.0, 0.0,
+            0.0, 1.0, 0.0,
+            0.0, 0.0, -1.0,
+        )
+        # fmt: on
+        rotations[tid] = U * correction * wp.transpose(V)
+        return
+
     # Scale by 1/infinity-norm for convergence guarantee.
     row0_sum = wp.abs(H[0, 0]) + wp.abs(H[0, 1]) + wp.abs(H[0, 2])
     row1_sum = wp.abs(H[1, 0]) + wp.abs(H[1, 1]) + wp.abs(H[1, 2])

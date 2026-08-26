@@ -30,7 +30,7 @@ from tools.vis_pyrender import (
 logger = logging.getLogger(__name__)
 
 # --------------------------------------------------------------------------------
-# Joint Names & Mapping (from nvhuman_layer/joint_names.py)
+# Joint Names & Mapping
 # --------------------------------------------------------------------------------
 # fmt: off
 nvskel93_name = [
@@ -413,7 +413,9 @@ def main():
                 model.prepare_identity(
                     coeffs_single,
                     scale_single,
-                    repose_to_bind_pose=args.apply_correctives,
+                    repose_to_bind_pose=(
+                        args.apply_correctives or model.procedural_transforms is not None
+                    ),
                 )
 
         for start in range(0, T, pose_batch_size):
@@ -433,7 +435,9 @@ def main():
                     model.prepare_identity(
                         coeffs_b,
                         scale_b,
-                        repose_to_bind_pose=args.apply_correctives,
+                        repose_to_bind_pose=(
+                            args.apply_correctives or model.procedural_transforms is not None
+                        ),
                     )
 
                 out_b = model.pose(

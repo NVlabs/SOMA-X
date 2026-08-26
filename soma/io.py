@@ -642,7 +642,7 @@ def _find_lod_skin_mesh_name_on_stage(stage, usd_path: str | Path, lod: str) -> 
 def find_lod_skin_mesh_name(usd_path: str | Path, lod: str) -> str:
     """Find the skinned mesh leaf name for a body LOD in a UsdSkel asset.
 
-    The nvHuman publishes use naming conventions such as ``c_skin_xlo`` or
+    The SOMA templates use naming conventions such as ``c_skin_xlo`` or
     ``c_bodyRig_xlo``.  This helper keeps the runtime tolerant to small naming
     differences while still requiring a skinned mesh, not just any mesh whose
     name contains the LOD token.
@@ -974,7 +974,8 @@ def save_soma_npz(
             (e.g. ``"smpl"``, ``"mhr"``, ``"anny"``).
         identity_coeffs: (N, C) or (1, C) identity coefficients.
         scale_params: (N, S) or (1, S) optional per-identity scale
-            vector. For MHR and Anny, this is the body-part scales the
+            vector. For SOMA, this stores the active bone-length scale
+            ratios. For MHR and Anny, this is the body-part scales the
             identity model consumes at rest-shape time.
         joint_orient: (J, 3, 3) per-joint orientation from
             :obj:`~soma.geometry.rig_utils.precompute_joint_orient`.
