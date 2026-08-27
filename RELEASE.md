@@ -36,6 +36,12 @@ Protect the `huggingface` GitHub environment so the first production sync
 requires maintainer approval. The workflow requests a short-lived,
 repository-scoped token through OIDC; do not configure a long-lived `HF_TOKEN`.
 
+After initial setup and after every change to Hugging Face authentication or
+publication code, run `pypi.yml` manually with `hf_git_smoke` enabled. The
+smoke job uses the configured Trusted Publisher to create, verify, and remove
+an ephemeral `ci-oidc-*` tag on the existing Hub snapshot. It does not upload
+assets, publish packages, or require a package-version bump.
+
 ## Release steps
 
 1. Merge the public-release prep MRs into internal `main`.
@@ -54,25 +60,43 @@ repository-scoped token through OIDC; do not configure a long-lived `HF_TOKEN`.
 7. Confirm the generated public mirror candidate passed the internal
    public-release validation gate before pushing.
 8. Confirm the public GitHub Actions build job passes on the release branch.
-9. Create the release tag from the public-safe release branch:
+9. Run the `pypi.yml` `hf_git_smoke` workflow-dispatch preflight and confirm
+   that the ephemeral Hub tag is created, verified, and removed. This is
+   mandatory after an automation change and before the first release that uses
+   the changed automation.
+10. Create the release tag from the public-safe release branch:
 
    ```bash
    git tag -a vX.Y.Z -m "SOMA-X X.Y.Z"
    git push origin vX.Y.Z
    ```
 
-10. Approve the protected `huggingface` environment, then verify the workflow
+11. Approve the protected `huggingface` environment, then verify the workflow
    publishes and immutably tags the exact manifest on `nvidia/SOMA-X`.
-   If the repository-scoped OIDC credential cannot create the Hub tag, create
-   that tag manually at the uploaded commit with a fine-grained token scoped to
-   `nvidia/SOMA-X`, then resume the workflow from `main` with its `tag` input.
-11. Verify the workflow downloads the Hub tag and passes file-set and SHA-256
+   The job repeats the ephemeral-tag preflight before uploading the release
+   snapshot, so a Git authentication failure cannot occur after a large upload.
+12. Verify the workflow downloads the Hub tag and passes file-set and SHA-256
    checks before the TestPyPI job becomes eligible.
-12. Verify the tag-triggered workflow publishes to TestPyPI.
-13. Approve the protected `pypi` environment only after TestPyPI verification.
-14. Verify PyPI shows the new `py-soma-x` release.
-15. Record release links for the GitHub tag, Hub tag/manifest, PyPI release,
+13. Verify the tag-triggered workflow publishes to TestPyPI.
+14. Approve the protected `pypi` environment only after TestPyPI verification.
+15. Verify PyPI shows the new `py-soma-x` release.
+16. Record release links for the GitHub tag, Hub tag/manifest, PyPI release,
     docs, and validation artifact.
+
+## Interrupted Hugging Face release recovery
+
+If the exact release snapshot reached Hub `main` but its immutable tag was not
+created, do not bump the package version. Fix and smoke-test the automation,
+then dispatch `pypi.yml` from public `main` with:
+
+- `tag`: the existing public GitHub release tag, such as `v0.2.3`.
+- `hf_revision`: the exact already-published Hub commit SHA.
+- `hf_git_smoke`: disabled.
+
+The recovery job uses the same short-lived OIDC credential to preflight Git
+authentication, verify the Hub manifest at `hf_revision`, create the missing
+release tag, and resume Hub verification, TestPyPI, PyPI, and the GitHub
+Release. No personal Hugging Face token is required.
 
 ## Local checks
 

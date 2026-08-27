@@ -1,7 +1,13 @@
+import base64
 import json
+import os
+import subprocess
 import sys
+import threading
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from importlib import import_module
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import pytest
 
@@ -10,12 +16,86 @@ sys.path.insert(0, str(TOOLS_CI))
 
 package_module = import_module("package_hf_assets")
 publish_module = import_module("publish_hf_assets")
+refs_module = import_module("hf_git_refs")
 verify_module = import_module("verify_hf_assets")
 MANIFEST_NAME = package_module.MANIFEST_NAME
 package_assets = package_module.package_assets
 create_tag_via_git = publish_module._create_tag_via_git
+delete_tag_via_git = publish_module._delete_tag_via_git
 run_git = publish_module._run_git
 verify_assets = verify_module.verify_assets
+
+
+class _GitHttpHandler(BaseHTTPRequestHandler):
+    project_root: Path
+    expected_authorization: str
+    seen_authorizations: list[str | None]
+
+    def log_message(self, _format: str, *args: object) -> None:
+        pass
+
+    def do_GET(self) -> None:
+        self._serve_git()
+
+    def do_POST(self) -> None:
+        self._serve_git()
+
+    def _serve_git(self) -> None:
+        authorization = self.headers.get("Authorization")
+        self.seen_authorizations.append(authorization)
+        if authorization != self.expected_authorization:
+            self.send_response(401)
+            self.send_header("WWW-Authenticate", 'Basic realm="test"')
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+
+        parsed = urlsplit(self.path)
+        content_length = int(self.headers.get("Content-Length", "0"))
+        request_body = self.rfile.read(content_length)
+        env = os.environ.copy()
+        env.update(
+            {
+                "CONTENT_LENGTH": str(content_length),
+                "CONTENT_TYPE": self.headers.get("Content-Type", ""),
+                "GIT_HTTP_EXPORT_ALL": "1",
+                "GIT_PROJECT_ROOT": str(self.project_root),
+                "PATH_INFO": parsed.path,
+                "QUERY_STRING": parsed.query,
+                "REMOTE_ADDR": self.client_address[0],
+                "REQUEST_METHOD": self.command,
+            }
+        )
+        result = subprocess.run(
+            ["git", "http-backend"],
+            input=request_body,
+            capture_output=True,
+            check=False,
+            env=env,
+        )
+        if result.returncode != 0:
+            self.send_error(500, result.stderr.decode(errors="replace"))
+            return
+
+        separator = b"\r\n\r\n"
+        if separator not in result.stdout:
+            separator = b"\n\n"
+        header_bytes, response_body = result.stdout.split(separator, 1)
+        status = 200
+        headers: list[tuple[str, str]] = []
+        for line in header_bytes.decode().splitlines():
+            key, value = line.split(":", 1)
+            if key.lower() == "status":
+                status = int(value.strip().split(" ", 1)[0])
+            else:
+                headers.append((key, value.strip()))
+
+        self.send_response(status)
+        for key, value in headers:
+            self.send_header(key, value)
+        self.send_header("Content-Length", str(len(response_body)))
+        self.end_headers()
+        self.wfile.write(response_body)
 
 
 def _write_repo(root: Path, content: bytes = b"asset-data") -> Path:
@@ -119,12 +199,17 @@ def test_model_card_has_structured_hub_metadata() -> None:
 def test_create_tag_via_git_uses_scoped_token_only_for_push(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    calls: list[list[str]] = []
+    calls: list[tuple[list[str], dict[str, str]]] = []
 
     def fake_run(
-        command: list[str], *, capture_output: bool, text: bool, check: bool
+        command: list[str],
+        *,
+        capture_output: bool,
+        text: bool,
+        check: bool,
+        env: dict[str, str],
     ) -> object:
-        calls.append(command)
+        calls.append((command, env))
         return type("Result", (), {"returncode": 0, "stderr": ""})()
 
     monkeypatch.setattr(publish_module.subprocess, "run", fake_run)
@@ -132,20 +217,57 @@ def test_create_tag_via_git_uses_scoped_token_only_for_push(
     create_tag_via_git("nvidia/SOMA-X", "v0.2.3", "a" * 40, "hf_test_token")
 
     assert len(calls) == 5
-    assert calls[2][-2:] == ["origin", "a" * 40]
-    assert "hf_test_token" not in " ".join(calls[1])
-    assert "http.extraHeader=Authorization: Bearer hf_test_token" in calls[-1]
-    assert calls[-1][-1] == "refs/tags/v0.2.3"
+    assert calls[2][0][-2:] == ["origin", "a" * 40]
+    assert "FETCH_HEAD" in calls[3][0]
+    assert "hf_test_token" not in " ".join(calls[1][0])
+    assert calls[-1][0][-1] == "refs/tags/v0.2.3"
+    assert calls[-1][1]["GIT_TERMINAL_PROMPT"] == "0"
+    encoded = base64.b64encode(b"hf_user:hf_test_token").decode()
+    assert calls[-1][1]["GIT_CONFIG_VALUE_0"] == f"Authorization: Basic {encoded}"
+    assert "hf_test_token" not in " ".join(calls[-1][0])
+
+
+def test_delete_tag_via_git_uses_basic_auth(monkeypatch: pytest.MonkeyPatch) -> None:
+    calls: list[tuple[list[str], dict[str, str]]] = []
+
+    def fake_run(
+        command: list[str],
+        *,
+        capture_output: bool,
+        text: bool,
+        check: bool,
+        env: dict[str, str],
+    ) -> object:
+        calls.append((command, env))
+        return type("Result", (), {"returncode": 0, "stderr": ""})()
+
+    monkeypatch.setattr(publish_module.subprocess, "run", fake_run)
+
+    delete_tag_via_git("nvidia/SOMA-X", "ci-oidc-123-1", "hf_test_token")
+
+    assert len(calls) == 3
+    assert calls[-1][0][-1] == ":refs/tags/ci-oidc-123-1"
+    assert calls[-1][1]["GIT_CONFIG_VALUE_0"].startswith("Authorization: Basic ")
 
 
 def test_git_failure_redacts_token(monkeypatch: pytest.MonkeyPatch) -> None:
+    encoded = base64.b64encode(b"hf_user:hf_secret_token").decode()
+
     def fake_run(
-        command: list[str], *, capture_output: bool, text: bool, check: bool
+        command: list[str],
+        *,
+        capture_output: bool,
+        text: bool,
+        check: bool,
+        env: dict[str, str],
     ) -> object:
         return type(
             "Result",
             (),
-            {"returncode": 1, "stderr": "remote rejected hf_secret_token"},
+            {
+                "returncode": 1,
+                "stderr": f"remote rejected hf_secret_token and {encoded}",
+            },
         )()
 
     monkeypatch.setattr(publish_module.subprocess, "run", fake_run)
@@ -153,3 +275,216 @@ def test_git_failure_redacts_token(monkeypatch: pytest.MonkeyPatch) -> None:
     with pytest.raises(RuntimeError, match=r"remote rejected \*\*\*") as exc_info:
         run_git(["push"], token="hf_secret_token")
     assert "hf_secret_token" not in str(exc_info.value)
+    assert encoded not in str(exc_info.value)
+
+
+def test_git_push_succeeds_against_basic_auth_http_server(tmp_path: Path) -> None:
+    remote_root = tmp_path / "remotes"
+    remote_root.mkdir()
+    remote = remote_root / "model.git"
+    subprocess.run(
+        ["git", "init", "--bare", str(remote)],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    subprocess.run(
+        ["git", "-C", str(remote), "config", "http.receivepack", "true"],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+
+    local = tmp_path / "local"
+    subprocess.run(
+        ["git", "init", "--quiet", str(local)],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    subprocess.run(
+        ["git", "-C", str(local), "config", "user.name", "Test"],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    subprocess.run(
+        ["git", "-C", str(local), "config", "user.email", "test@example.com"],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    (local / "README.md").write_text("test\n", encoding="utf-8")
+    subprocess.run(
+        ["git", "-C", str(local), "add", "README.md"],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+    subprocess.run(
+        ["git", "-C", str(local), "commit", "--quiet", "-m", "test"],
+        capture_output=True,
+        check=True,
+        text=True,
+    )
+
+    token = "hf_test_token"
+    expected_authorization = "Basic " + base64.b64encode(f"hf_user:{token}".encode()).decode()
+    handler = type(
+        "GitHttpHandler",
+        (_GitHttpHandler,),
+        {
+            "project_root": remote_root,
+            "expected_authorization": expected_authorization,
+            "seen_authorizations": [],
+        },
+    )
+    server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    thread = threading.Thread(target=server.serve_forever)
+    thread.start()
+    try:
+        run_git(
+            [
+                "-C",
+                str(local),
+                "push",
+                f"http://127.0.0.1:{server.server_port}/model.git",
+                "HEAD:refs/heads/main",
+            ],
+            token=token,
+        )
+    finally:
+        server.shutdown()
+        thread.join()
+        server.server_close()
+
+    remote_head = subprocess.run(
+        ["git", "-C", str(remote), "rev-parse", "refs/heads/main"],
+        capture_output=True,
+        check=True,
+        text=True,
+    ).stdout.strip()
+    local_head = subprocess.run(
+        ["git", "-C", str(local), "rev-parse", "HEAD"],
+        capture_output=True,
+        check=True,
+        text=True,
+    ).stdout.strip()
+    assert remote_head == local_head
+    assert handler.seen_authorizations
+    assert set(handler.seen_authorizations) == {expected_authorization}
+
+
+def test_smoke_git_auth_always_removes_created_tag(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    tags: set[str] = set()
+    calls: list[tuple[str, str]] = []
+
+    monkeypatch.setattr(refs_module, "_tag_names", lambda repo_id, token: set(tags))
+    monkeypatch.setattr(
+        refs_module,
+        "_manifest_bytes",
+        lambda repo_id, revision, token: b"manifest",
+    )
+
+    def fake_create(repo_id: str, tag: str, revision: str, token: str) -> None:
+        tags.add(tag)
+        calls.append(("create", tag))
+
+    def fake_delete(repo_id: str, tag: str, token: str) -> None:
+        tags.remove(tag)
+        calls.append(("delete", tag))
+
+    monkeypatch.setattr(refs_module, "_create_tag_via_git", fake_create)
+    monkeypatch.setattr(refs_module, "_delete_tag_via_git", fake_delete)
+
+    refs_module.smoke_git_auth(
+        "nvidia/SOMA-X",
+        "main",
+        "ci-oidc-123-1",
+        "hf_test_token",
+    )
+
+    assert calls == [("create", "ci-oidc-123-1"), ("delete", "ci-oidc-123-1")]
+    assert not tags
+
+
+def test_smoke_git_auth_cleans_up_after_verification_failure(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    tags: set[str] = set()
+
+    monkeypatch.setattr(refs_module, "_tag_names", lambda repo_id, token: set(tags))
+    monkeypatch.setattr(
+        refs_module,
+        "_manifest_bytes",
+        lambda repo_id, revision, token: b"tag" if revision.startswith("ci-") else b"source",
+    )
+    monkeypatch.setattr(
+        refs_module,
+        "_create_tag_via_git",
+        lambda repo_id, tag, revision, token: tags.add(tag),
+    )
+    monkeypatch.setattr(
+        refs_module,
+        "_delete_tag_via_git",
+        lambda repo_id, tag, token: tags.remove(tag),
+    )
+
+    with pytest.raises(ValueError, match="does not resolve"):
+        refs_module.smoke_git_auth(
+            "nvidia/SOMA-X",
+            "main",
+            "ci-oidc-123-1",
+            "hf_test_token",
+        )
+    assert not tags
+
+
+def test_create_verified_release_tag_checks_manifest(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    tags: set[str] = set()
+    manifest = json.dumps({"release_tag": "v0.2.3"}).encode()
+
+    monkeypatch.setattr(refs_module, "_tag_names", lambda repo_id, token: set(tags))
+    monkeypatch.setattr(
+        refs_module,
+        "_manifest_bytes",
+        lambda repo_id, revision, token: manifest,
+    )
+    monkeypatch.setattr(
+        refs_module,
+        "_create_tag_via_git",
+        lambda repo_id, tag, revision, token: tags.add(tag),
+    )
+
+    refs_module.create_verified_release_tag(
+        "nvidia/SOMA-X",
+        "a" * 40,
+        "v0.2.3",
+        "hf_test_token",
+    )
+
+    assert tags == {"v0.2.3"}
+
+
+def test_create_verified_release_tag_rejects_wrong_release_manifest(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        refs_module,
+        "_manifest_bytes",
+        lambda repo_id, revision, token: json.dumps(
+            {"release_tag": "v0.2.2"}
+        ).encode(),
+    )
+
+    with pytest.raises(ValueError, match="does not match"):
+        refs_module.create_verified_release_tag(
+            "nvidia/SOMA-X",
+            "a" * 40,
+            "v0.2.3",
+            "hf_test_token",
+        )

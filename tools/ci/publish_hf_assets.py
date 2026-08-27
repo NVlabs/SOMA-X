@@ -3,6 +3,8 @@
 """Publish and immutably tag a verified SOMA-X Hugging Face stage."""
 
 import argparse
+import base64
+import os
 import subprocess
 import sys
 import tempfile
@@ -13,14 +15,34 @@ from verify_hf_assets import MANIFEST_NAME, verify_assets
 
 def _run_git(args: list[str], token: str | None = None) -> None:
     command = ["git"]
+    env = os.environ.copy()
+    encoded_credential = None
     if token is not None:
-        command.extend(["-c", f"http.extraHeader=Authorization: Bearer {token}"])
+        encoded_credential = base64.b64encode(f"hf_user:{token}".encode()).decode()
+        env.update(
+            {
+                "GIT_CONFIG_COUNT": "1",
+                "GIT_CONFIG_KEY_0": "http.extraHeader",
+                "GIT_CONFIG_VALUE_0": f"Authorization: Basic {encoded_credential}",
+                "GIT_TERMINAL_PROMPT": "0",
+            }
+        )
     command.extend(args)
-    result = subprocess.run(command, capture_output=True, text=True, check=False)
+    result = subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        check=False,
+        env=env,
+    )
     if result.returncode == 0:
         return
 
-    detail = result.stderr.strip().replace(token, "***") if token else result.stderr.strip()
+    detail = result.stderr.strip()
+    if token is not None:
+        detail = detail.replace(token, "***")
+    if encoded_credential is not None:
+        detail = detail.replace(encoded_credential, "***")
     if detail:
         detail = f": {detail}"
     raise RuntimeError(f"git {args[0]} failed with exit code {result.returncode}{detail}")
@@ -38,7 +60,7 @@ def _create_tag_via_git(repo_id: str, tag: str, revision: str, token: str) -> No
                 "remote",
                 "add",
                 "origin",
-                f"https://huggingface.co/{repo_id}",
+                f"https://huggingface.co/{repo_id}.git",
             ]
         )
         _run_git(["-C", str(repo), "fetch", "--quiet", "--depth=1", "origin", revision])
@@ -53,13 +75,34 @@ def _create_tag_via_git(repo_id: str, tag: str, revision: str, token: str) -> No
                 "tag",
                 "--annotate",
                 tag,
-                revision,
+                "FETCH_HEAD",
                 "--message",
                 f"SOMA-X assets for {tag}",
             ]
         )
         _run_git(
             ["-C", str(repo), "push", "--quiet", "origin", f"refs/tags/{tag}"],
+            token=token,
+        )
+
+
+def _delete_tag_via_git(repo_id: str, tag: str, token: str) -> None:
+    """Delete a Hub tag with the same scoped Git credential used to create it."""
+    with tempfile.TemporaryDirectory() as checkout_dir:
+        repo = Path(checkout_dir)
+        _run_git(["-C", str(repo), "init", "--quiet"])
+        _run_git(
+            [
+                "-C",
+                str(repo),
+                "remote",
+                "add",
+                "origin",
+                f"https://huggingface.co/{repo_id}.git",
+            ]
+        )
+        _run_git(
+            ["-C", str(repo), "push", "--quiet", "origin", f":refs/tags/{tag}"],
             token=token,
         )
 
