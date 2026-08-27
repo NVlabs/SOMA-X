@@ -16,7 +16,7 @@ project = "SOMA-X"
 author = "NVIDIA"
 copyright = "2026, NVIDIA"
 version = "0.2"
-release = os.environ.get("SOMA_DOCS_RELEASE", "0.2.2")
+release = os.environ.get("SOMA_DOCS_RELEASE", "0.2.3")
 
 # -- General configuration ----------------------------------------------------
 

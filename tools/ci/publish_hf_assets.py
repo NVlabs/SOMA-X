@@ -3,6 +3,7 @@
 """Publish and immutably tag a verified SOMA-X Hugging Face stage."""
 
 import argparse
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -10,8 +11,61 @@ from pathlib import Path
 from verify_hf_assets import MANIFEST_NAME, verify_assets
 
 
+def _run_git(args: list[str], token: str | None = None) -> None:
+    command = ["git"]
+    if token is not None:
+        command.extend(["-c", f"http.extraHeader=Authorization: Bearer {token}"])
+    command.extend(args)
+    result = subprocess.run(command, capture_output=True, text=True, check=False)
+    if result.returncode == 0:
+        return
+
+    detail = result.stderr.strip().replace(token, "***") if token else result.stderr.strip()
+    if detail:
+        detail = f": {detail}"
+    raise RuntimeError(f"git {args[0]} failed with exit code {result.returncode}{detail}")
+
+
+def _create_tag_via_git(repo_id: str, tag: str, revision: str, token: str) -> None:
+    """Create an annotated Hub tag with the repo-scoped OIDC credential."""
+    with tempfile.TemporaryDirectory() as checkout_dir:
+        repo = Path(checkout_dir)
+        _run_git(["-C", str(repo), "init", "--quiet"])
+        _run_git(
+            [
+                "-C",
+                str(repo),
+                "remote",
+                "add",
+                "origin",
+                f"https://huggingface.co/{repo_id}",
+            ]
+        )
+        _run_git(["-C", str(repo), "fetch", "--quiet", "--depth=1", "origin", revision])
+        _run_git(
+            [
+                "-C",
+                str(repo),
+                "-c",
+                "user.name=SOMA-X release automation",
+                "-c",
+                "user.email=soma-x-release@noreply.github.com",
+                "tag",
+                "--annotate",
+                tag,
+                revision,
+                "--message",
+                f"SOMA-X assets for {tag}",
+            ]
+        )
+        _run_git(
+            ["-C", str(repo), "push", "--quiet", "origin", f"refs/tags/{tag}"],
+            token=token,
+        )
+
+
 def publish_assets(stage: Path, repo_id: str, release_tag: str) -> str:
-    from huggingface_hub import HfApi, hf_hub_download, snapshot_download
+    from huggingface_hub import HfApi, get_token, hf_hub_download, snapshot_download
 
     stage = stage.resolve()
     manifest = verify_assets(stage)
@@ -52,12 +106,10 @@ def publish_assets(stage: Path, repo_id: str, release_tag: str) -> str:
         commit_message=f"Publish SOMA-X assets for {release_tag}",
         commit_description=f"Public GitHub commit: {manifest['public_commit']}",
     )
-    api.create_tag(
-        repo_id=repo_id,
-        tag=release_tag,
-        revision=commit.oid,
-        tag_message=f"SOMA-X assets for {release_tag}",
-    )
+    token = get_token()
+    if token is None:
+        raise RuntimeError("Hugging Face credential is unavailable for tag creation")
+    _create_tag_via_git(repo_id, release_tag, commit.oid, token)
     print(f"Published {repo_id}@{release_tag} from Hub commit {commit.oid}")
     return commit.oid
 
@@ -70,7 +122,7 @@ def main() -> int:
     args = parser.parse_args()
     try:
         publish_assets(args.stage, args.repo_id, args.release_tag)
-    except (OSError, ValueError) as exc:
+    except (OSError, RuntimeError, ValueError) as exc:
         print(f"Hugging Face publication failed: {exc}", file=sys.stderr)
         return 1
     return 0

@@ -23,8 +23,8 @@ workflow.
 
 ## One-time Hugging Face setup
 
-The v0.2.2 release uses Hugging Face Trusted Publishing. A maintainer with
-Write access to `nvidia/SOMA-X` must add these claims under the repository's
+The v0.2.3 and later releases use Hugging Face Trusted Publishing. A maintainer
+with Write access to `nvidia/SOMA-X` must add these claims under the repository's
 **Settings -> Trusted Publishers** page:
 
 - Provider: GitHub Actions
@@ -63,6 +63,9 @@ repository-scoped token through OIDC; do not configure a long-lived `HF_TOKEN`.
 
 10. Approve the protected `huggingface` environment, then verify the workflow
    publishes and immutably tags the exact manifest on `nvidia/SOMA-X`.
+   If the repository-scoped OIDC credential cannot create the Hub tag, create
+   that tag manually at the uploaded commit with a fine-grained token scoped to
+   `nvidia/SOMA-X`, then resume the workflow from `main` with its `tag` input.
 11. Verify the workflow downloads the Hub tag and passes file-set and SHA-256
    checks before the TestPyPI job becomes eligible.
 12. Verify the tag-triggered workflow publishes to TestPyPI.

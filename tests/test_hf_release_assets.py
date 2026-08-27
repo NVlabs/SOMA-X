@@ -9,9 +9,12 @@ TOOLS_CI = Path(__file__).resolve().parents[1] / "tools" / "ci"
 sys.path.insert(0, str(TOOLS_CI))
 
 package_module = import_module("package_hf_assets")
+publish_module = import_module("publish_hf_assets")
 verify_module = import_module("verify_hf_assets")
 MANIFEST_NAME = package_module.MANIFEST_NAME
 package_assets = package_module.package_assets
+create_tag_via_git = publish_module._create_tag_via_git
+run_git = publish_module._run_git
 verify_assets = verify_module.verify_assets
 
 
@@ -102,3 +105,51 @@ def test_verify_only_allows_download_cache_when_requested(tmp_path: Path) -> Non
         verify_assets(stage)
 
     verify_assets(stage, allow_download_cache=True)
+
+
+def test_model_card_has_structured_hub_metadata() -> None:
+    from huggingface_hub import ModelCard
+
+    model_card = ModelCard.load(Path(__file__).resolve().parents[1] / "docs" / "model_card.md")
+
+    assert model_card.data.license == "apache-2.0"
+    assert "soma-x" in model_card.data.tags
+
+
+def test_create_tag_via_git_uses_scoped_token_only_for_push(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: list[list[str]] = []
+
+    def fake_run(
+        command: list[str], *, capture_output: bool, text: bool, check: bool
+    ) -> object:
+        calls.append(command)
+        return type("Result", (), {"returncode": 0, "stderr": ""})()
+
+    monkeypatch.setattr(publish_module.subprocess, "run", fake_run)
+
+    create_tag_via_git("nvidia/SOMA-X", "v0.2.3", "a" * 40, "hf_test_token")
+
+    assert len(calls) == 5
+    assert calls[2][-2:] == ["origin", "a" * 40]
+    assert "hf_test_token" not in " ".join(calls[1])
+    assert "http.extraHeader=Authorization: Bearer hf_test_token" in calls[-1]
+    assert calls[-1][-1] == "refs/tags/v0.2.3"
+
+
+def test_git_failure_redacts_token(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake_run(
+        command: list[str], *, capture_output: bool, text: bool, check: bool
+    ) -> object:
+        return type(
+            "Result",
+            (),
+            {"returncode": 1, "stderr": "remote rejected hf_secret_token"},
+        )()
+
+    monkeypatch.setattr(publish_module.subprocess, "run", fake_run)
+
+    with pytest.raises(RuntimeError, match=r"remote rejected \*\*\*") as exc_info:
+        run_git(["push"], token="hf_secret_token")
+    assert "hf_secret_token" not in str(exc_info.value)

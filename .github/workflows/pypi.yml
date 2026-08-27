@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing vX.Y.Z tag to publish a GitHub Release for."
+        description: "Existing vX.Y.Z tag to resume after its Hugging Face tag exists."
         required: false
         type: string
 
@@ -57,10 +57,11 @@ jobs:
 
       - name: Build and verify Hugging Face asset stage
         run: |
+          public_commit="$(git rev-parse HEAD)"
           python tools/ci/package_hf_assets.py \
             --output "$RUNNER_TEMP/hf-stage" \
             --release-tag "v${{ steps.version.outputs.package_version }}" \
-            --public-commit "$GITHUB_SHA"
+            --public-commit "$public_commit"
           python tools/ci/verify_hf_assets.py "$RUNNER_TEMP/hf-stage"
 
       - name: Install build tools
@@ -132,7 +133,10 @@ jobs:
       - name: Exchange GitHub OIDC identity for a scoped Hub token
         env:
           HF_OIDC_RESOURCE: nvidia/SOMA-X
-        run: echo "HF_TOKEN=$(hf auth token)" >> "$GITHUB_ENV"
+        run: |
+          token="$(hf auth token)"
+          echo "::add-mask::$token"
+          echo "HF_TOKEN=$token" >> "$GITHUB_ENV"
 
       - name: Publish and tag Hugging Face assets
         run: |
@@ -143,8 +147,24 @@ jobs:
 
   verify-huggingface:
     name: Verify published Hugging Face assets
-    needs: publish-huggingface
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    needs:
+      - build
+      - publish-huggingface
+    if: |
+      always() &&
+      needs.build.result == 'success' &&
+      (
+        (
+          github.event_name == 'push' &&
+          startsWith(github.ref, 'refs/tags/v') &&
+          needs.publish-huggingface.result == 'success'
+        ) ||
+        (
+          github.event_name == 'workflow_dispatch' &&
+          inputs.tag != '' &&
+          needs.publish-huggingface.result == 'skipped'
+        )
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -161,9 +181,11 @@ jobs:
         run: python -m pip install "huggingface_hub==1.19.0"
 
       - name: Download and verify immutable release
+        env:
+          RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
         run: |
           hf download nvidia/SOMA-X \
-            --revision "$GITHUB_REF_NAME" \
+            --revision "$RELEASE_TAG" \
             --local-dir "$RUNNER_TEMP/hf-download"
           python tools/ci/verify_hf_assets.py \
             --allow-download-cache "$RUNNER_TEMP/hf-download"
@@ -173,7 +195,12 @@ jobs:
     needs:
       - build
       - verify-huggingface
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: |
+      needs.verify-huggingface.result == 'success' &&
+      (
+        (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
+        (github.event_name == 'workflow_dispatch' && inputs.tag != '')
+      )
     runs-on: ubuntu-latest
     environment:
       name: testpypi
@@ -196,7 +223,12 @@ jobs:
   publish-pypi:
     name: Publish to PyPI
     needs: publish-testpypi
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: |
+      needs.publish-testpypi.result == 'success' &&
+      (
+        (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')) ||
+        (github.event_name == 'workflow_dispatch' && inputs.tag != '')
+      )
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -222,11 +254,11 @@ jobs:
     if: |
       always() &&
       needs.build.result == 'success' &&
+      needs.publish-pypi.result == 'success' &&
       (
         (
           github.event_name == 'push' &&
-          startsWith(github.ref, 'refs/tags/v') &&
-          needs.publish-pypi.result == 'success'
+          startsWith(github.ref, 'refs/tags/v')
         ) ||
         (
           github.event_name == 'workflow_dispatch' &&

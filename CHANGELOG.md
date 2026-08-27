@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.3
+
+Changes from v0.2.2:
+
+- Adds structured Hugging Face model-card metadata for the Apache 2.0 license
+  and public discovery tags, and fixes the model-card license link.
+
 ## v0.2.2
 
 Changes from v0.2.1:

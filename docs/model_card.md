@@ -1,3 +1,15 @@
+---
+license: apache-2.0
+tags:
+  - soma-x
+  - parametric-human-body-model
+  - computer-graphics
+  - human-pose-estimation
+  - animation
+  - robotics
+  - pytorch
+---
+
 # Model Overview
 
 ## Description:
@@ -6,7 +18,8 @@ SOMA (Unifying Parametric Human Body Models) is a unified framework that decoupl
 This model is ready for commercial use. 
 
 ## License/Terms of Use:
-SOMA is released under the [Apache 2.0 License](../LICENSE).
+SOMA is released under the
+[Apache 2.0 License](https://github.com/NVlabs/SOMA-X/blob/main/LICENSE).
 
 ## Deployment Geography:
 Global
@@ -18,8 +31,8 @@ SOMA is intended for use by computer vision researchers, graphics and animation 
 - **Avatar synthesis and digital humans** — freely mix identity sources with SOMA's pose representation.
 - **Simulation and robotics** — lightweight analytical forward pass enables real-time simulation pipelines with diverse body shapes.
 
-## Expected Release Date:
-GitHub: 03/16/2026 <br>
+## Release:
+SOMA-X v0.2.3
 
 ## Reference(s):
 - SOMA: Unifying Parametric Human Body Models.
@@ -101,7 +114,8 @@ Our AI models are designed and/or optimized to run on NVIDIA GPU-accelerated sys
 * Windows (via PyTorch CPU/GPU path) <br>
 
 ## Model Version(s):
-- **SOMA v1.0** — initial public release; includes full-body layer (`SOMALayer`, 77 joints, mid/low/xlo LODs) and all six identity backends.
+- **SOMA-X v0.2.3** — full-body release with `SOMALayer` (77-joint pose
+  interface and mid/low/xlo LODs) and all six identity backends.
 
 ## Training, Testing, and Evaluation Datasets:
 
