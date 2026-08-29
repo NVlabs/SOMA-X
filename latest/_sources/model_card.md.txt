@@ -32,7 +32,7 @@ SOMA is intended for use by computer vision researchers, graphics and animation 
 - **Simulation and robotics** — lightweight analytical forward pass enables real-time simulation pipelines with diverse body shapes.
 
 ## Release:
-SOMA-X v0.2.3
+SOMA-X v0.2.4
 
 ## Reference(s):
 - SOMA: Unifying Parametric Human Body Models.
@@ -114,6 +114,8 @@ Our AI models are designed and/or optimized to run on NVIDIA GPU-accelerated sys
 * Windows (via PyTorch CPU/GPU path) <br>
 
 ## Model Version(s):
+- **SOMA-X v0.2.4** — keeps the virtual Root fixed during Lie-GN pose
+  inversion for a well-constrained optimization.
 - **SOMA-X v0.2.3** — full-body release with `SOMALayer` (77-joint pose
   interface and mid/low/xlo LODs) and all six identity backends.
 
