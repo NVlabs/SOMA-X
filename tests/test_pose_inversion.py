@@ -120,6 +120,22 @@ def test_lie_gn_solve_falls_back_for_singular_batch_element():
     assert torch.isfinite(delta).all()
 
 
+def test_lie_gn_active_joints_exclude_virtual_root_but_include_hand_root():
+    """Full-body virtual roots are fixed; a hand-only wrist root remains active."""
+    from soma.pose_inversion import _active_lie_joint_indices
+
+    descendant_weights = torch.tensor(
+        [
+            [1.0, 1.0],
+            [1.0, 1.0],
+            [0.0, 0.0],
+        ]
+    )
+
+    assert _active_lie_joint_indices(descendant_weights, root_idx=1).tolist() == [1]
+    assert _active_lie_joint_indices(descendant_weights, root_idx=0).tolist() == [0, 1]
+
+
 def test_pose_inversion_exposes_skeleton_transfer_rotation_method():
     from soma.pose_inversion import PoseInversion
 
@@ -275,9 +291,7 @@ def test_xlo_layer_default_inversion_uses_xlo_topology():
     result = inv.fit(target)
     assert result["per_vertex_error"].shape == (1, soma.bind_shape.shape[0])
     mean_err = result["per_vertex_error"].mean().item()
-    assert mean_err < xlo_mean_error_limit, (
-        f"XLO topology inversion error too high: {mean_err:.6f}"
-    )
+    assert mean_err < xlo_mean_error_limit, f"XLO topology inversion error too high: {mean_err:.6f}"
 
 
 @pytest.mark.slow
@@ -390,6 +404,13 @@ class TestInvert:
         assert result["rotations"].shape == (1, J, 3, 3)
         assert result["root_translation"].shape == (1, 3)
         assert result["per_vertex_error"].shape[0] == 1
+
+        expected_root = torch.eye(
+            3,
+            device=result["rotations"].device,
+            dtype=result["rotations"].dtype,
+        ).unsqueeze(0)
+        torch.testing.assert_close(result["rotations"][:, 0], expected_root, rtol=0, atol=1e-6)
 
         mean_err = result["per_vertex_error"].mean().item()
         max_err = result["per_vertex_error"].max().item()
@@ -611,6 +632,13 @@ class TestLieAlgebraGN:
         assert result["rotations"].shape == (1, J, 3, 3)
         assert result["root_translation"].shape == (1, 3)
         assert result["per_vertex_error"].shape[0] == 1
+
+        expected_root = torch.eye(
+            3,
+            device=result["rotations"].device,
+            dtype=result["rotations"].dtype,
+        ).unsqueeze(0)
+        torch.testing.assert_close(result["rotations"][:, 0], expected_root, rtol=0, atol=1e-6)
 
         mean_err = result["per_vertex_error"].mean().item()
         assert mean_err < 0.01, f"Mean vertex error too high: {mean_err:.6f} m"

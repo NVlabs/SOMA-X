@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.2.4
+
+Changes from v0.2.3:
+
+- Keeps the virtual Root fixed during Lie-GN pose inversion, improving
+  convergence without introducing an unobservable root transform.
+
 ## v0.2.3
 
 Changes from v0.2.2:

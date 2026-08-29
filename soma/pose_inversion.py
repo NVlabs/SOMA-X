@@ -174,6 +174,14 @@ def _solve_lie_gn_normal_equations(JtJ: torch.Tensor, rhs: torch.Tensor) -> torc
     return solution
 
 
+def _active_lie_joint_indices(descendant_weights: torch.Tensor, root_idx: int) -> torch.Tensor:
+    """Return joints with geometry influence, excluding the full-body virtual root."""
+    active_mask = descendant_weights.any(dim=1)
+    if root_idx > 0:
+        active_mask[0] = False
+    return active_mask.nonzero(as_tuple=True)[0]
+
+
 def _align_vectors_auto(
     target: torch.Tensor,
     source: torch.Tensor,
@@ -1687,9 +1695,10 @@ class PoseInversion:
             cache: precomputed refit cache.
             n_iters: number of Gauss-Newton iterations.
             lambda_reg: Marquardt damping factor applied to active joints.
-                Inactive joints (zero skinning weight) are factored out of
-                the solve entirely.  Each active diagonal entry is scaled by
-                (1 + lambda_reg).  Unit-invariant; 0.1 gives light damping.
+                The virtual root and joints with zero descendant skinning
+                influence are factored out of the solve entirely. Each active
+                diagonal entry is scaled by (1 + lambda_reg). Unit-invariant;
+                0.1 gives light damping.
             leaf_weight: optional vertex importance weights for the weighted
                 least-squares objective.
             init_result: if provided, warm-start from this result; otherwise
@@ -1730,6 +1739,8 @@ class PoseInversion:
 
         # Initialise pose_local
         root_idx = self._root_joint_idx
+        has_virtual_root = root_idx > 0  # full-body: joint 0 is virtual root
+        eye3 = torch.eye(3, device=device, dtype=dtype)
         if init_result is not None:
             pose_local = torch.zeros(B, J, 4, 4, device=device, dtype=dtype)
             pose_local[:, :, :3, :3] = init_result["rotations"]
@@ -1737,6 +1748,8 @@ class PoseInversion:
         else:
             W_init = self._skel_transfer.fit(target)
             pose_local = joint_world_to_local(W_init, cache["parent_ids"])
+        if has_virtual_root:
+            pose_local[:, 0, :3, :3] = eye3
 
         # ---- Precompute ancestor mask (constant across iterations) ----
         # A[j, k] = 1.0 if k is in the subtree of j (j is ancestor-or-equal of k)
@@ -1756,14 +1769,12 @@ class PoseInversion:
         AW = A @ W_weights.T  # (J, V)
 
         # Active joints: only those whose subtree actually influences vertices.
-        # Inactive joints (virtual root, leaf end-joints) have AW[j] == 0 for all
-        # vertices, so their q vectors and JtJ blocks are exactly zero — structurally
-        # singular. We factor them out and solve only the (3*K_act x 3*K_act) system.
-        active_mask = AW.any(dim=1)  # (J,) bool
-        active_idx = active_mask.nonzero(as_tuple=True)[0]  # (K_act,) long
+        # Virtual roots are ancestors of the whole skeleton, so their AW rows are
+        # nonzero even though they are structural and must stay at identity. Leaf
+        # end-joints have zero AW rows. Factor both groups out and solve only the
+        # (3*K_act x 3*K_act) system.
+        active_idx = _active_lie_joint_indices(AW, root_idx)  # (K_act,) long
         K_act = active_idx.shape[0]
-
-        eye3 = torch.eye(3, device=device, dtype=dtype)
 
         for _ in range(n_iters):
             # ---- FK -> world transforms + D matrices ----
