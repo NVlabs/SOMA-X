@@ -127,7 +127,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install Hugging Face client
-        run: python -m pip install "huggingface_hub==1.19.0"
+        run: python -m pip install "huggingface_hub==1.29.0"
 
       - name: Exchange GitHub OIDC identity for a scoped Hub token
         env:
@@ -168,7 +168,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install Hugging Face client
-        run: python -m pip install "huggingface_hub==1.19.0"
+        run: python -m pip install "huggingface_hub==1.29.0"
 
       - name: Build and verify Hugging Face asset stage
         run: |
@@ -225,7 +225,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install Hugging Face client
-        run: python -m pip install "huggingface_hub==1.19.0"
+        run: python -m pip install "huggingface_hub==1.29.0"
 
       - name: Exchange GitHub OIDC identity for a scoped Hub token
         env:
@@ -292,7 +292,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install Hugging Face client
-        run: python -m pip install "huggingface_hub==1.19.0"
+        run: python -m pip install "huggingface_hub==1.29.0"
 
       - name: Download and verify immutable release
         env:
