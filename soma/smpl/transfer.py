@@ -12,8 +12,8 @@ import numpy as np
 import torch
 import trimesh
 
+from ..fitting.pose_inversion import PoseInversion
 from ..geometry.barycentric_interp import BarycentricInterpolator
-from ..pose_inversion import PoseInversion
 from ..units import Unit
 
 

@@ -330,7 +330,7 @@ def _make_synthetic_twist_layer(
     tmp_path,
     lod: str = "low",
 ):
-    import soma.soma as soma_module
+    import soma.body.soma as soma_module
     from soma import SOMALayer
     from soma.io import load_lod_rig_from_usd as original_load_lod_rig_from_usd
 
@@ -935,7 +935,7 @@ def test_twist_mode_reports_malformed_packaged_definition(tmp_path):
 
 
 def test_twist_mode_rejects_non_twist_rig_asset(monkeypatch, tmp_path):
-    import soma.soma as soma_module
+    import soma.body.soma as soma_module
     from soma import SOMALayer
 
     no_twist_path = tmp_path / "no_twist.usda"
@@ -1452,7 +1452,6 @@ def test_procedural_identity_reposes_to_soma_bind_pose(identity_model_type):
     )[..., :3, :3]
     public_ids = layer.public_transform_joint_indices
     twist_ids = layer.procedural_transforms.twist_target_ids
-
     for joint_group, joint_ids in (("twist", twist_ids), ("public", public_ids)):
         errors_degrees = _rotation_errors_degrees(
             bind_local_rotations[:, joint_ids],
@@ -1489,6 +1488,7 @@ def test_procedural_identity_reposes_to_soma_bind_pose(identity_model_type):
         f"{max_twist_error_degrees:.6f} degrees exceeds "
         f"{MAX_BIND_ROTATION_ERROR_DEGREES:.6f} degrees"
     )
+
 
 @pytest.mark.parametrize(
     ("lod", "num_vertices"),
@@ -1604,7 +1604,7 @@ def test_twist_mode_correctives_use_public_joint_rotations(monkeypatch, tmp_path
 @pytest.mark.cpu
 @pytest.mark.asset_heavy
 def test_pose_inversion_uses_public_skeleton_for_twist_layer(monkeypatch, tmp_path):
-    from soma.pose_inversion import PoseInversion
+    from soma.fitting.pose_inversion import PoseInversion
 
     layer = _make_synthetic_twist_layer(monkeypatch, tmp_path)
     identity = torch.zeros(1, layer.identity_model.num_identity_coeffs)

@@ -24,7 +24,7 @@ the identity model's barycentric interpolator.
 
 Usage::
 
-    from soma.soma import SOMALayer
+    from soma.body import SOMALayer
     from soma.pose_inversion import PoseInversion
 
     soma = SOMALayer("assets", identity_model_type="mhr", device="cuda")
@@ -54,18 +54,18 @@ from typing import Any
 
 import torch
 
-from .geometry.batched_skinning import topk_skinning
-from .geometry.lbs import batch_rodrigues
-from .geometry.lbs_warp import linear_blend_skinning
-from .geometry.rig_utils import (
+from ..geometry.batched_skinning import topk_skinning
+from ..geometry.lbs import batch_rodrigues
+from ..geometry.lbs_warp import linear_blend_skinning
+from ..geometry.rig_utils import (
     compute_skeleton_levels,
     get_body_part_vertex_ids,
     get_joint_descendents,
     joint_local_to_world_levelorder,
     joint_world_to_local,
 )
-from .geometry.skeleton_transfer import SkeletonTransfer
-from .geometry.transforms import (
+from ..geometry.skeleton_transfer import SkeletonTransfer
+from ..geometry.transforms import (
     SE3_from_Rt,
     SE3_inverse,
     align_vectors,
@@ -77,7 +77,7 @@ from .geometry.transforms import (
 )
 
 try:
-    from .geometry.fused_refit_warp import fused_refit_level as _fused_refit_level
+    from ..geometry.fused_refit_warp import fused_refit_level as _fused_refit_level
 except ImportError:
     _fused_refit_level = None
 
@@ -993,7 +993,7 @@ class PoseInversion:
     layer's ``output_unit``.
 
     Args:
-        soma_layer: A :obj:`~soma.soma.SOMALayer` instance (any LOD).
+        soma_layer: A :obj:`~soma.body.SOMALayer` instance (any LOD).
         low_lod: Use low-LOD SOMA topology (4505 verts) for the iterative
             refit.  This is ~4x fewer vertices than mid-LOD (18056) with
             negligible accuracy loss (~0.006 cm).  When *True* and the
@@ -1050,7 +1050,7 @@ class PoseInversion:
             # Create an internal low-LOD layer for the refit.  Procedural mode
             # remains enabled here so autograd refinement can evaluate twist
             # LBS through the same public-pose API as the original layer.
-            from .soma import SOMALayer
+            from .body import SOMALayer
 
             template_rig_path = getattr(soma_layer, "procedural_template_rig_path", None)
             self.soma = SOMALayer(
@@ -1120,7 +1120,7 @@ class PoseInversion:
         """Build barycentric interpolator: full-res MHR -> low-LOD SOMA."""
         import trimesh
 
-        from .geometry.barycentric_interp import BarycentricInterpolator
+        from ..geometry.barycentric_interp import BarycentricInterpolator
 
         soma = self.soma
         data_root = soma.data_root
@@ -1923,7 +1923,7 @@ class PoseInversion:
                 and root_translation.  Otherwise, warm-start from skeleton
                 transfer.
         """
-        from .geometry.transforms import rotation_6d_to_matrix
+        from ..geometry.transforms import rotation_6d_to_matrix
 
         if self._autograd_soma is not None:
             return self._fit_autograd_public_layer(
@@ -2105,7 +2105,7 @@ class PoseInversion:
         the forward pass runs through the procedural layer so LBS evaluates the
         twist-joint skinning implied by those public rotations.
         """
-        from .geometry.transforms import rotation_6d_to_matrix
+        from ..geometry.transforms import rotation_6d_to_matrix
 
         layer = self._autograd_soma
         if layer is None:

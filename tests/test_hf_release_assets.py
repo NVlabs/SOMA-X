@@ -196,6 +196,39 @@ def test_model_card_has_structured_hub_metadata() -> None:
     assert "soma-x" in model_card.data.tags
 
 
+def test_v0_3_contract_contains_supported_hand_assets_only() -> None:
+    contract = json.loads((TOOLS_CI / "hf_assets_v0.3.json").read_text(encoding="utf-8"))
+    sources = {entry["source"] for entry in contract["files"]}
+
+    assert contract["release_series"] == "0.3"
+    assert {
+        "assets/SOMAHand.npz",
+        "assets/MANO/SOMA_wrap_left.obj",
+        "assets/MANO/SOMA_wrap_right.obj",
+        "assets/MANO/base_hand_left.obj",
+        "assets/MANO/base_hand_right.obj",
+        "assets/images/soma-in-action.gif",
+    } <= sources
+    assert not any("UmeTrack" in source for source in sources)
+    assert not any(source.startswith("tools/") for source in sources)
+    # The SOMA Hand teaser is part of the combined soma-in-action.gif; no
+    # separate hand render ships in the payload.
+    hand_media = {
+        source
+        for source in sources
+        if "hand" in Path(source).name.lower()
+        and Path(source).suffix.lower() in {".gif", ".jpeg", ".jpg", ".mp4", ".png", ".webp"}
+    }
+    assert hand_media == set()
+
+
+def test_top_level_exports_hand_layers() -> None:
+    import soma
+
+    assert soma.SOMAHandLayer.__module__ == "soma.hand.soma"
+    assert soma.MANOLayer.__module__ == "soma.hand.mano"
+
+
 def test_create_tag_via_git_uses_scoped_token_only_for_push(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

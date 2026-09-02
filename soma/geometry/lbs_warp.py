@@ -55,7 +55,7 @@ from typing import Any
 import torch
 import warp as wp
 
-from soma._warp_utils import cache_warp_kernel, ensure_warp_initialized
+from soma.geometry._warp_utils import cache_warp_kernel, ensure_warp_initialized
 
 
 @cache_warp_kernel

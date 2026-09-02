@@ -3,7 +3,7 @@
 
 import warp as wp
 
-from soma._warp_utils import cache_warp_kernel
+from soma.geometry._warp_utils import cache_warp_kernel
 from soma.geometry.align_vectors_warp import _create_newton_schulz_auto_kernel
 from soma.geometry.fused_refit_warp import _create_fused_lbs_cov_kernel
 from soma.geometry.lbs_warp import get_kernel

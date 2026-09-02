@@ -8,12 +8,12 @@ from pathlib import Path
 import pytest
 import torch
 
-from soma.geometry.transforms import euler_xyz_to_matrix, matrix_to_euler_xyz
-from soma.pose_inversion_mhr import (
+from soma.fitting.pose_inversion_mhr import (
     _FLEXIBLE_SLICE,
     MHRPoseInversion,
     _redistribute_colocated_transforms,
 )
+from soma.geometry.transforms import euler_xyz_to_matrix, matrix_to_euler_xyz
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 ASSETS_DIR = REPO_ROOT / "assets"

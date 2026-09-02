@@ -165,8 +165,8 @@ def test_align_vectors_auto_uses_kabsch_for_reflected_covariance():
 
 
 def test_auto_refit_alignment_matches_data_when_reference_agrees_for_full_rank():
+    from soma.fitting.pose_inversion import _align_vectors_auto
     from soma.geometry.transforms import compute_covariance, newton_schulz
-    from soma.pose_inversion import _align_vectors_auto
 
     source = torch.tensor(
         [
@@ -186,7 +186,7 @@ def test_auto_refit_alignment_matches_data_when_reference_agrees_for_full_rank()
 
 
 def test_auto_refit_alignment_uses_reference_for_rank_deficient_twist():
-    from soma.pose_inversion import _align_vectors_auto
+    from soma.fitting.pose_inversion import _align_vectors_auto
 
     source = torch.tensor(
         [
@@ -205,7 +205,7 @@ def test_auto_refit_alignment_uses_reference_for_rank_deficient_twist():
 
 
 def test_auto_refit_alignment_uses_reference_for_zero_covariance():
-    from soma.pose_inversion import _align_vectors_auto
+    from soma.fitting.pose_inversion import _align_vectors_auto
 
     source = torch.zeros(3, 3)
     target = torch.zeros(3, 3)
@@ -220,12 +220,12 @@ def test_auto_refit_alignment_uses_reference_for_zero_covariance():
 
 
 def test_auto_refit_alignment_uses_kabsch_for_reflected_covariance():
+    from soma.fitting.pose_inversion import _AUTO_REFIT_PRIOR_STRENGTH, _align_vectors_auto
     from soma.geometry.transforms import (
         compute_covariance,
         kabsch,
         regularize_covariance_with_reference,
     )
-    from soma.pose_inversion import _AUTO_REFIT_PRIOR_STRENGTH, _align_vectors_auto
 
     target, source = _reflected_alignment_vectors()
     reference = torch.eye(3)
@@ -329,8 +329,8 @@ def test_fused_refit_auto_matches_pytorch_auto_alignment():
     if not torch.cuda.is_available():
         pytest.skip("CUDA not available")
 
+    from soma.fitting.pose_inversion import _align_vectors_auto
     from soma.geometry.fused_refit_warp import fused_refit_level
-    from soma.pose_inversion import _align_vectors_auto
 
     device = torch.device("cuda")
     source = torch.tensor(
@@ -385,8 +385,8 @@ def test_fused_refit_auto_uses_kabsch_for_reflected_covariance():
     if not torch.cuda.is_available():
         pytest.skip("CUDA not available")
 
+    from soma.fitting.pose_inversion import _align_vectors_auto
     from soma.geometry.fused_refit_warp import fused_refit_level
-    from soma.pose_inversion import _align_vectors_auto
 
     device = torch.device("cuda")
     target, source = _reflected_alignment_vectors(device)

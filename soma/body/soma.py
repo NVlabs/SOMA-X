@@ -243,37 +243,37 @@ import torch.nn as nn
 from scipy.sparse import csc_matrix
 from scipy.spatial import cKDTree
 
-from .correctives_model import (
+from ..correctives_model import (
     _DEFAULT_CORRECTIVES_MODEL_PATH,
     CorrectivesMLP,
     _resolve_correctives_model_path,
 )
-from .geometry._warp_init import ensure_warp_initialized
-from .geometry.barycentric_interp import BarycentricInterpolator
-from .geometry.batched_skinning import BatchedSkinning, FKTopology
-from .geometry.lbs import batch_rodrigues
-from .geometry.rig_utils import (
+from ..geometry._warp_init import ensure_warp_initialized
+from ..geometry.barycentric_interp import BarycentricInterpolator
+from ..geometry.batched_skinning import BatchedSkinning, FKTopology
+from ..geometry.lbs import batch_rodrigues
+from ..geometry.rig_utils import (
     apply_joint_orient_local,
     joint_world_to_local,
     precompute_joint_orient,
 )
-from .geometry.skeleton_transfer import SkeletonTransfer
-from .identity_model import create_identity_model
-from .io import (
+from ..geometry.skeleton_transfer import SkeletonTransfer
+from ..io import (
     SOMA_TEMPLATE_RIG_FILENAME,
     SOMA_XLO_TEMPLATE_RIG_FILENAME,
     fan_triangulate,
     load_lod_rigs_from_usd,
     missing_soma_neutral_rig_keys,
 )
-from .procedural_transforms import (
+from ..procedural_transforms import (
     SOMA_PROCEDURAL_TRANSFORM_DEFINITION_FILENAME,
     SOMAProceduralParameterTransform,
     derive_soma_rig_without_procedural_joints,
     has_soma_twist_joints,
     load_soma_procedural_transform_definition,
 )
-from .units import Unit
+from ..units import Unit
+from .identity_model import create_identity_model
 
 logger = logging.getLogger(__name__)
 
@@ -362,7 +362,7 @@ def _raise_missing_template_for_slim_npz(
 
 
 class SOMAPoseOutput(dict[str, torch.Tensor]):
-    """Structured output returned by :obj:`~soma.soma.SOMALayer.pose` and :obj:`~soma.soma.SOMALayer.forward`.
+    """Structured output returned by :obj:`~soma.body.SOMALayer.pose` and :obj:`~soma.body.SOMALayer.forward`.
 
     Behaves like a `dict` for backwards compatibility (`out["vertices"]`)
     while also supporting attribute access (`out.vertices`). `vertices` is
@@ -417,7 +417,7 @@ class SOMALayer(nn.Module):
 
     ``forward()`` is a convenience wrapper that calls both.
 
-    See the :mod:`soma.soma` module docstring for the SOMA skeleton joint
+    See the :mod:`soma.body.soma` module docstring for the SOMA skeleton joint
     layout, pose tensor conventions, per-backend identity dimensions, and
     ``scale_params`` semantics.
     """
@@ -483,7 +483,7 @@ class SOMALayer(nn.Module):
             identity_model_type: Identity backend. One of ``"mhr"``
                 (default), ``"soma"``, ``"smpl"``, ``"smplh"``,
                 ``"smplx"``, ``"anny"``, ``"garment"``. See
-                :mod:`soma.soma` for per-backend identity dimensions
+                :mod:`soma.body.soma` for per-backend identity dimensions
                 and ``scale_params`` semantics.
             mode: Skinning backend. ``"warp"`` uses the NVIDIA Warp
                 accelerated LBS kernel; other values fall back to the

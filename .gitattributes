@@ -1,5 +1,6 @@
 * text=auto eol=lf
 assets/** filter=lfs diff=lfs merge=lfs -text
+docs/_static/*.gif filter=lfs diff=lfs merge=lfs -text
 *.json -filter diff -merge text
 *.md -filter text
 *.txt -filter text

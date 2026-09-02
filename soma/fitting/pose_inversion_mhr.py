@@ -15,10 +15,10 @@ from typing import Any
 import numpy as np
 import torch
 
-from .geometry.lbs_warp import linear_blend_skinning
-from .geometry.rig_utils import joint_world_to_local
-from .geometry.skeleton_transfer import SkeletonTransfer
-from .geometry.transforms import (
+from ..geometry.lbs_warp import linear_blend_skinning
+from ..geometry.rig_utils import joint_world_to_local
+from ..geometry.skeleton_transfer import SkeletonTransfer
+from ..geometry.transforms import (
     SE3_from_Rt,
     SE3_inverse,
     euler_xyz_to_matrix,

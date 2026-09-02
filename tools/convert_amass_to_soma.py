@@ -38,11 +38,11 @@ import smplx
 import torch
 from tqdm import tqdm
 
+from soma.body import SOMALayer
+from soma.fitting.pose_inversion import PoseInversion
 from soma.geometry.rig_utils import remove_joint_orient_local
 from soma.geometry.transforms import matrix_to_rotvec
 from soma.io import add_npz_args, save_soma_npz
-from soma.pose_inversion import PoseInversion
-from soma.soma import SOMALayer
 from soma.units import Unit
 from tools.logging_utils import add_logging_args, configure_logging
 from tools.vis_pyrender import (

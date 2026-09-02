@@ -8,7 +8,7 @@ from pathlib import Path
 REPO_ID = "nvidia/soma-x"
 
 
-def get_assets_dir(revision: str = "v0.2.4", cache_dir: str | Path | None = None) -> Path:
+def get_assets_dir(revision: str = "v0.3.0", cache_dir: str | Path | None = None) -> Path:
     """Download (or retrieve from cache) the SOMA asset directory from HuggingFace.
 
     Uses ``huggingface_hub.snapshot_download`` which preserves the repository

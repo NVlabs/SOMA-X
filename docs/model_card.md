@@ -13,7 +13,7 @@ tags:
 # Model Overview
 
 ## Description:
-SOMA (Unifying Parametric Human Body Models) is a unified framework that decouples identity representation from pose parameterization by mapping any supported parametric body model to a single canonical mesh topology and skeleton, enabling a shared Linear Blend Skinning (LBS) pipeline across all backends. SOMA supports six identity backends (SOMA-shape, SMPL, SMPL-X, MHR, ANNY, and GarmentMeasurements), unified under a canonical mesh topology and SOMA skeleton. 
+SOMA (Unifying Parametric Human Body Models) is a unified framework that decouples identity representation from pose parameterization by mapping supported parametric models to canonical body and hand topologies and skeletons, enabling shared Linear Blend Skinning (LBS) pipelines across backends. The full-body layer supports six identity backends (SOMA-shape, SMPL, SMPL-X, MHR, ANNY, and GarmentMeasurements). SOMA-X v0.3 also includes wrist-local left/right hand layers with native SOMA identity and articulation priors plus interoperability with user-supplied MANO models.
 
 This model is ready for commercial use. 
 
@@ -30,9 +30,11 @@ SOMA is intended for use by computer vision researchers, graphics and animation 
 - **Motion generation and animation** — apply motion capture sequences to any supported identity model using the same axis-angle pose parameterization.
 - **Avatar synthesis and digital humans** — freely mix identity sources with SOMA's pose representation.
 - **Simulation and robotics** — lightweight analytical forward pass enables real-time simulation pipelines with diverse body shapes.
+- **Hand animation and reconstruction** — wrist-local left/right hand layers
+  support mid, low, and extra-low LODs and a sampled articulation prior.
 
 ## Release:
-SOMA-X v0.2.4
+SOMA-X v0.3.0
 
 ## Reference(s):
 - SOMA: Unifying Parametric Human Body Models.
@@ -71,6 +73,10 @@ Optional: shallow pose-dependent corrective MLP (2 hidden layers, ReLU activatio
 - Identity coefficients: floating-point tensor, shape `(B, K)` where `K = 128` for SOMA-shape backend or backend-specific dimensionality for SMPL/SMPL-X/MHR/ANNY/Garment
 - Pose parameters: axis-angle vectors `(B, 77, 3)` or rotation matrices `(B, 77, 3, 3)` covering 77 articulated joints (excludes root dummy joint)
 - Optional root translation: `(B, 3)` in meters
+- Hand pose parameters: axis-angle `(B, 25, 3)` or rotation matrices
+  `(B, 25, 3, 3)`, with joint zero representing the wrist
+- Hand identity coefficients: `(B, 20)` for the native SOMA hand PCA, or the
+  backend-specific MANO/MHR dimensionality
 
 **Input Parameters:** One-Dimensional (1D) coefficient vectors; Three-Dimensional (3D) pose tensors <br>
 
@@ -89,6 +95,9 @@ Optional: shallow pose-dependent corrective MLP (2 hidden layers, ReLU activatio
 - Posed mesh vertices: `(B, N_h, 3)` where `N_h` depends on `lod` (`mid`: 18,056; `low`: 4,505; `xlo`: 612) -- world-space vertex positions in **meters**
 - Joint positions: `(B, 77, 3)` — world-space 3D joint positions in **meters**
 - Rest-shape vertices: `(B, N_h, 3)` in meters, with the same LOD-dependent `N_h` (intermediate output, available on request)
+- Hand vertices: `(B, V_h, 3)` in wrist-local coordinates, where `V_h` is
+  2,859 (`mid`), 718 (`low`), or 134 (`xlo`) per hand
+- Hand joints and transforms: `(B, 25, 3)` and `(B, 25, 4, 4)`
 
 **Other Properties Related to Output:** All outputs are in meters. Body vertex count `N_h` is selected by `SOMALayer(lod=...)`; `low_lod=True` is the legacy alias for `lod="low"`. Joint count is fixed at 77.
 
@@ -114,10 +123,11 @@ Our AI models are designed and/or optimized to run on NVIDIA GPU-accelerated sys
 * Windows (via PyTorch CPU/GPU path) <br>
 
 ## Model Version(s):
-- **SOMA-X v0.2.4** — keeps the virtual Root fixed during Lie-GN pose
-  inversion for a well-constrained optimization.
-- **SOMA-X v0.2.3** — full-body release with `SOMALayer` (77-joint pose
-  interface and mid/low/xlo LODs) and all six identity backends.
+- **SOMA-X v0.3.0** — adds `SOMAHandLayer` for left/right hands at
+  mid/low/xlo LODs, native hand identity and articulation-pose PCA models, and
+  MANO interoperability using separately licensed user-supplied model files.
+- **SOMA-X v0.2.3** — full-body release with `SOMALayer` and all six body
+  identity backends.
 
 ## Training, Testing, and Evaluation Datasets:
 

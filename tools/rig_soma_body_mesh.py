@@ -30,9 +30,9 @@ repo_root = Path(__file__).resolve().parents[1]
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
+from soma.body import SOMALayer  # noqa: E402
 from soma.geometry.rig_utils import joint_world_to_local  # noqa: E402
 from soma.io import save_soma_usd  # noqa: E402
-from soma.soma import SOMALayer  # noqa: E402
 from soma.units import Unit  # noqa: E402
 from tools.logging_utils import add_logging_args, configure_logging  # noqa: E402
 

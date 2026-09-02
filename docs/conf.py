@@ -15,8 +15,8 @@ sys.path.insert(0, str(_REPO_ROOT))
 project = "SOMA-X"
 author = "NVIDIA"
 copyright = "2026, NVIDIA"
-version = "0.2"
-release = os.environ.get("SOMA_DOCS_RELEASE", "0.2.4")
+version = "0.3"
+release = os.environ.get("SOMA_DOCS_RELEASE", "0.3.0")
 
 # -- General configuration ----------------------------------------------------
 

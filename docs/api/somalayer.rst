@@ -21,9 +21,9 @@ See the module overview below for the full parameter reference (joint grouping,
 per-backend identity dims, ``scale_params`` layout, units). The class reference
 follows.
 
-.. automodule:: soma.soma
+.. automodule:: soma.body.soma
    :no-members:
 
-.. autoclass:: soma.soma.SOMALayer
+.. autoclass:: soma.body.SOMALayer
    :members: default_skin_mesh_name, num_shape_components, prepare_identity, pose, forward
    :show-inheritance:

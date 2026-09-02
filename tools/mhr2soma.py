@@ -32,15 +32,15 @@ repo_root = Path(__file__).resolve().parents[1]
 if str(repo_root) not in sys.path:
     sys.path.insert(0, str(repo_root))
 
-from soma.geometry.rig_utils import get_body_part_vertex_ids  # noqa: E402
-from soma.io import add_npz_args, export_soma_usd  # noqa: E402
-from soma.pose_inversion import (  # noqa: E402
+from soma.body import SOMALayer  # noqa: E402
+from soma.fitting.pose_inversion import (  # noqa: E402
     PoseInversion,
     _bind_joint_positions_from_cache,
     _heel_vertex_ids,
 )
-from soma.rts_smoothing import RTS_SMOOTHING_PRESETS, smooth_pose  # noqa: E402
-from soma.soma import SOMALayer  # noqa: E402
+from soma.fitting.rts_smoothing import RTS_SMOOTHING_PRESETS, smooth_pose  # noqa: E402
+from soma.geometry.rig_utils import get_body_part_vertex_ids  # noqa: E402
+from soma.io import add_npz_args, export_soma_usd  # noqa: E402
 from soma.units import Unit  # noqa: E402
 from tools.conversion_utils import add_inversion_args, export_soma_npz  # noqa: E402
 from tools.logging_utils import add_logging_args, configure_logging  # noqa: E402

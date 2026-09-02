@@ -19,9 +19,9 @@ import torch.nn.functional as F
 import trimesh
 from tqdm import tqdm
 
+from soma.body import SOMALayer
 from soma.geometry.barycentric_interp import BarycentricInterpolator
 from soma.geometry.batched_skinning import BatchedSkinning
-from soma.soma import SOMALayer
 from tools.logging_utils import add_logging_args, configure_logging
 from tools.vis_pyrender import MeshRenderer, look_at, set_pyopengl_platform
 

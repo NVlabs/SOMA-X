@@ -91,6 +91,75 @@ def _compute_vertex_normals(positions: np.ndarray, faces: np.ndarray) -> np.ndar
     return vertex_normals
 
 
+def build_octahedral_skeleton(
+    joint_positions: np.ndarray,
+    parent_ids: np.ndarray,
+    *,
+    ring_frac: float = 0.15,
+    radius_frac: float = 0.05,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Build octahedral bone geometry as (positions, faces) numpy arrays.
+
+    Each parent->child bone is a 6-vertex octahedron: a head vertex at the
+    parent joint, a tail vertex at the child joint, and a 4-vertex ring at
+    `ring_frac` of the bone length with radius `radius_frac` * length, so
+    bone thickness scales with bone length (like DCC octahedral bone display).
+    Pure numpy (no trimesh) so it is cheap enough to rebuild per frame.
+    """
+    joints = np.asarray(joint_positions, dtype=np.float32)
+    parents = np.asarray(parent_ids, dtype=np.int32)
+
+    positions = []
+    faces = []
+    vert_offset = 0
+    for joint_idx, parent_idx in enumerate(parents):
+        parent_idx = int(parent_idx)
+        if parent_idx < 0 or parent_idx == joint_idx or parent_idx >= len(joints):
+            continue
+        head = joints[parent_idx]
+        tail = joints[joint_idx]
+        segment = tail - head
+        length = np.linalg.norm(segment)
+        if length < 1e-6:
+            continue
+        direction = segment / length
+
+        # Orthonormal basis (u, w, direction) for the ring plane.
+        ref = np.array([0.0, 0.0, 1.0], dtype=np.float32)
+        if abs(np.dot(ref, direction)) > 0.9:
+            ref = np.array([0.0, 1.0, 0.0], dtype=np.float32)
+        u = np.cross(ref, direction)
+        u /= np.linalg.norm(u) + 1e-8
+        w = np.cross(direction, u)
+
+        radius = radius_frac * length
+        ring_center = head + ring_frac * length * direction
+        ring = [
+            ring_center + radius * u,
+            ring_center + radius * w,
+            ring_center - radius * u,
+            ring_center - radius * w,
+        ]
+        positions.extend([head, *ring, tail])
+        o = vert_offset
+        for i in range(4):
+            j = (i + 1) % 4
+            faces.append([o, 1 + o + j, 1 + o + i])  # head cap
+            faces.append([o + 5, 1 + o + i, 1 + o + j])  # tail cap
+        vert_offset += 6
+
+    if not positions:
+        return np.zeros((0, 3), dtype=np.float32), np.zeros((0, 3), dtype=np.int32)
+    positions = np.asarray(positions, dtype=np.float32)
+    faces = np.asarray(faces, dtype=np.int32)
+    # De-index so every face has its own vertices: averaged (smooth) normals
+    # flatten the octahedra into silhouettes, while per-face normals give the
+    # crisp faceted shading that makes the bones read as 3D.
+    flat_positions = positions[faces].reshape(-1, 3)
+    flat_faces = np.arange(len(flat_positions), dtype=np.int32).reshape(-1, 3)
+    return flat_positions, flat_faces
+
+
 class MeshRenderer:
     def __init__(
         self,
@@ -121,6 +190,14 @@ class MeshRenderer:
         self._cached_faces = None
         self._cached_material = None
         self._cached_vertex_colors = None
+        self.skeleton_node = None
+        self._cached_skeleton_parents = None
+        self._cached_skeleton_material = None
+        self._cached_skeleton_color = None
+        self._cached_skeleton_ring_frac = None
+        self._cached_skeleton_radius_frac = None
+        self._cached_skeleton_opacity = None
+        self._cached_skeleton_light_pose = None
 
     def setup_mesh(
         self,
@@ -150,20 +227,80 @@ class MeshRenderer:
         if len(mesh_color) == 3:
             mesh_color = (*mesh_color, 1.0)
         self._cached_mesh_color = np.array(mesh_color, dtype=np.float32)
+        # A sub-1.0 mesh alpha needs BLEND mode; pyrender then draws this mesh
+        # after opaque nodes so an interior skeleton stays depth-correct.
+        # Back faces must be culled when blending: pyrender does no triangle
+        # sorting, so a double-sided translucent shell blends front/back faces
+        # in arbitrary order and shows a patchy per-triangle pattern.
+        alpha = float(mesh_color[3])
+        base_color_factor = (*base_color_factor[:3], base_color_factor[3] * alpha)
         self._cached_material = self.pyrender.MetallicRoughnessMaterial(
             metallicFactor=metallic,
             roughnessFactor=roughness,
             baseColorFactor=base_color_factor,
-            doubleSided=True,
+            doubleSided=alpha >= 1.0,
+            alphaMode="BLEND" if alpha < 1.0 else "OPAQUE",
         )
         self._cached_vertex_colors = None
 
-    def render_frame(self, vertices: np.ndarray) -> np.ndarray:
+    def setup_skeleton(
+        self,
+        parent_ids: np.ndarray,
+        *,
+        color: tuple[float, float, float, float] = (0.96, 0.96, 0.96, 1.0),
+        metallic: float = 0.0,
+        roughness: float = 0.2,
+        emissive: tuple[float, float, float] | None = None,
+        ring_frac: float = 0.15,
+        radius_frac: float = 0.05,
+        opacity: float = 0.85,
+        light_dir: np.ndarray | None = None,
+    ):
+        """Cache skeleton topology and material for render_frame(joints=...).
+
+        Defaults match the README teaser look: thin, light bones composited
+        x-ray style over the mesh at `opacity`. Without an environment map,
+        high metallic renders nearly black in pyrender, so the default stays
+        moderate. `emissive` defaults to a dim tint of `color` so lit/shadow facets stay distinct
+        (channel-order agnostic, so it is unaffected by the demos' BGR
+        output flip).
+        """
+        self._cached_skeleton_parents = np.asarray(parent_ids, dtype=np.int32)
+        if len(color) == 3:
+            color = (*color, 1.0)
+        self._cached_skeleton_color = np.array(color, dtype=np.float32)
+        if emissive is None:
+            emissive = tuple(0.18 * c for c in color[:3])
+        self._cached_skeleton_material = self.pyrender.MetallicRoughnessMaterial(
+            metallicFactor=metallic,
+            roughnessFactor=roughness,
+            baseColorFactor=(1.0, 1.0, 1.0, 1.0),
+            emissiveFactor=emissive,
+            doubleSided=True,
+        )
+        self._cached_skeleton_ring_frac = ring_frac
+        self._cached_skeleton_radius_frac = radius_frac
+        self._cached_skeleton_opacity = opacity
+        # A raking key just for the skeleton pass: the frontal mesh light hits
+        # the octahedra's azimuthal facets symmetrically, which shades them
+        # flat. An off-axis light breaks that symmetry so the facets read.
+        if light_dir is None:
+            light_dir = np.array([-0.7, -0.6, -1.0])
+        self._cached_skeleton_light_pose = look_at(
+            np.zeros(3), np.asarray(light_dir, dtype=np.float32), np.array([0.0, 1.0, 0.0])
+        )
+
+    def render_frame(self, vertices: np.ndarray, joints: np.ndarray | None = None) -> np.ndarray:
         """Fast render path — only vertex positions change.
 
         Reuses the faces / material / colours / camera set by setup_mesh().
         Builds a pyrender Primitive directly (skips trimesh object creation
         and Mesh.from_trimesh overhead).
+
+        When `joints` (J, 3) is given, an octahedral-bone skeleton (topology
+        and material cached by setup_skeleton()) is rendered in a second
+        pass and composited x-ray style over the mesh image, so the full
+        skeleton stays visible through the body (README teaser look).
         """
         verts = np.asarray(vertices, dtype=np.float32)
 
@@ -187,6 +324,43 @@ class MeshRenderer:
         self.mesh_node = self.scene.add(mesh)
 
         color, _ = self.renderer.render(self.scene)
+
+        if joints is not None:
+            if self._cached_skeleton_parents is None:
+                raise RuntimeError("Call setup_skeleton() before render_frame(joints=...).")
+            skel_verts, skel_faces = build_octahedral_skeleton(
+                joints,
+                self._cached_skeleton_parents,
+                ring_frac=self._cached_skeleton_ring_frac,
+                radius_frac=self._cached_skeleton_radius_frac,
+            )
+            if len(skel_verts):
+                skel_primitive = self.pyrender.Primitive(
+                    positions=skel_verts,
+                    normals=_compute_vertex_normals(skel_verts, skel_faces),
+                    indices=skel_faces,
+                    color_0=np.tile(self._cached_skeleton_color, (len(skel_verts), 1)),
+                    material=self._cached_skeleton_material,
+                    mode=4,  # TRIANGLES
+                )
+                skel_mesh = self.pyrender.Mesh(primitives=[skel_primitive])
+                # Skeleton-only pass: its depth buffer gives an exact
+                # coverage mask for the x-ray composite over the mesh image.
+                self.scene.remove_node(self.mesh_node)
+                self.mesh_node = None
+                self.skeleton_node = self.scene.add(skel_mesh)
+                mesh_light_pose = self.scene.get_pose(self.light_node)
+                self.scene.set_pose(self.light_node, pose=self._cached_skeleton_light_pose)
+                skel_color, skel_depth = self.renderer.render(self.scene)
+                self.scene.set_pose(self.light_node, pose=mesh_light_pose)
+                self.scene.remove_node(self.skeleton_node)
+                self.skeleton_node = None
+                mask = skel_depth > 0
+                out = color.copy()
+                a = self._cached_skeleton_opacity
+                out[mask] = (a * skel_color[mask] + (1.0 - a) * color[mask]).astype(out.dtype)
+                return out
+
         return color
 
     def render(

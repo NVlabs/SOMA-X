@@ -216,6 +216,26 @@ def main():
         help="Limit the number of rendered motion frames. 0 = render all frames.",
     )
     parser.add_argument(
+        "--skeleton-overlay",
+        action="store_true",
+        default=False,
+        help="Render the public SOMA skeleton (octahedral bones) inside the mesh.",
+    )
+    parser.add_argument(
+        "--mesh-alpha",
+        type=float,
+        default=None,
+        help="Mesh opacity in [0, 1] (default: 1.0). With --skeleton-overlay the "
+        "skeleton is composited over the mesh, so translucency is optional.",
+    )
+    parser.add_argument(
+        "--skeleton-style",
+        choices=["light", "skin"],
+        default="light",
+        help="Skeleton color style for --skeleton-overlay: 'light' = neutral "
+        "light gray, 'skin' = darker tone (0.65x) of the mesh color.",
+    )
+    parser.add_argument(
         "--gender",
         default="neutral",
         help="Gender of the model (default: neutral). Only used for smpl and smplx models.",
@@ -234,6 +254,8 @@ def main():
     if args.soma_bone_scale_demo and "soma" not in identity_models:
         raise ValueError("--soma-bone-scale-demo requires identity-model-type to include soma")
     args.identity_models = identity_models
+    if args.mesh_alpha is None:
+        args.mesh_alpha = 1.0
     if args.lod is None:
         args.lod = "low" if args.low_lod else "mid"
     elif args.low_lod and args.lod != "low":
@@ -448,12 +470,16 @@ def main():
                 )
                 if model_type not in outputs:
                     outputs[model_type] = {"vertices": [], "joints": []}
+                    if args.skeleton_overlay:
+                        outputs[model_type]["transforms"] = []
                 outputs[model_type]["vertices"].append(out_b["vertices"])
                 outputs[model_type]["joints"].append(out_b["joints"])
+                if args.skeleton_overlay:
+                    outputs[model_type]["transforms"].append(out_b["transforms"])
 
         for model_type in list(outputs.keys()):
-            outputs[model_type]["vertices"] = torch.cat(outputs[model_type]["vertices"], dim=0)
-            outputs[model_type]["joints"] = torch.cat(outputs[model_type]["joints"], dim=0)
+            for key in outputs[model_type]:
+                outputs[model_type][key] = torch.cat(outputs[model_type][key], dim=0)
 
     # 5. Render (model-first loop with streaming video writer)
     logger.info("Rendering videos...")
@@ -464,6 +490,8 @@ def main():
         suffix = f"{suffix}_bone_scale"
     if args.procedural_transforms == "on":
         suffix = f"{suffix}_procedural"
+    if args.skeleton_overlay:
+        suffix = f"{suffix}_skel"
     faces = {model_type: models[model_type].faces.detach().cpu().numpy() for model_type in models}
     cam_pose = look_at(
         eye=np.array([0.0, 1.0, 6.0]),
@@ -477,17 +505,30 @@ def main():
         out_path = f"{args.output_dir}/{model_type}_{suffix}.{args.video_extension}"
         renderer.setup_mesh(
             faces=faces[model_type],
-            mesh_color=color_map[model_type],
+            mesh_color=(*color_map[model_type][:3], args.mesh_alpha),
             cam_pose=cam_pose,
             light_dir=light_dir,
             metallic=0.0,
             roughness=0.5,
             base_color_factor=[0.9, 0.9, 0.9, 1.0],
         )
+        if args.skeleton_overlay:
+            parents = models[model_type].output_joint_parent_ids.detach().cpu().numpy()
+            # Drop the virtual Root (index 0) so no bone spikes to the origin;
+            # joints parented to Root become skeleton roots (-1).
+            skel_parents = parents[1:] - 1
+            if args.skeleton_style == "skin":
+                skel_color = tuple(0.65 * c for c in color_map[model_type][:3])
+                renderer.setup_skeleton(skel_parents, color=skel_color)
+            else:
+                renderer.setup_skeleton(skel_parents)
         writer = imageio.get_writer(out_path, fps=30)
         for t in tqdm(range(T), desc=model_type):
             verts = outputs[model_type]["vertices"][t].detach().cpu().numpy()
-            img = renderer.render_frame(verts)
+            joints = None
+            if args.skeleton_overlay:
+                joints = outputs[model_type]["transforms"][t, 1:, :3, 3].detach().cpu().numpy()
+            img = renderer.render_frame(verts, joints=joints)
             writer.append_data(img[..., ::-1])
         writer.close()
         logger.info(f"Saved {out_path}")

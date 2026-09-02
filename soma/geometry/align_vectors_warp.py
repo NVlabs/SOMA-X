@@ -10,7 +10,7 @@ from typing import Literal
 import torch
 import warp as wp
 
-from soma._warp_utils import cache_warp_kernel, ensure_warp_initialized
+from soma.geometry._warp_utils import cache_warp_kernel, ensure_warp_initialized
 
 AlignmentMethod = Literal["auto", "kabsch", "newton-schulz"]
 

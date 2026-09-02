@@ -696,7 +696,7 @@ def load_rig_from_usd(usd_path: str | Path, *, skin_mesh_name: str | None = None
     positions, and skinning weights from the USD skeleton.  Returns the
     rig-related keys that used to be stored in ``SOMA_neutral.npz`` so they
     can be merged with the slim core asset when initializing
-    :obj:`~soma.soma.SOMALayer`.
+    :obj:`~soma.body.SOMALayer`.
 
     Shape PCA data (``mean``, ``shapedirs``, ``eigenvalues``) and mesh
     topology (``triangles``, ``triangles_low``, LOD maps, facial segments)
@@ -1209,7 +1209,7 @@ def save_soma_usd(
     written (skeleton bind pose + skinned mesh) with no SkelAnimation prim.
 
     The rotations and root_translation should come directly from
-    :obj:`~soma.pose_inversion.PoseInversion.fit` (local-space,
+    :obj:`~soma.fitting.pose_inversion.PoseInversion.fit` (local-space,
     ``absolute_pose=True`` convention).
 
     Args:

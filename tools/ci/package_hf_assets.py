@@ -124,7 +124,7 @@ def main() -> int:
     parser.add_argument(
         "--contract",
         type=Path,
-        default=Path(__file__).with_name("hf_assets_v0.2.json"),
+        default=Path(__file__).with_name("hf_assets_v0.3.json"),
     )
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--release-tag", required=True)

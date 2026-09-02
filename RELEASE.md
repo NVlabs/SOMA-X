@@ -46,10 +46,10 @@ assets, publish packages, or require a package-version bump.
 
 1. Merge the public-release prep MRs into internal `main`.
 2. Cut or refresh the minor-line internal release branch, for example
-   `release-0.2`. Patch releases reuse the same minor-line branch and create a
-   new patch tag, for example `v0.2.1` from `release-0.2`.
+   `release-0.3`. Patch releases reuse the same minor-line branch and create a
+   new patch tag from that branch.
 3. Confirm `setup.cfg` and `soma/__init__.py` both contain the intended package
-   version, for example `0.2.0`.
+   version, for example `0.3.0`.
 4. Post the exact public file diff, exact Hugging Face publish set, and proposed
    public-facing GitHub commit message to the release issue.
 5. Obtain explicit human approval for all three review items before creating
@@ -80,7 +80,11 @@ assets, publish packages, or require a package-version bump.
 13. Verify the tag-triggered workflow publishes to TestPyPI.
 14. Approve the protected `pypi` environment only after TestPyPI verification.
 15. Verify PyPI shows the new `py-soma-x` release.
-16. Record release links for the GitHub tag, Hub tag/manifest, PyPI release,
+16. Verify the GitHub Pages changelog under `/stable/` and `/vX.Y/` shows the
+    new release section. For patch releases, make sure the `release-X.Y` docs
+    workflow completed; if the tag workflow was metadata-only or the branch
+    workflow was cancelled, manually rerun the docs workflow on `release-X.Y`.
+17. Record release links for the GitHub tag, Hub tag/manifest, PyPI release,
     docs, and validation artifact.
 
 ## Interrupted Hugging Face release recovery
@@ -104,6 +108,10 @@ Run these from the release branch before tagging:
 
 ```bash
 python tools/ci/check_release_version.py --expected vX.Y.Z
+HF_STAGE_DIR="$(mktemp -d)"
+python tools/ci/package_hf_assets.py --output "$HF_STAGE_DIR" \
+  --release-tag vX.Y.Z --public-commit <40-character-public-commit>
+python tools/ci/verify_hf_assets.py "$HF_STAGE_DIR"
 python -m build --sdist --wheel
 python -m twine check --strict dist/*
 ```

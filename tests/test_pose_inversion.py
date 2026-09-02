@@ -80,7 +80,7 @@ requires_cuda = pytest.mark.skipif(not torch.cuda.is_available(), reason="CUDA n
 
 def test_joint_pose_prior_weights_overrides_named_joints():
     """Per-joint pose-prior weights should override only named joints."""
-    from soma.pose_inversion import _joint_pose_prior_weights
+    from soma.fitting.pose_inversion import _joint_pose_prior_weights
 
     weights = _joint_pose_prior_weights(
         ["Root", "Hips", "LeftShin"],
@@ -94,7 +94,7 @@ def test_joint_pose_prior_weights_overrides_named_joints():
 
 def test_joint_pose_prior_weights_rejects_unknown_joint():
     """Typos in explicit pose-prior weights should fail loudly."""
-    from soma.pose_inversion import _joint_pose_prior_weights
+    from soma.fitting.pose_inversion import _joint_pose_prior_weights
 
     with pytest.raises(ValueError, match="Unknown joint"):
         _joint_pose_prior_weights(
@@ -107,7 +107,7 @@ def test_joint_pose_prior_weights_rejects_unknown_joint():
 
 def test_lie_gn_solve_falls_back_for_singular_batch_element():
     """Singular normal-equation batches should return finite deterministic steps."""
-    from soma.pose_inversion import _solve_lie_gn_normal_equations
+    from soma.fitting.pose_inversion import _solve_lie_gn_normal_equations
 
     JtJ = torch.eye(3).repeat(2, 1, 1)
     JtJ[1] = 0.0
@@ -122,7 +122,7 @@ def test_lie_gn_solve_falls_back_for_singular_batch_element():
 
 def test_lie_gn_active_joints_exclude_virtual_root_but_include_hand_root():
     """Full-body virtual roots are fixed; a hand-only wrist root remains active."""
-    from soma.pose_inversion import _active_lie_joint_indices
+    from soma.fitting.pose_inversion import _active_lie_joint_indices
 
     descendant_weights = torch.tensor(
         [
@@ -137,7 +137,7 @@ def test_lie_gn_active_joints_exclude_virtual_root_but_include_hand_root():
 
 
 def test_pose_inversion_exposes_skeleton_transfer_rotation_method():
-    from soma.pose_inversion import PoseInversion
+    from soma.fitting.pose_inversion import PoseInversion
 
     class FakeSoma:
         low_lod = True
@@ -158,7 +158,7 @@ def test_pose_inversion_exposes_skeleton_transfer_rotation_method():
 
 
 def test_pose_inversion_exposes_refit_rotation_method():
-    from soma.pose_inversion import PoseInversion
+    from soma.fitting.pose_inversion import PoseInversion
 
     class FakeSoma:
         low_lod = True
@@ -177,7 +177,7 @@ def test_pose_inversion_exposes_refit_rotation_method():
 
 
 def test_pose_inversion_uses_automatic_default_rotation_methods():
-    from soma.pose_inversion import PoseInversion
+    from soma.fitting.pose_inversion import PoseInversion
 
     class FakeSoma:
         low_lod = True
@@ -256,8 +256,8 @@ def _load_motion(soma, frames):
 @requires_cuda
 def test_xlo_layer_default_inversion_uses_xlo_topology():
     """PoseInversion(xlo_layer) should not try to downsample xlo to low LOD."""
-    from soma.pose_inversion import PoseInversion
-    from soma.soma import SOMALayer
+    from soma.body import SOMALayer
+    from soma.fitting.pose_inversion import PoseInversion
 
     soma = SOMALayer(
         data_root=str(ASSETS_DIR),
@@ -298,8 +298,8 @@ def test_xlo_layer_default_inversion_uses_xlo_topology():
 @pytest.mark.cpu
 @pytest.mark.asset_heavy
 def test_procedural_pose_inversion_uses_public_view_without_public_layer_clone():
-    from soma.pose_inversion import PoseInversion
-    from soma.soma import SOMALayer
+    from soma.body import SOMALayer
+    from soma.fitting.pose_inversion import PoseInversion
 
     soma = SOMALayer(
         data_root=str(ASSETS_DIR),
@@ -333,8 +333,8 @@ def soma_and_inv():
     if not MOTION_FILE.is_file():
         pytest.fail(f"Motion file not found: {MOTION_FILE}")
 
-    from soma.pose_inversion import PoseInversion
-    from soma.soma import SOMALayer
+    from soma.body import SOMALayer
+    from soma.fitting.pose_inversion import PoseInversion
 
     device = "cuda"
     soma = SOMALayer(
@@ -366,8 +366,8 @@ def soma_and_inv_no_procedural():
     if not MOTION_FILE.is_file():
         pytest.fail(f"Motion file not found: {MOTION_FILE}")
 
-    from soma.pose_inversion import PoseInversion
-    from soma.soma import SOMALayer
+    from soma.body import SOMALayer
+    from soma.fitting.pose_inversion import PoseInversion
 
     device = "cuda"
     soma = SOMALayer(
@@ -577,7 +577,7 @@ class TestInvertAutogradFK:
         """Heel weights should select a smaller rear-foot subset."""
         soma, inv = soma_and_inv
 
-        from soma.pose_inversion import (
+        from soma.fitting.pose_inversion import (
             _bind_joint_positions_from_cache,
             _normalized_vertex_weights,
         )
@@ -659,7 +659,7 @@ class TestLieAlgebraGN:
         soma, inv = soma_and_inv
         verts, _ = _load_motion(soma, frames=[0])
 
-        from soma.pose_inversion import (
+        from soma.fitting.pose_inversion import (
             _bind_joint_positions_from_cache,
             _heel_vertex_ids,
         )

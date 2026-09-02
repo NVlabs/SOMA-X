@@ -3,13 +3,17 @@
 
 """Public SOMA-X package exports."""
 
-__version__ = "0.2.4"
+__version__ = "0.3.0"
 
-from pathlib import Path
+import sys as _sys
 
+from . import body as _body
+from . import fitting as _fitting
 from .assets import get_assets_dir
+from .body import SOMALayer, SOMAPoseOutput, create_identity_model
 from .geometry.rig_utils import remove_joint_orient_local
-from .identity_model import BaseIdentityModel, create_identity_model
+from .hand import MANOLayer, SOMAHandLayer, SOMAHandPoseOutput
+from .identity_model import BaseIdentityModel
 from .io import (
     SOMA_TEMPLATE_RIG_FILENAME,
     SOMA_XLO_TEMPLATE_RIG_FILENAME,
@@ -36,31 +40,23 @@ from .smpl import (
     create_smpl_family_layer,
     transfer_smpl_family_pose_parameters,
 )
-from .soma import SOMALayer
 from .units import Unit
 
 # Backward compatibility: prefer SOMALayer
 SomaLayer = SOMALayer
 
-_OPTIONAL_EXPORTS = {}
-if (Path(__file__).with_name("ha" "nd") / "__init__.py").is_file():
-    from importlib import import_module
-
-    _OPTIONAL_EXPORTS.update(
-        {
-            "SOMA" "HandLayer": ("soma." "hand", "SOMA" "HandLayer"),
-            "MA" "NOLayer": ("soma." "hand.mano", "MA" "NOLayer"),
-        }
-    )
-
-
-def __getattr__(name: str):
-    if name in _OPTIONAL_EXPORTS:
-        module_name, attr_name = _OPTIONAL_EXPORTS[name]
-        value = getattr(import_module(module_name), attr_name)
-        globals()[name] = value
-        return value
-    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+# Legacy module paths. Registering the implementation modules under their
+# pre-0.3 names makes ``import soma.soma`` / ``from soma.pose_inversion import X``
+# and pickled class references resolve without keeping shim files around.
+_LEGACY_MODULES = {
+    "soma.soma": _body.soma,
+    "soma.pose_inversion": _fitting.pose_inversion,
+    "soma.pose_inversion_mhr": _fitting.pose_inversion_mhr,
+    "soma.rts_smoothing": _fitting.rts_smoothing,
+}
+for _name, _module in _LEGACY_MODULES.items():
+    _sys.modules.setdefault(_name, _module)
+    setattr(_sys.modules[__name__], _name.rsplit(".", 1)[1], _module)
 
 
 def setup_warp_for_ddp() -> None:
@@ -87,6 +83,10 @@ __all__ = [
     "__version__",
     "get_assets_dir",
     "SOMALayer",
+    "SOMAPoseOutput",
+    "SOMAHandLayer",
+    "SOMAHandPoseOutput",
+    "MANOLayer",
     "SMPLLayer",
     "SMPLXLayer",
     "SomaLayer",
@@ -116,5 +116,3 @@ __all__ = [
     "write_usd_mesh",
     "setup_warp_for_ddp",
 ]
-
-__all__.extend(_OPTIONAL_EXPORTS)

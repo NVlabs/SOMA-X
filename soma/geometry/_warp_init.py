@@ -3,6 +3,6 @@
 
 """Compatibility shim for Warp initialization helpers."""
 
-from soma._warp_utils import ensure_warp_initialized
+from soma.geometry._warp_utils import ensure_warp_initialized
 
 __all__ = ["ensure_warp_initialized"]

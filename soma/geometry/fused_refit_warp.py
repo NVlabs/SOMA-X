@@ -10,7 +10,7 @@ With: 1 fused launch + 1 Newton-Schulz launch = 2 kernel launches per level.
 import torch
 import warp as wp
 
-from soma._warp_utils import cache_warp_kernel, ensure_warp_initialized
+from soma.geometry._warp_utils import cache_warp_kernel, ensure_warp_initialized
 from soma.geometry.transforms import rotation_matrices_are_valid
 
 

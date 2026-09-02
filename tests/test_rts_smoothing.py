@@ -4,6 +4,15 @@
 import pytest
 import torch
 
+from soma.fitting.rts_smoothing import (
+    RTSSmoothingConfig,
+    RTSSmoothingGains,
+    derive_smoothing_groups,
+    euclidean_acceleration,
+    rts_smooth_euclidean,
+    rts_smooth_rotations,
+    smooth_pose,
+)
 from soma.geometry.rig_utils import precompute_joint_orient
 from soma.geometry.transforms import (
     matrix_to_quaternion_xyzw,
@@ -12,15 +21,6 @@ from soma.geometry.transforms import (
     quaternion_log_xyzw,
     quaternion_multiply_xyzw,
     quaternion_xyzw_to_matrix,
-)
-from soma.rts_smoothing import (
-    RTSSmoothingConfig,
-    RTSSmoothingGains,
-    derive_smoothing_groups,
-    euclidean_acceleration,
-    rts_smooth_euclidean,
-    rts_smooth_rotations,
-    smooth_pose,
 )
 
 

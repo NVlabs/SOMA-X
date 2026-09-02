@@ -25,10 +25,10 @@ import numpy as np
 import smplx
 import torch
 
+from soma.body import SOMALayer
+from soma.fitting.pose_inversion import PoseInversion
 from soma.geometry.transforms import matrix_to_rotvec, rotation_6d_to_matrix
 from soma.io import add_npz_args, export_soma_usd
-from soma.pose_inversion import PoseInversion
-from soma.soma import SOMALayer
 from tools.conversion_utils import add_inversion_args, export_soma_npz
 from tools.logging_utils import add_logging_args, configure_logging
 from tools.vis_pyrender import (

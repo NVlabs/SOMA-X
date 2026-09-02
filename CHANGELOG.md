@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.3.0
+
+Changes from v0.2.4:
+
+- Introduces SOMA Hand through `SOMAHandLayer`, a unified runtime for left and
+  right wrist-local hands at mid, low, and extra-low LODs:
+  - Fit hand identity with the native SOMA shape PCA and per-bone length
+    controls.
+  - Use native SOMA, MHR, or user-supplied MANO identity backends while keeping
+    the same SOMA hand topology and pose interface.
+- Organizes the full-body layer and identity backends under `soma.body`, and
+  pose inversion plus RTS smoothing under `soma.fitting`, while preserving the
+  top-level exports and the legacy `soma.soma`, `soma.identity_model`,
+  `soma.pose_inversion`, `soma.pose_inversion_mhr`, and `soma.rts_smoothing`
+  import paths.
+- Adds full-body and hand identity-backend conversion tools that preserve SOMA
+  NPZ animation data while fitting target parameters in the SOMA bind pose.
+
 ## v0.2.4
 
 Changes from v0.2.3:
