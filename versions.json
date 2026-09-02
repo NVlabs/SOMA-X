@@ -5,9 +5,14 @@
     "url": "https://nvlabs.github.io/SOMA-X/latest/"
   },
   {
+    "version": "0.3",
+    "url": "https://nvlabs.github.io/SOMA-X/v0.3/",
+    "name": "0.3 (stable)",
+    "preferred": true
+  },
+  {
     "version": "0.2",
     "url": "https://nvlabs.github.io/SOMA-X/v0.2/",
-    "name": "0.2 (stable)",
-    "preferred": true
+    "name": "0.2"
   }
 ]
