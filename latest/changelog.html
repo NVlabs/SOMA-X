@@ -44,7 +44,7 @@
 
 
 
-    <script src="_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="_static/documentation_options.js?v=e259d695"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -66,12 +66,12 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Model Overview" href="model_card.html" />
-    <link rel="prev" title="Procedural Control Format" href="procedural_control_format.html" />
+    <link rel="prev" title="soma.geometry" href="api/geometry.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.3" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -369,20 +369,27 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Demos and conversion tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hand_data_assets.html">SOMA Hand data assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/somahandlayer.html"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_card.html">Model Overview</a></li>
@@ -444,6 +451,28 @@
                   
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="v0-3-0">
+<h2>v0.3.0<a class="headerlink" href="#v0-3-0" title="Link to this heading">#</a></h2>
+<p>Changes from v0.2.4:</p>
+<ul class="simple">
+<li><p>Introduces SOMA Hand through <code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code>, a unified runtime for left and
+right wrist-local hands at mid, low, and extra-low LODs:</p>
+<ul>
+<li><p>Fit hand identity with the native SOMA shape PCA and per-bone length
+controls.</p></li>
+<li><p>Use native SOMA, MHR, or user-supplied MANO identity backends while keeping
+the same SOMA hand topology and pose interface.</p></li>
+</ul>
+</li>
+<li><p>Organizes the full-body layer and identity backends under <code class="docutils literal notranslate"><span class="pre">soma.body</span></code>, and
+pose inversion plus RTS smoothing under <code class="docutils literal notranslate"><span class="pre">soma.fitting</span></code>, while preserving the
+top-level exports and the legacy <code class="docutils literal notranslate"><span class="pre">soma.soma</span></code>, <code class="docutils literal notranslate"><span class="pre">soma.identity_model</span></code>,
+<code class="docutils literal notranslate"><span class="pre">soma.pose_inversion</span></code>, <code class="docutils literal notranslate"><span class="pre">soma.pose_inversion_mhr</span></code>, and <code class="docutils literal notranslate"><span class="pre">soma.rts_smoothing</span></code>
+import paths.</p></li>
+<li><p>Adds full-body and hand identity-backend conversion tools that preserve SOMA
+NPZ animation data while fitting target parameters in the SOMA bind pose.</p></li>
+</ul>
+</section>
 <section id="v0-2-4">
 <h2>v0.2.4<a class="headerlink" href="#v0-2-4" title="Link to this heading">#</a></h2>
 <p>Changes from v0.2.3:</p>
@@ -720,12 +749,12 @@ twist joints are on.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="procedural_control_format.html"
+       href="api/geometry.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Procedural Control Format</p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></p>
       </div>
     </a>
     <a class="right-next"
@@ -758,6 +787,7 @@ twist joints are on.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-3-0">v0.3.0</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-4">v0.2.4</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-3">v0.2.3</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v0-2-2">v0.2.2</a></li>

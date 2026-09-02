@@ -4,6 +4,7 @@ The current API draft focuses on the parts of `soma` that look stable and user-f
 
 - top-level library entry points exported from `soma`
 - the main full-body layer: `SOMALayer`
+- the left/right hand layer: `SOMAHandLayer`
 - `PoseInversion`, which is used by the conversion tooling
 - the `soma.io` module for USD and NPZ interoperability
 - the lower-level `soma.geometry` building blocks that back skinning, fitting, and rig transforms
@@ -13,11 +14,20 @@ The current API draft focuses on the parts of `soma` that look stable and user-f
 For the first published version of the docs, treat these as the primary supported entry points:
 
 - `soma.SOMALayer`
+- `soma.body.SOMALayer` and `soma.body.SOMAPoseOutput`
+- `soma.SOMAHandLayer`
+- `soma.hand.SOMAHandPoseOutput`
 - `soma.setup_warp_for_ddp`
 - `soma.Unit`
-- `soma.create_identity_model`
+- `soma.create_identity_model` and the `soma.body.identity_model` backends
 - `soma.io.*` USD and NPZ helpers
-- `soma.pose_inversion.PoseInversion`
+- `soma.fitting.pose_inversion.PoseInversion`
+- `soma.fitting.rts_smoothing.smooth_pose`
+
+The historical `soma.soma`, `soma.identity_model`, `soma.pose_inversion`, and
+`soma.rts_smoothing` paths remain available for existing applications and
+serialized references. New module-qualified imports should use `soma.body` and
+`soma.fitting`.
 
 ## Advanced building blocks
 

@@ -44,7 +44,7 @@
 
 
 
-    <script src="_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="_static/documentation_options.js?v=e259d695"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -66,12 +66,12 @@
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Overview" href="api/index.html" />
+    <link rel="next" title="Installation" href="installation.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.3" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -369,20 +369,27 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Demos and conversion tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hand_data_assets.html">SOMA Hand data assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/somahandlayer.html"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_card.html">Model Overview</a></li>
@@ -420,15 +427,21 @@
                   
   <section id="soma-x-documentation">
 <h1>SOMA-X Documentation<a class="headerlink" href="#soma-x-documentation" title="Link to this heading">#</a></h1>
-<p>This site is API-first and centered on the <code class="docutils literal notranslate"><span class="pre">soma</span></code> library. The main pages cover:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> for the full-body model</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code> for inverse pose fitting</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">soma.io</span></code> helpers for NPZ and USD workflows</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code> advanced building blocks (FK, LBS, skeleton fitting, Warp kernels)</p></li>
-</ul>
-<p>The tracked project documents under <code class="docutils literal notranslate"><span class="pre">docs/</span></code> are also included in the navigation so
-API docs and project documentation live in one site.</p>
+<p>SOMA-X provides canonical full-body and wrist-local hand layers, model
+interoperability, pose inversion, and shared geometry utilities. Start with
+the installation and tools guides, then use the model and API references for
+the exact runtime contracts.</p>
+<p>All identity models below are driven by SOMA’s unified body and hand
+skeletons.</p>
+<p><img alt="SOMA Body and SOMA Hand identity backends animated by the unified skeleton" src="_images/soma-in-action.gif" /></p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
 <section id="local-preview">
 <h2>Local preview<a class="headerlink" href="#local-preview" title="Link to this heading">#</a></h2>
 <p>Install the docs dependencies:</p>
@@ -436,17 +449,11 @@ API docs and project documentation live in one site.</p>
 </pre></div>
 </div>
 <p>Build and serve locally:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SOMA_DOCS_AUDIENCE</span><span class="o">=</span>public<span class="w"> </span><span class="nv">DOC_VERSION</span><span class="o">=</span><span class="m">0</span>.2<span class="w"> </span>sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>docs<span class="w"> </span>docs/_build/html
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">SOMA_DOCS_AUDIENCE</span><span class="o">=</span>public<span class="w"> </span><span class="nv">DOC_VERSION</span><span class="o">=</span><span class="m">0</span>.3<span class="w"> </span>sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>docs<span class="w"> </span>docs/_build/html
 python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span>-d<span class="w"> </span>docs/_build/html
 </pre></div>
 </div>
 <p>Then open <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8000/</span></code>.</p>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
-<div class="toctree-wrapper compound">
-</div>
 </section>
 </section>
 
@@ -461,11 +468,11 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
                   
 <div class="prev-next-area">
     <a class="right-next"
-       href="api/index.html"
+       href="installation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API Overview</p>
+        <p class="prev-next-title">Installation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -490,9 +497,7 @@ python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-preview">Local preview</a><ul class="pst-show_toc_level nav section-nav flex-column">
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-preview">Local preview</a></li>
 </ul>
   </nav></div>
 

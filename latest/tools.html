@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Procedural Control Format &#8212; SOMA-X</title>
+    <title>Demos and conversion tools &#8212; SOMA-X</title>
   
   
   
@@ -50,8 +50,7 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'procedural_control_format';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'tools';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
@@ -61,13 +60,13 @@
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
 
-    <link rel="canonical" href="https://nvlabs.github.io/SOMA-X/procedural_control_format.html" />
+    <link rel="canonical" href="https://nvlabs.github.io/SOMA-X/tools.html" />
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Overview" href="api/index.html" />
-    <link rel="prev" title="SOMA Hand data assets" href="hand_data_assets.html" />
+    <link rel="next" title="Data Assets" href="data_assets.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -371,15 +370,15 @@
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tools.html">Demos and conversion tools</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Demos and conversion tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="hand_data_assets.html">SOMA Hand data assets</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Procedural Control Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="nav bd-sidenav">
@@ -433,7 +432,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Procedural Control Format</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Demos and conversion tools</span></li>
   </ul>
 </nav>
 </div>
@@ -450,142 +449,180 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="procedural-control-format">
-<h1>Procedural Control Format<a class="headerlink" href="#procedural-control-format" title="Link to this heading">#</a></h1>
-<p>SOMA procedural controls are declared in <code class="docutils literal notranslate"><span class="pre">assets/SOMA_procedural_transforms.json</span></code>.
-The filename is intentionally not suffixed by the schema version; versioning lives
-inside the file as <code class="docutils literal notranslate"><span class="pre">schema_version</span></code>.</p>
-<p>This JSON sidecar is the authoritative runtime source for SOMA procedural
-topology and parameter metadata. The Python runtime, Maya reference, Blender
-reference, and other consumers should load this file alongside
-<code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code>; embedding the definition into USD metadata is out of
-scope for the current sidecar format.</p>
-<section id="scope">
-<h2>Scope<a class="headerlink" href="#scope" title="Link to this heading">#</a></h2>
-<p>The current schema describes the v0027 SOMA template twist setup consumed by
-<code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> when procedural transforms are enabled. It is declarative: consumers
-resolve stable joint names to indices, validate the definition, compile numeric
-buffers, and evaluate the same ordered transform without running arbitrary
-Python code.</p>
-</section>
-<section id="required-top-level-fields">
-<h2>Required Top-Level Fields<a class="headerlink" href="#required-top-level-fields" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">schema_version</span></code>: semantic schema version for the JSON structure.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">modes</span></code>: supported extraction modes. SOMA currently supports <code class="docutils literal notranslate"><span class="pre">local_x_euler</span></code>,
-<code class="docutils literal notranslate"><span class="pre">local_x_swing_twist</span></code>, and <code class="docutils literal notranslate"><span class="pre">aligned_x_swing_twist</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">template_asset</span></code>: identity of the template rig asset the definition targets.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">conventions</span></code>: units, angle units, scalar dtype, matrix layout, rotation
-handedness, Euler order, quaternion order, and axes.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">public_rig_derivation</span></code>: stable <code class="docutils literal notranslate"><span class="pre">main_joint_names</span></code> plus policies for removed
-joint parent remapping and skin-weight aggregation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">channel_extractors</span></code>: deterministic extraction semantics for each mode.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rotation_extraction</span></code>: selected extraction policy. This may be a single mode
-string applied globally, or an object with <code class="docutils literal notranslate"><span class="pre">default</span></code> and
-<code class="docutils literal notranslate"><span class="pre">per_procedural_joint</span></code> overrides keyed by generated twist-joint name.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">segments</span></code>: main start/end joints, generated twist joints, reverse
-compensation flag, source axis, and sign.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">parameter_matrices</span></code>: sparse COO-style named rotation and translation
-matrices with float32 values.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">evaluation_order</span></code>: the required runtime operation order.</p></li>
-</ul>
-</section>
-<section id="evaluation-semantics">
-<h2>Evaluation Semantics<a class="headerlink" href="#evaluation-semantics" title="Link to this heading">#</a></h2>
-<p>Public rig derivation keeps the named 78 main SOMA joints from the 110-joint template.
-All other template joints are removed by remapping their parent to the nearest
-kept ancestor and adding their skinning-weight column into that kept ancestor
-before the removed column is dropped.</p>
-<section id="pose-rotation-convention">
-<h3>Pose Rotation Convention<a class="headerlink" href="#pose-rotation-convention" title="Link to this heading">#</a></h3>
-<p>Procedural channel extraction starts from the same public pose convention used by
-<code class="docutils literal notranslate"><span class="pre">SOMALayer.pose()</span></code> and the normal skinning path. Let <code class="docutils literal notranslate"><span class="pre">p(j)</span></code> be the parent of
-joint <code class="docutils literal notranslate"><span class="pre">j</span></code>, let <code class="docutils literal notranslate"><span class="pre">O_j</span></code> be joint <code class="docutils literal notranslate"><span class="pre">j</span></code>’s T-pose world orient, and let <code class="docutils literal notranslate"><span class="pre">R_abs,j</span></code> be
-the absolute local rotation consumed by FK.</p>
-<p>For the default <code class="docutils literal notranslate"><span class="pre">absolute_pose=False</span></code> path, callers provide T-pose-relative local
-rotations <code class="docutils literal notranslate"><span class="pre">R_rel,j</span></code>, which are converted before FK:</p>
-<div class="math notranslate nohighlight">
-\[R_{\mathrm{abs},j} =
-O_{p(j)}^{\mathsf{T}} R_{\mathrm{rel},j} O_j\]</div>
-<p>For <code class="docutils literal notranslate"><span class="pre">absolute_pose=True</span></code>, callers provide absolute local rotations directly:</p>
-<div class="math notranslate nohighlight">
-\[R_{\mathrm{abs},j} = R_{\mathrm{in},j}\]</div>
-<p>The inverse conversion, used when writing absolute local rotations back to the
-T-pose-relative convention, is:</p>
-<div class="math notranslate nohighlight">
-\[R_{\mathrm{rel},j} =
-O_{p(j)} R_{\mathrm{abs},j} O_j^{\mathsf{T}}\]</div>
-<p>The T-pose-relative convention is the SMPL-style convention. <code class="docutils literal notranslate"><span class="pre">absolute_pose=True</span></code>
-is for already-oriented local rotations, such as DCC joint matrices or
-PoseInversion output with joint orient baked in.</p>
-</section>
-<section id="rotation-extraction-modes">
-<h3>Rotation Extraction Modes<a class="headerlink" href="#rotation-extraction-modes" title="Link to this heading">#</a></h3>
-<p><code class="docutils literal notranslate"><span class="pre">rotation_extraction</span></code> chooses which extractor feeds each generated twist-joint
-row. A global string applies to every procedural joint. The object form supports
-mixed extractors with <code class="docutils literal notranslate"><span class="pre">default</span></code> and <code class="docutils literal notranslate"><span class="pre">per_procedural_joint</span></code> overrides:</p>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">"default"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local_x_euler"</span><span class="p">,</span>
-<span class="w">  </span><span class="nt">"per_procedural_joint"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nt">"LeftForeArmTwist2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"local_x_swing_twist"</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="p">}</span>
+  <section id="demos-and-conversion-tools">
+<h1>Demos and conversion tools<a class="headerlink" href="#demos-and-conversion-tools" title="Link to this heading">#</a></h1>
+<p>The repository includes optional command-line tools for visualization,
+retargeting, pose sampling, and DCC integration. Install the demo extras before
+using tools that render images or video:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[demo]"</span>
 </pre></div>
 </div>
-<p>For each extraction mode <code class="docutils literal notranslate"><span class="pre">m</span></code>, SOMA builds a source-channel vector <code class="docutils literal notranslate"><span class="pre">c^(m)</span></code> from
-public joint rotations and applies the mode-specific sparse rotation matrix
-<code class="docutils literal notranslate"><span class="pre">M^(m)</span></code>. The generated twist angles are the sum of all selected mode products:</p>
-<div class="math notranslate nohighlight">
-\[\theta = \sum_m M^{(m)} c^{(m)}\]</div>
-<p>Each generated twist joint <code class="docutils literal notranslate"><span class="pre">k</span></code> is emitted as a signed axis rotation:</p>
-<div class="math notranslate nohighlight">
-\[R_{\mathrm{twist},k} =
-\operatorname{Rot}_{a_k}(s_k \theta_k)\]</div>
-<p>The supported extraction modes define <code class="docutils literal notranslate"><span class="pre">c^(m)</span></code> as follows:</p>
+<section id="full-body-demo">
+<h2>Full-body demo<a class="headerlink" href="#full-body-demo" title="Link to this heading">#</a></h2>
+<p>Render one or more identity backends with the shared SOMA body rig:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tools/demo_soma_vis.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data-root<span class="w"> </span>assets<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-dir<span class="w"> </span>out/body-demo<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--identity-model-type<span class="w"> </span>soma,mhr<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--lod<span class="w"> </span>mid
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">--random-shape</span></code> to animate identities and <code class="docutils literal notranslate"><span class="pre">--motion-file</span></code> to provide a
+custom motion. The <code class="docutils literal notranslate"><span class="pre">mid</span></code>, <code class="docutils literal notranslate"><span class="pre">low</span></code>, and <code class="docutils literal notranslate"><span class="pre">xlo</span></code> LODs share the same public pose
+contract.</p>
+</section>
+<section id="soma-hand-demo">
+<h2>SOMA Hand demo<a class="headerlink" href="#soma-hand-demo" title="Link to this heading">#</a></h2>
+<p>Render the left and right wrist-local layers from a body motion:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tools/hand/demo_soma_hand_vis.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--data-root<span class="w"> </span>assets<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hand-type<span class="w"> </span>left,right<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--remove-wrist-translation<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-dir<span class="w"> </span>out/hand-demo
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">--shape-only</span> <span class="pre">--random-shape</span></code> to render native hand identity variation
+without a body motion. MANO and MHR identity backends are selected with
+<code class="docutils literal notranslate"><span class="pre">--identity-model-type</span></code> and require their corresponding local model assets.
+For MANO, pass the separately licensed model explicitly with
+<code class="docutils literal notranslate"><span class="pre">--hand-type</span> <span class="pre">right</span> <span class="pre">--mano-model-path</span> <span class="pre">/path/to/MANO_RIGHT.pkl</span></code> (or the
+left-hand equivalent).
+By default, motion renders apply the wrist’s animated world transform. Use
+<code class="docutils literal notranslate"><span class="pre">--remove-wrist-translation</span></code> to retain wrist orientation while keeping the
+hand centered. The default camera framing leaves room around the motion-wide
+hand bounds; increase <code class="docutils literal notranslate"><span class="pre">--camera-framing-scale</span></code> to zoom out further.</p>
+<p>Both demos accept <code class="docutils literal notranslate"><span class="pre">--skeleton-overlay</span></code> to draw the public skeleton as
+octahedral bones over the mesh, and <code class="docutils literal notranslate"><span class="pre">--skeleton-style</span> <span class="pre">{light,skin}</span></code> to pick a
+neutral light-gray or a darker skin-toned bone color.</p>
+</section>
+<section id="readme-teaser">
+<h2>README teaser<a class="headerlink" href="#readme-teaser" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">make_teaser.py</span></code> composes the body and hand demo renders into the single
+README teaser GIF with one title and label specification, so both rows stay
+aligned and typographically consistent:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tools/demo_soma_vis.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--identity-model-type<span class="w"> </span>soma,mhr,smplx,anny,garment<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--skeleton-overlay<span class="w"> </span>--skeleton-style<span class="w"> </span>skin<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--image-size<span class="w"> </span><span class="m">1440</span><span class="w"> </span>--max-frames<span class="w"> </span><span class="m">576</span><span class="w"> </span>--output-dir<span class="w"> </span>out/teaser/body
+<span class="k">for</span><span class="w"> </span>backend<span class="w"> </span><span class="k">in</span><span class="w"> </span>soma<span class="w"> </span>mhr<span class="w"> </span>mano<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span>python<span class="w"> </span>tools/hand/demo_soma_hand_vis.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--hand-type<span class="w"> </span>right<span class="w"> </span>--identity-model-type<span class="w"> </span><span class="s2">"</span><span class="nv">$backend</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--remove-wrist-translation<span class="w"> </span>--camera-framing-scale<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--skeleton-overlay<span class="w"> </span>--skeleton-style<span class="w"> </span>skin<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--image-size<span class="w"> </span><span class="m">1440</span><span class="w"> </span>--max-frames<span class="w"> </span><span class="m">576</span><span class="w"> </span>--output-dir<span class="w"> </span>out/teaser/hand
+<span class="k">done</span>
+python<span class="w"> </span>tools/make_teaser.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--body-videos<span class="w"> </span>out/teaser/body/soma_fixed_shape_skel.mp4,out/teaser/body/mhr_fixed_shape_skel.mp4,out/teaser/body/smplx_fixed_shape_skel.mp4,out/teaser/body/anny_fixed_shape_skel.mp4,out/teaser/body/garment_fixed_shape_skel.mp4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--body-labels<span class="w"> </span><span class="s2">"SOMA native,MHR,SMPL-X,Anny,GM"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hand-videos<span class="w"> </span>out/teaser/hand/hand_right_soma_no_correctives_fixed_shape_skel.mp4,out/teaser/hand/hand_right_mhr_no_correctives_fixed_shape_skel.mp4,out/teaser/hand/hand_right_mano_no_correctives_fixed_shape_skel.mp4<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hand-labels<span class="w"> </span><span class="s2">"SOMA native,MHR,MANO"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output<span class="w"> </span>assets/images/soma-in-action.gif
+</pre></div>
+</div>
+<p>The MANO backend additionally needs <code class="docutils literal notranslate"><span class="pre">--mano-model-path</span></code>, and the SMPL-X and
+GarmentMeasurements backends need their locally licensed model files. The
+compositor requires <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> on the path.</p>
+</section>
+<section id="sample-the-hand-articulation-prior">
+<h2>Sample the hand articulation prior<a class="headerlink" href="#sample-the-hand-articulation-prior" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">sample_soma_hand_pose_pca.py</span></code> draws reproducible coefficients from the
+distributed articulation prior, converts the bind-relative exponential maps
+to the layer’s absolute-local rotation convention, poses the skinned mesh, and
+writes MP4/GIF output.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tools/hand/sample_soma_hand_pose_pca.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hand-asset<span class="w"> </span>assets/SOMAHand.npz<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--hand-type<span class="w"> </span>right<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--num-poses<span class="w"> </span><span class="m">60</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--seed<span class="w"> </span><span class="m">20260829</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-prefix<span class="w"> </span>out/soma-hand-samples
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">--n-components</span></code>, <code class="docutils literal notranslate"><span class="pre">--sample-scale</span></code>, and <code class="docutils literal notranslate"><span class="pre">--lod</span></code> to control the sampled
+prior and rendered geometry.</p>
+</section>
+<section id="smpl-family-to-soma">
+<h2>SMPL-family to SOMA<a class="headerlink" href="#smpl-family-to-soma" title="Link to this heading">#</a></h2>
+<p>Convert an SMPL animation to SOMA and optionally export the recovered pose:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tools.smpl2soma<span class="w"> </span>--output-npz<span class="w"> </span>out/smpl-soma.npz
+</pre></div>
+</div>
+<p>The converter uses <code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code>: analytical fitting is the default, and
+<code class="docutils literal notranslate"><span class="pre">--autograd-iters</span></code> adds differentiable FK refinement. SMPL/SMPL-X model files
+must be supplied under their own license.</p>
+</section>
+<section id="mhr-to-soma">
+<h2>MHR to SOMA<a class="headerlink" href="#mhr-to-soma" title="Link to this heading">#</a></h2>
+<p>Convert MHR-format parquet data, including SAM 3D Body outputs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tools.mhr2soma<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span>/path/to/parquet-directory<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-npz<span class="w"> </span>out/mhr-soma.npz
+</pre></div>
+</div>
+<p>Use <code class="docutils literal notranslate"><span class="pre">--max-samples</span></code> for bounded local checks. The tool also exposes the
+reusable RTS smoothing presets through its <code class="docutils literal notranslate"><span class="pre">--smooth</span></code> options.</p>
+</section>
+<section id="convert-identity-backends">
+<h2>Convert identity backends<a class="headerlink" href="#convert-identity-backends" title="Link to this heading">#</a></h2>
+<p>The identity conversion tools accept a canonical SOMA animation NPZ written
+by <code class="docutils literal notranslate"><span class="pre">soma.io.save_soma_npz</span></code>, preserve its animation, and optimize target
+identity parameters against the source geometry in the SOMA bind pose.</p>
+<p>Convert a full-body SMPL-X fit to native SOMA identity parameters:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tools.convert_identity_backend<span class="w"> </span>input_smplx.npz<span class="w"> </span>output_soma.npz<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--target-backend<span class="w"> </span>soma<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--source-model-path<span class="w"> </span>/path/to/SMPLX_NEUTRAL.pkl
+</pre></div>
+</div>
+<p>The source backend and coefficients are read from the input NPZ. This example
+therefore converts its stored SMPL-X betas to native SOMA identity
+coefficients and bone scales. Other supported full-body targets include MHR,
+Anny, SMPL, SMPL-H, SMPL-X, and GarmentMeasurements.</p>
+<p>Use the separate hand entry point for native SOMA Hand, MHR hand, and MANO:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tools.hand.convert_identity_backend<span class="w"> </span>input_mhr_hand.npz<span class="w"> </span>output_soma_hand.npz<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--target-backend<span class="w"> </span>soma
+</pre></div>
+</div>
+<p>Native SOMA bone scales are optimized by default for body and hand targets.
+Global scale remains fixed to the input value unless
+<code class="docutils literal notranslate"><span class="pre">--optimize-global-scale</span></code> is explicitly supplied. The output is another SOMA
+NPZ containing the target parameters plus <code class="docutils literal notranslate"><span class="pre">conversion_*</span></code> source metadata,
+loss history, and per-identity bind-pose vertex error. Use
+<code class="docutils literal notranslate"><span class="pre">--no-optimize-scale-params</span></code> to keep target scale parameters neutral.</p>
+</section>
+<section id="amass-to-soma">
+<h2>AMASS to SOMA<a class="headerlink" href="#amass-to-soma" title="Link to this heading">#</a></h2>
+<p>Convert one AMASS sequence or a directory tree of SMPL motion files:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tools.convert_amass_to_soma<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--input<span class="w"> </span>/path/to/sequence.npz<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--output-npz<span class="w"> </span>out/soma.npz<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--no-render
+</pre></div>
+</div>
+<p>For batch conversion, use <code class="docutils literal notranslate"><span class="pre">--input-dir</span></code> and <code class="docutils literal notranslate"><span class="pre">--output-dir</span></code>. The exported NPZ
+contains SOMA poses, root translations, joint names, reconstruction errors,
+and identity parameters.</p>
+</section>
+<section id="mano-interoperability">
+<h2>MANO interoperability<a class="headerlink" href="#mano-interoperability" title="Link to this heading">#</a></h2>
+<p>The hand tools convert pose and identity parameters using user-supplied MANO
+v1.2 files:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">local_x_euler</span></code>: reads the configured SOMA local-X twist channel from XYZ local
-Euler angles on the absolute local source rotation.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">local_x_swing_twist</span></code>: converts the absolute local source rotation to an
-<code class="docutils literal notranslate"><span class="pre">xyzw</span></code> quaternion and extracts the configured twist axis with half-angle
-stabilization.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">aligned_x_swing_twist</span></code>: derives segment-aligned virtual orientations from
-source world transforms and bind alignment, then extracts X-axis swing/twist
-from the relative virtual segment orientation. Reverse-compensation segments
-use inherited start-joint twist where declared by the sidecar.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tools/hand/mano2soma.py</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tools/hand/soma2mano.py</span></code></p></li>
 </ul>
-<p>The checked-in v0027 SOMA sidecar declares all three modes and uses
-<code class="docutils literal notranslate"><span class="pre">aligned_x_swing_twist</span></code> globally.</p>
-<p>The rotation matrix rows are generated twist joints and columns are public SOMA
-joints. The translation matrix keeps identity rows by default and overrides twist
-rows with start/end public segment weights. Runtimes may resolve names once and
-cache dense, COO, CSR, or device-native buffers as long as they preserve the
-declared float32 values and evaluation order. Mixed extraction modes should stay
-vectorized by compiling one rotation matrix per extractor and summing the
-mode-specific matrix products; do not loop over procedural joints at evaluation
-time.</p>
+<p>Both commands fail with an actionable model-path error when the licensed MANO
+file is unavailable. See <a class="reference internal" href="hand_data_assets.html"><span class="std std-doc">SOMA Hand data assets</span></a> for the
+topology correspondence and local asset setup.</p>
 </section>
-</section>
-<section id="validation">
-<h2>Validation<a class="headerlink" href="#validation" title="Link to this heading">#</a></h2>
-<p>The Python loader rejects malformed definitions before constructing the evaluator.
-It reports missing source joints, missing twist joints, duplicate outputs,
-unknown matrix rows or columns, invalid axes, invalid signs, unsupported modes,
-and missing or invalid rotation extraction policies.</p>
-</section>
-<section id="non-python-consumer-plan">
-<h2>Non-Python Consumer Plan<a class="headerlink" href="#non-python-consumer-plan" title="Link to this heading">#</a></h2>
-<p>A Maya or game-engine evaluator should:</p>
-<ol class="arabic simple">
-<li><p>Load <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> and <code class="docutils literal notranslate"><span class="pre">SOMA_procedural_transforms.json</span></code>.</p></li>
-<li><p>Resolve every joint name in <code class="docutils literal notranslate"><span class="pre">main_joint_names</span></code>, <code class="docutils literal notranslate"><span class="pre">segments</span></code>, and sparse matrix
-entries to local runtime indices.</p></li>
-<li><p>Validate duplicate outputs, axis/sign values, matrix names, rotation
-extraction policies, and non-degenerate start/end translation segments.</p></li>
-<li><p>Compile source-channel extraction buffers, sparse matrices, and output emitter
-buffers to the target runtime format.</p></li>
-<li><p>Apply the declared <code class="docutils literal notranslate"><span class="pre">evaluation_order</span></code> during evaluation, then hand the
-expanded skeleton to that runtime’s FK/LBS implementation.</p></li>
-</ol>
+<section id="dcc-integration">
+<h2>DCC integration<a class="headerlink" href="#dcc-integration" title="Link to this heading">#</a></h2>
+<p>Procedural transform references and setup instructions are maintained with
+their integrations:</p>
+<ul class="simple">
+<li><p>Blender: <code class="docutils literal notranslate"><span class="pre">tools/soma_procedural_blender/README.md</span></code></p></li>
+<li><p>Maya: <code class="docutils literal notranslate"><span class="pre">tools/soma_procedural_maya/README.md</span></code></p></li>
+</ul>
+<p>The <a class="reference internal" href="procedural_control_format.html"><span class="std std-doc">procedural control format</span></a> documents the
+shared sidecar schema used by the Python runtime and DCC implementations.</p>
 </section>
 </section>
 
@@ -600,20 +637,20 @@ expanded skeleton to that runtime’s FK/LBS implementation.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="hand_data_assets.html"
+       href="installation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">SOMA Hand data assets</p>
+        <p class="prev-next-title">Installation</p>
       </div>
     </a>
     <a class="right-next"
-       href="api/index.html"
+       href="data_assets.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API Overview</p>
+        <p class="prev-next-title">Data Assets</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -638,15 +675,16 @@ expanded skeleton to that runtime’s FK/LBS implementation.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scope">Scope</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#required-top-level-fields">Required Top-Level Fields</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluation-semantics">Evaluation Semantics</a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pose-rotation-convention">Pose Rotation Convention</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rotation-extraction-modes">Rotation Extraction Modes</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#non-python-consumer-plan">Non-Python Consumer Plan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#full-body-demo">Full-body demo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma-hand-demo">SOMA Hand demo</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#readme-teaser">README teaser</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-the-hand-articulation-prior">Sample the hand articulation prior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#smpl-family-to-soma">SMPL-family to SOMA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mhr-to-soma">MHR to SOMA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-identity-backends">Convert identity backends</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#amass-to-soma">AMASS to SOMA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mano-interoperability">MANO interoperability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dcc-integration">DCC integration</a></li>
 </ul>
   </nav></div>
 

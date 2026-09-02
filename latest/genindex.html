@@ -43,7 +43,7 @@
 
 
 
-    <script src="_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="_static/documentation_options.js?v=e259d695"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -68,7 +68,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.3" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -362,20 +362,27 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Demos and conversion tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hand_data_assets.html">SOMA Hand data assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/somahandlayer.html"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_card.html">Model Overview</a></li>
@@ -505,8 +512,12 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.default_skin_mesh_name">default_skin_mesh_name (soma.soma.SOMALayer property)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.default_skin_mesh_name">default_skin_mesh_name (soma.body.SOMALayer property)</a>
+
+      <ul>
+        <li><a href="api/somahandlayer.html#soma.hand.SOMAHandLayer.default_skin_mesh_name">(soma.hand.SOMAHandLayer property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -527,10 +538,10 @@
 </li>
       <li><a href="api/io.html#soma.io.find_lod_skin_mesh_name">find_lod_skin_mesh_name() (in module soma.io)</a>
 </li>
-      <li><a href="api/geometry.html#soma.geometry.skeleton_transfer.SkeletonTransfer.fit">fit() (soma.geometry.skeleton_transfer.SkeletonTransfer method)</a>
+      <li><a href="api/pose_inversion.html#soma.fitting.pose_inversion.PoseInversion.fit">fit() (soma.fitting.pose_inversion.PoseInversion method)</a>
 
       <ul>
-        <li><a href="api/pose_inversion.html#soma.pose_inversion.PoseInversion.fit">(soma.pose_inversion.PoseInversion method)</a>
+        <li><a href="api/geometry.html#soma.geometry.skeleton_transfer.SkeletonTransfer.fit">(soma.geometry.skeleton_transfer.SkeletonTransfer method)</a>
 </li>
       </ul></li>
       <li><a href="api/geometry.html#soma.geometry.skeleton_transfer.SkeletonTransfer.fit_joint_positions">fit_joint_positions() (soma.geometry.skeleton_transfer.SkeletonTransfer method)</a>
@@ -543,9 +554,11 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/geometry.html#soma.geometry.batched_skinning.FKTopology">FKTopology (class in soma.geometry.batched_skinning)</a>
 </li>
-      <li><a href="api/geometry.html#soma.geometry.align_vectors_warp.AlignVectorsWarp.forward">forward() (soma.geometry.align_vectors_warp.AlignVectorsWarp static method)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.forward">forward() (soma.body.SOMALayer method)</a>
 
       <ul>
+        <li><a href="api/geometry.html#soma.geometry.align_vectors_warp.AlignVectorsWarp.forward">(soma.geometry.align_vectors_warp.AlignVectorsWarp static method)</a>
+</li>
         <li><a href="api/geometry.html#soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp.forward">(soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp static method)</a>
 </li>
         <li><a href="api/geometry.html#soma.geometry.align_vectors_warp.RodriguesRotationWarp.forward">(soma.geometry.align_vectors_warp.RodriguesRotationWarp static method)</a>
@@ -554,7 +567,7 @@
 </li>
         <li><a href="api/geometry.html#soma.geometry.chamfer_warp.ChamferLoss.forward">(soma.geometry.chamfer_warp.ChamferLoss method)</a>
 </li>
-        <li><a href="api/somalayer.html#soma.soma.SOMALayer.forward">(soma.soma.SOMALayer method)</a>
+        <li><a href="api/somahandlayer.html#soma.hand.SOMAHandLayer.forward">(soma.hand.SOMAHandLayer method)</a>
 </li>
       </ul></li>
       <li><a href="api/geometry.html#soma.geometry.fused_refit_warp.fused_refit_level">fused_refit_level() (in module soma.geometry.fused_refit_warp)</a>
@@ -569,13 +582,15 @@
 </li>
       <li><a href="api/geometry.html#soma.geometry.rig_utils.get_body_part_vertex_ids">get_body_part_vertex_ids() (in module soma.geometry.rig_utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/geometry.html#soma.geometry.rig_utils.get_joint_children_ids">get_joint_children_ids() (in module soma.geometry.rig_utils)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/geometry.html#soma.geometry.rig_utils.get_joint_descendents">get_joint_descendents() (in module soma.geometry.rig_utils)</a>
 </li>
       <li><a href="api/geometry.html#soma.geometry.lbs_warp.get_kernel">get_kernel() (in module soma.geometry.lbs_warp)</a>
+</li>
+      <li><a href="api/somahandlayer.html#soma.hand.SOMAHandLayer.get_rest_shape">get_rest_shape() (soma.hand.SOMAHandLayer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -661,6 +676,8 @@
     module
 
       <ul>
+        <li><a href="api/somalayer.html#module-soma.body.soma">soma.body.soma</a>
+</li>
         <li><a href="api/geometry.html#module-soma.geometry.align_vectors_warp">soma.geometry.align_vectors_warp</a>
 </li>
         <li><a href="api/geometry.html#module-soma.geometry.barycentric_interp">soma.geometry.barycentric_interp</a>
@@ -685,9 +702,9 @@
 </li>
         <li><a href="api/geometry.html#module-soma.geometry.transforms">soma.geometry.transforms</a>
 </li>
-        <li><a href="api/io.html#module-soma.io">soma.io</a>
+        <li><a href="api/somahandlayer.html#module-soma.hand">soma.hand</a>
 </li>
-        <li><a href="api/somalayer.html#module-soma.soma">soma.soma</a>
+        <li><a href="api/io.html#module-soma.io">soma.io</a>
 </li>
       </ul></li>
   </ul></td>
@@ -699,12 +716,16 @@
       <li><a href="api/geometry.html#soma.geometry.transforms.newton_schulz">newton_schulz() (in module soma.geometry.transforms)</a>
 </li>
   </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/somahandlayer.html#soma.hand.SOMAHandLayer.num_shape_components">num_shape_components (soma.hand.SOMAHandLayer property)</a>
+</li>
+  </ul></td>
 </tr></table>
 
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.output_joint_parent_ids">output_joint_parent_ids (soma.soma.SOMALayer property)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.output_joint_parent_ids">output_joint_parent_ids (soma.body.SOMALayer property)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -716,9 +737,13 @@
 </li>
       <li><a href="api/geometry.html#soma.geometry.align_vectors_warp.ParallelRodriguesKabschWarp">ParallelRodriguesKabschWarp (class in soma.geometry.align_vectors_warp)</a>
 </li>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.pose">pose() (soma.soma.SOMALayer method)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.pose">pose() (soma.body.SOMALayer method)</a>
+
+      <ul>
+        <li><a href="api/somahandlayer.html#soma.hand.SOMAHandLayer.pose">(soma.hand.SOMAHandLayer method)</a>
 </li>
-      <li><a href="api/pose_inversion.html#soma.pose_inversion.PoseInversion">PoseInversion (class in soma.pose_inversion)</a>
+      </ul></li>
+      <li><a href="api/pose_inversion.html#soma.fitting.pose_inversion.PoseInversion">PoseInversion (class in soma.fitting.pose_inversion)</a>
 </li>
       <li><a href="api/geometry.html#soma.geometry.rig_utils.PoseMirror_MHR">PoseMirror_MHR (class in soma.geometry.rig_utils)</a>
 </li>
@@ -730,21 +755,23 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/geometry.html#soma.geometry.rig_utils.precompute_joint_orient">precompute_joint_orient() (in module soma.geometry.rig_utils)</a>
 </li>
-      <li><a href="api/pose_inversion.html#soma.pose_inversion.PoseInversion.prepare_identity">prepare_identity() (soma.pose_inversion.PoseInversion method)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.prepare_identity">prepare_identity() (soma.body.SOMALayer method)</a>
 
       <ul>
-        <li><a href="api/somalayer.html#soma.soma.SOMALayer.prepare_identity">(soma.soma.SOMALayer method)</a>
+        <li><a href="api/pose_inversion.html#soma.fitting.pose_inversion.PoseInversion.prepare_identity">(soma.fitting.pose_inversion.PoseInversion method)</a>
+</li>
+        <li><a href="api/somahandlayer.html#soma.hand.SOMAHandLayer.prepare_identity">(soma.hand.SOMAHandLayer method)</a>
 </li>
       </ul></li>
       <li><a href="api/geometry.html#soma.geometry.transforms.project_rotations_to_so3">project_rotations_to_so3() (in module soma.geometry.transforms)</a>
 </li>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.public_bind_transforms_world">public_bind_transforms_world() (soma.soma.SOMALayer method)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.public_bind_transforms_world">public_bind_transforms_world() (soma.body.SOMALayer method)</a>
 </li>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.public_joint_names">public_joint_names (soma.soma.SOMALayer property)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.public_joint_names">public_joint_names (soma.body.SOMALayer property)</a>
 </li>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.public_rig_view">public_rig_view() (soma.soma.SOMALayer method)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.public_rig_view">public_rig_view() (soma.body.SOMALayer method)</a>
 </li>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.public_skinning_weights">public_skinning_weights() (soma.soma.SOMALayer method)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.public_skinning_weights">public_skinning_weights() (soma.body.SOMALayer method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -800,7 +827,7 @@
 </li>
       <li><a href="api/geometry.html#soma.geometry.transforms.rotvec_to_matrix">rotvec_to_matrix() (in module soma.geometry.transforms)</a>
 </li>
-      <li><a href="api/pose_inversion.html#soma.pose_inversion.PoseInversion.roundtrip">roundtrip() (soma.pose_inversion.PoseInversion method)</a>
+      <li><a href="api/pose_inversion.html#soma.fitting.pose_inversion.PoseInversion.roundtrip">roundtrip() (soma.fitting.pose_inversion.PoseInversion method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -824,6 +851,13 @@
 </li>
       <li><a href="api/geometry.html#soma.geometry.laplacian.LaplacianMesh.solve">solve() (soma.geometry.laplacian.LaplacianMesh method)</a>
 </li>
+      <li>
+    soma.body.soma
+
+      <ul>
+        <li><a href="api/somalayer.html#module-soma.body.soma">module</a>
+</li>
+      </ul></li>
       <li>
     soma.geometry.align_vectors_warp
 
@@ -911,20 +945,24 @@
 </li>
       </ul></li>
       <li>
+    soma.hand
+
+      <ul>
+        <li><a href="api/somahandlayer.html#module-soma.hand">module</a>
+</li>
+      </ul></li>
+      <li>
     soma.io
 
       <ul>
         <li><a href="api/io.html#module-soma.io">module</a>
 </li>
       </ul></li>
-      <li>
-    soma.soma
-
-      <ul>
-        <li><a href="api/somalayer.html#module-soma.soma">module</a>
+      <li><a href="api/somahandlayer.html#soma.hand.SOMAHandLayer">SOMAHandLayer (class in soma.hand)</a>
 </li>
-      </ul></li>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer">SOMALayer (class in soma.soma)</a>
+      <li><a href="api/somahandlayer.html#soma.hand.SOMAHandPoseOutput">SOMAHandPoseOutput (class in soma.hand)</a>
+</li>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer">SOMALayer (class in soma.body)</a>
 </li>
       <li><a href="api/io.html#soma.io.SOMANPZData">SOMANPZData (class in soma.io)</a>
 </li>
@@ -934,15 +972,15 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.target_joint_names">target_joint_names (soma.soma.SOMALayer property)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.target_joint_names">target_joint_names (soma.body.SOMALayer property)</a>
 </li>
-      <li><a href="api/somalayer.html#soma.soma.SOMALayer.to_public_rotations">to_public_rotations() (soma.soma.SOMALayer method)</a>
+      <li><a href="api/somalayer.html#soma.body.SOMALayer.to_public_rotations">to_public_rotations() (soma.body.SOMALayer method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/geometry.html#soma.geometry.batched_skinning.topk_skinning">topk_skinning() (in module soma.geometry.batched_skinning)</a>
 </li>
-      <li><a href="api/pose_inversion.html#soma.pose_inversion.PoseInversion.transfer_to_soma">transfer_to_soma() (soma.pose_inversion.PoseInversion method)</a>
+      <li><a href="api/pose_inversion.html#soma.fitting.pose_inversion.PoseInversion.transfer_to_soma">transfer_to_soma() (soma.fitting.pose_inversion.PoseInversion method)</a>
 </li>
   </ul></td>
 </tr></table>

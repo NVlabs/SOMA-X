@@ -44,7 +44,7 @@
 
 
 
-    <script src="../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../_static/documentation_options.js?v=e259d695"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -66,12 +66,12 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="soma.io" href="io.html" />
-    <link rel="prev" title="SOMALayer" href="somalayer.html" />
+    <link rel="prev" title="SOMAHandLayer" href="somahandlayer.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.3" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -369,20 +369,27 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">Demos and conversion tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hand_data_assets.html">SOMA Hand data assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">API Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="somahandlayer.html"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../model_card.html">Model Overview</a></li>
@@ -454,8 +461,8 @@ repository.</p>
 </ul>
 <p>This makes it the key API for conversions such as SMPL-to-SOMA and MHR-to-SOMA.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.pose_inversion.</span></span><span class="sig-name descname"><span class="pre">PoseInversion</span></span><span class="sig-paren">(</span>
+<dt class="sig sig-object py" id="soma.fitting.pose_inversion.PoseInversion">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.fitting.pose_inversion.</span></span><span class="sig-name descname"><span class="pre">PoseInversion</span></span><span class="sig-paren">(</span>
 
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">soma_layer</span></span></em>,</dd>
@@ -464,7 +471,7 @@ repository.</p>
 <dd><em class="sig-param"><span class="n"><span class="pre">refit_rotation_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.fitting.pose_inversion.PoseInversion" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Invert posed vertices to a layer’s skeleton rotations.</p>
 <p>Accepts vertices in the wrapped layer topology. For <code class="xref py py-class docutils literal notranslate"><span class="pre">SOMALayer</span></code>,
@@ -475,7 +482,7 @@ layer’s <code class="docutils literal notranslate"><span class="pre">output_un
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>soma_layer</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a>) – A <a class="reference internal" href="somalayer.html#soma.soma.SOMALayer" title="soma.soma.SOMALayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SOMALayer</span></code></a> instance (any LOD).</p></li>
+<li><p><strong>soma_layer</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a>) – A <a class="reference internal" href="somalayer.html#soma.body.SOMALayer" title="soma.body.SOMALayer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SOMALayer</span></code></a> instance (any LOD).</p></li>
 <li><p><strong>low_lod</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – Use low-LOD SOMA topology (4505 verts) for the iterative
 refit.  This is ~4x fewer vertices than mid-LOD (18056) with
 negligible accuracy loss (~0.006 cm).  When <em>True</em> and the
@@ -502,8 +509,8 @@ remain available for diagnostics.</p></li>
 </pre></div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion.transfer_to_soma">
-<span class="sig-name descname"><span class="pre">transfer_to_soma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion.transfer_to_soma" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="soma.fitting.pose_inversion.PoseInversion.transfer_to_soma">
+<span class="sig-name descname"><span class="pre">transfer_to_soma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.fitting.pose_inversion.PoseInversion.transfer_to_soma" title="Link to this definition">#</a></dt>
 <dd><p>Transfer vertices from identity-model topology to SOMA topology.</p>
 <p>If vertices are already on SOMA topology, returns them unchanged.</p>
 <dl class="field-list simple">
@@ -520,7 +527,7 @@ remain available for diagnostics.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion.prepare_identity">
+<dt class="sig sig-object py" id="soma.fitting.pose_inversion.PoseInversion.prepare_identity">
 <span class="sig-name descname"><span class="pre">prepare_identity</span></span><span class="sig-paren">(</span>
 
 <dl>
@@ -530,7 +537,7 @@ remain available for diagnostics.</p></li>
 <dd><em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion.prepare_identity" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.fitting.pose_inversion.PoseInversion.prepare_identity" title="Link to this definition">#</a></dt>
 <dd><p>Set up rig from identity parameters.</p>
 <p>Supports both single identity <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">C)</span></code> and batched identities
 <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">C)</span></code>.  Structural caches (sparse weights, groups, levels)
@@ -553,7 +560,7 @@ model’s native rest pose (e.g. MHR).</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion.fit">
+<dt class="sig sig-object py" id="soma.fitting.pose_inversion.PoseInversion.fit">
 <span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span>
 
 <dl>
@@ -574,7 +581,7 @@ model’s native rest pose (e.g. MHR).</p></li>
 <dd><em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion.fit" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.fitting.pose_inversion.PoseInversion.fit" title="Link to this definition">#</a></dt>
 <dd><p>Fit SOMA skeleton rotations to posed vertices.</p>
 <p>Supports several modes depending on the iteration arguments:</p>
 <ul class="simple">
@@ -642,8 +649,8 @@ Float for uniform (e.g. 3.0), or dict for per-group
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.pose_inversion.PoseInversion.roundtrip">
-<span class="sig-name descname"><span class="pre">roundtrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">posed_vertices</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.pose_inversion.PoseInversion.roundtrip" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="soma.fitting.pose_inversion.PoseInversion.roundtrip">
+<span class="sig-name descname"><span class="pre">roundtrip</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">posed_vertices</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.fitting.pose_inversion.PoseInversion.roundtrip" title="Link to this definition">#</a></dt>
 <dd><p>Invert and forward for verification.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -670,12 +677,12 @@ Float for uniform (e.g. 3.0), or dict for per-group
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="somalayer.html"
+       href="somahandlayer.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></p>
       </div>
     </a>
     <a class="right-next"
@@ -708,11 +715,11 @@ Float for uniform (e.g. 3.0), or dict for per-group
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion.transfer_to_soma"><code class="docutils literal notranslate"><span class="pre">transfer_to_soma()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion.prepare_identity"><code class="docutils literal notranslate"><span class="pre">prepare_identity()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion.fit"><code class="docutils literal notranslate"><span class="pre">fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.pose_inversion.PoseInversion.roundtrip"><code class="docutils literal notranslate"><span class="pre">roundtrip()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.fitting.pose_inversion.PoseInversion"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.fitting.pose_inversion.PoseInversion.transfer_to_soma"><code class="docutils literal notranslate"><span class="pre">transfer_to_soma()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.fitting.pose_inversion.PoseInversion.prepare_identity"><code class="docutils literal notranslate"><span class="pre">prepare_identity()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.fitting.pose_inversion.PoseInversion.fit"><code class="docutils literal notranslate"><span class="pre">fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.fitting.pose_inversion.PoseInversion.roundtrip"><code class="docutils literal notranslate"><span class="pre">roundtrip()</span></code></a></li>
 </ul>
 </li>
 </ul>

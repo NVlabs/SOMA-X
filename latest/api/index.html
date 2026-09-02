@@ -44,7 +44,7 @@
 
 
 
-    <script src="../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../_static/documentation_options.js?v=e259d695"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -66,12 +66,12 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="SOMALayer" href="somalayer.html" />
-    <link rel="prev" title="SOMA-X Documentation" href="../index.html" />
+    <link rel="prev" title="Procedural Control Format" href="../procedural_control_format.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.3" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -369,20 +369,27 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">Demos and conversion tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hand_data_assets.html">SOMA Hand data assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">API Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="somahandlayer.html"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../model_card.html">Model Overview</a></li>
@@ -448,6 +455,7 @@
 <ul class="simple">
 <li><p>top-level library entry points exported from <code class="docutils literal notranslate"><span class="pre">soma</span></code></p></li>
 <li><p>the main full-body layer: <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></p></li>
+<li><p>the left/right hand layer: <code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code>, which is used by the conversion tooling</p></li>
 <li><p>the <code class="docutils literal notranslate"><span class="pre">soma.io</span></code> module for USD and NPZ interoperability</p></li>
 <li><p>the lower-level <code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code> building blocks that back skinning, fitting, and rig transforms</p></li>
@@ -457,12 +465,20 @@
 <p>For the first published version of the docs, treat these as the primary supported entry points:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">soma.SOMALayer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">soma.body.SOMALayer</span></code> and <code class="docutils literal notranslate"><span class="pre">soma.body.SOMAPoseOutput</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">soma.SOMAHandLayer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">soma.hand.SOMAHandPoseOutput</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">soma.setup_warp_for_ddp</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">soma.Unit</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">soma.create_identity_model</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">soma.create_identity_model</span></code> and the <code class="docutils literal notranslate"><span class="pre">soma.body.identity_model</span></code> backends</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">soma.io.*</span></code> USD and NPZ helpers</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">soma.pose_inversion.PoseInversion</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">soma.fitting.pose_inversion.PoseInversion</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">soma.fitting.rts_smoothing.smooth_pose</span></code></p></li>
 </ul>
+<p>The historical <code class="docutils literal notranslate"><span class="pre">soma.soma</span></code>, <code class="docutils literal notranslate"><span class="pre">soma.identity_model</span></code>, <code class="docutils literal notranslate"><span class="pre">soma.pose_inversion</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">soma.rts_smoothing</span></code> paths remain available for existing applications and
+serialized references. New module-qualified imports should use <code class="docutils literal notranslate"><span class="pre">soma.body</span></code> and
+<code class="docutils literal notranslate"><span class="pre">soma.fitting</span></code>.</p>
 </section>
 <section id="advanced-building-blocks">
 <h2>Advanced building blocks<a class="headerlink" href="#advanced-building-blocks" title="Link to this heading">#</a></h2>
@@ -487,12 +503,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../index.html"
+       href="../procedural_control_format.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">SOMA-X Documentation</p>
+        <p class="prev-next-title">Procedural Control Format</p>
       </div>
     </a>
     <a class="right-next"

@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Bias &#8212; SOMA-X</title>
+    <title>Installation &#8212; SOMA-X</title>
   
   
   
@@ -50,7 +50,7 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'BIAS';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'installation';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://nvlabs.github.io/SOMA-X/versions.json';
@@ -60,13 +60,13 @@
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
 
-    <link rel="canonical" href="https://nvlabs.github.io/SOMA-X/BIAS.html" />
+    <link rel="canonical" href="https://nvlabs.github.io/SOMA-X/installation.html" />
     <link rel="icon" href="_static/favicon.png"/>
 
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Explainability" href="EXPLAINABILITY.html" />
-    <link rel="prev" title="Model Overview" href="model_card.html" />
+    <link rel="next" title="Demos and conversion tools" href="tools.html" />
+    <link rel="prev" title="SOMA-X Documentation" href="index.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
@@ -246,6 +246,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -366,8 +370,8 @@
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">Demos and conversion tools</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
@@ -386,11 +390,11 @@
 <li class="toctree-l1"><a class="reference internal" href="api/geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="model_card.html">Model Overview</a></li>
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="BIAS.html">Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="EXPLAINABILITY.html">Explainability</a></li>
 <li class="toctree-l1"><a class="reference internal" href="PRIVACY.html">Privacy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="SAFETY_and_SECURITY.html">Safety and Security</a></li>
@@ -428,7 +432,7 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Bias</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Installation</span></li>
   </ul>
 </nav>
 </div>
@@ -445,33 +449,106 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="bias">
-<h1>Bias<a class="headerlink" href="#bias" title="Link to this heading">#</a></h1>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-left"><p>Field</p></th>
-<th class="head text-left"><p>Response</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-left"><p>Participation considerations from adversely impacted groups (<a class="reference external" href="https://www.senate.ca.gov/content/protected-classes">protected classes</a>) in model design and testing:</p></td>
-<td class="text-left"><p>The SOMA native shape PCA was fitted on a combination of SizeUSA (large-scale U.S. anthropometric survey) and TripleGangers (303 individuals, commercially purchased). While SizeUSA covers a broad range of age, sex, and BMI groups, both datasets reflect body shapes predominantly from North American/Western populations and may under-represent shapes common in other geographic regions (e.g., South/Southeast Asia, Sub-Saharan Africa). SOMA mitigates this by adding additional data from GarmentMeasurements which contains some european population and by supporting the ANNY backend, which derives body shapes from anthropometric measurements rather than 3D scan data, enabling representation of human body shapes from infants to elders without inheriting scan-collection demographic biases.</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p>Measures taken to mitigate against unwanted bias:</p></td>
-<td class="text-left"><p>(1) <strong>Multi-backend design:</strong> SOMA’s unified framework supports six identity backends. The ANNY backend is explicitly constructed from anthropometric phenotypes (age, height, weight, body composition) rather than scans, avoiding demographic sampling biases that affect scan-collected datasets. Developers requiring globally diverse or age-spanning body shape representation are encouraged to use ANNY. (2) <strong>Shape space coverage:</strong> The SOMA-shape PCA backend samples from the full statistical range of the SizeUSA, TripleGanger and GarmentMeasurment scan distribution; no demographic subgroup is excluded. (3) <strong>Evaluation coverage:</strong> Quantitative benchmarks sample 100 random identities spanning the full shape space extremes per backend, ensuring evaluation is not biased toward mean/average bodies.</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p>Bias Metric (If Measured):</p></td>
-<td class="text-left"><p>No formal demographic bias metric has been measured for the SOMA-shape against external demographic benchmarks.</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p>Which characteristic (feature) shows the greatest difference in performance?:</p></td>
-<td class="text-left"><p>Not applicable.</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p>Representation in training data:</p></td>
-<td class="text-left"><p>SizeUSA and TripleGangers (303 individuals) together represent predominantly the U.S./Western population and do not collectively or exhaustively represent all global demographic groups proportionally. For instance, East Asian, South Asian, and Sub-Saharan African body proportions may be under-represented. To mitigate this for applications requiring global diversity, we recommend using the ANNY identity backend or fine-tuning the SOMA native shape PCA with supplementary scan data representative of the target population.</p></td>
-</tr>
-</tbody>
-</table>
+  <section id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h1>
+<section id="install-from-pypi">
+<h2>Install from PyPI<a class="headerlink" href="#install-from-pypi" title="Link to this heading">#</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>py-soma-x
+</pre></div>
 </div>
+<p>SOMA-X downloads its public runtime assets from
+<a class="reference external" href="https://huggingface.co/nvidia/SOMA-X"><code class="docutils literal notranslate"><span class="pre">nvidia/SOMA-X</span></code></a> on first use. The
+download is cached by <code class="docutils literal notranslate"><span class="pre">huggingface_hub</span></code>; pass <code class="docutils literal notranslate"><span class="pre">data_root</span></code> to a layer when an
+explicit local asset directory is preferred.</p>
+<p>Install optional identity backends with extras:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"py-soma-x[smpl]"</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"py-soma-x[anny]"</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"py-soma-x[demo]"</span>
+</pre></div>
+</div>
+</section>
+<section id="separately-licensed-model-files">
+<h2>Separately licensed model files<a class="headerlink" href="#separately-licensed-model-files" title="Link to this heading">#</a></h2>
+<p>SOMA-X does not redistribute SMPL, SMPL-X, or MANO model files. Download the
+models from their official sources under the applicable license and pass the
+local path explicitly.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">soma</span><span class="w"> </span><span class="kn">import</span> <span class="n">SOMALayer</span>
+
+<span class="n">body</span> <span class="o">=</span> <span class="n">SOMALayer</span><span class="p">(</span>
+    <span class="n">identity_model_type</span><span class="o">=</span><span class="s2">"smpl"</span><span class="p">,</span>
+    <span class="n">identity_model_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s2">"model_path"</span><span class="p">:</span> <span class="s2">"/path/to/SMPL_NEUTRAL.pkl"</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The hand conversion tools accept <code class="docutils literal notranslate"><span class="pre">MANO_LEFT.pkl</span></code> and <code class="docutils literal notranslate"><span class="pre">MANO_RIGHT.pkl</span></code> from
+MANO v1.2. See <a class="reference internal" href="hand_data_assets.html"><span class="std std-doc">SOMA Hand data assets</span></a> for the expected
+paths and interoperability contract.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">smplx</span></code> dependency requires <code class="docutils literal notranslate"><span class="pre">chumpy</span></code>, whose PyPI package needs build
+isolation disabled:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--no-build-isolation<span class="w"> </span>chumpy
+</pre></div>
+</div>
+<p>If that package build is unavailable, install the compatible source revision:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>--no-build-isolation<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>git+https://github.com/mattloper/chumpy@580566eafc9ac68b2614b64d6f7aaa8
+</pre></div>
+</div>
+</section>
+<section id="developer-installation">
+<h2>Developer installation<a class="headerlink" href="#developer-installation" title="Link to this heading">#</a></h2>
+<p>The source repository uses Git LFS for runtime and test assets.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>lfs<span class="w"> </span>install
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/NVlabs/SOMA-X.git
+<span class="nb">cd</span><span class="w"> </span>SOMA-X
+git<span class="w"> </span>lfs<span class="w"> </span>pull
+</pre></div>
+</div>
+<p>Create an environment and install the development dependencies:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>uv
+uv<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>torch<span class="w"> </span>--index-url<span class="w"> </span>https://download.pytorch.org/whl/cu124
+uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[dev]"</span>
+</pre></div>
+</div>
+<p>On Windows PowerShell, activate with <code class="docutils literal notranslate"><span class="pre">.\.venv\Scripts\activate</span></code> after
+<code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">venv</span> <span class="pre">.venv</span></code>. Select the PyTorch wheel index that matches the installed GPU
+driver and CUDA runtime.</p>
+<p>Run the test suite with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pytest<span class="w"> </span>tests<span class="w"> </span>-v
+</pre></div>
+</div>
+</section>
+<section id="optional-body-identity-assets">
+<h2>Optional body identity assets<a class="headerlink" href="#optional-body-identity-assets" title="Link to this heading">#</a></h2>
+<section id="garmentmeasurements">
+<h3>GarmentMeasurements<a class="headerlink" href="#garmentmeasurements" title="Link to this heading">#</a></h3>
+<p>Clone the upstream
+<a class="reference external" href="https://github.com/mbotsch/GarmentMeasurements">GarmentMeasurements</a>
+repository and convert its PCA file into the local SOMA-X asset layout:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tools/convert_gm_pca_to_npz.py<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>/path/to/GarmentMeasurements/data/pca/point.pca<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>assets/GarmentMeasurements/point.npz
+</pre></div>
+</div>
+</section>
+<section id="anny">
+<h3>Anny<a class="headerlink" href="#anny" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[anny]"</span>
+</pre></div>
+</div>
+</section>
+<section id="smpl-family">
+<h3>SMPL family<a class="headerlink" href="#smpl-family" title="Link to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>uv<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[smpl]"</span>
+pip<span class="w"> </span>install<span class="w"> </span>--no-build-isolation<span class="w"> </span>chumpy
+</pre></div>
+</div>
+<p>Keep licensed model files outside version control. Pass their paths through
+the identity backend configuration rather than copying them into a release or
+Hugging Face payload.</p>
+</section>
+</section>
 </section>
 
 
@@ -485,20 +562,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="model_card.html"
+       href="index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Model Overview</p>
+        <p class="prev-next-title">SOMA-X Documentation</p>
       </div>
     </a>
     <a class="right-next"
-       href="EXPLAINABILITY.html"
+       href="tools.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Explainability</p>
+        <p class="prev-next-title">Demos and conversion tools</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -509,9 +586,33 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-from-pypi">Install from PyPI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#separately-licensed-model-files">Separately licensed model files</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#developer-installation">Developer installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-body-identity-assets">Optional body identity assets</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#garmentmeasurements">GarmentMeasurements</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#anny">Anny</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smpl-family">SMPL family</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 

@@ -44,7 +44,7 @@
 
 
 
-    <script src="_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="_static/documentation_options.js?v=e259d695"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -71,7 +71,7 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.3" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -369,20 +369,27 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Demos and conversion tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hand_data_assets.html">SOMA Hand data assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/somalayer.html"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/somahandlayer.html"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="data_assets.html">Data Assets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="procedural_control_format.html">Procedural Control Format</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Model Overview</a></li>
@@ -446,7 +453,7 @@
 <h1>Model Overview<a class="headerlink" href="#model-overview" title="Link to this heading">#</a></h1>
 <section id="description">
 <h2>Description:<a class="headerlink" href="#description" title="Link to this heading">#</a></h2>
-<p>SOMA (Unifying Parametric Human Body Models) is a unified framework that decouples identity representation from pose parameterization by mapping any supported parametric body model to a single canonical mesh topology and skeleton, enabling a shared Linear Blend Skinning (LBS) pipeline across all backends. SOMA supports six identity backends (SOMA-shape, SMPL, SMPL-X, MHR, ANNY, and GarmentMeasurements), unified under a canonical mesh topology and SOMA skeleton.</p>
+<p>SOMA (Unifying Parametric Human Body Models) is a unified framework that decouples identity representation from pose parameterization by mapping supported parametric models to canonical body and hand topologies and skeletons, enabling shared Linear Blend Skinning (LBS) pipelines across backends. The full-body layer supports six identity backends (SOMA-shape, SMPL, SMPL-X, MHR, ANNY, and GarmentMeasurements). SOMA-X v0.3 also includes wrist-local left/right hand layers with native SOMA identity and articulation priors plus interoperability with user-supplied MANO models.</p>
 <p>This model is ready for commercial use.</p>
 </section>
 <section id="license-terms-of-use">
@@ -466,11 +473,13 @@
 <li><p><strong>Motion generation and animation</strong> — apply motion capture sequences to any supported identity model using the same axis-angle pose parameterization.</p></li>
 <li><p><strong>Avatar synthesis and digital humans</strong> — freely mix identity sources with SOMA’s pose representation.</p></li>
 <li><p><strong>Simulation and robotics</strong> — lightweight analytical forward pass enables real-time simulation pipelines with diverse body shapes.</p></li>
+<li><p><strong>Hand animation and reconstruction</strong> — wrist-local left/right hand layers
+support mid, low, and extra-low LODs and a sampled articulation prior.</p></li>
 </ul>
 </section>
 <section id="release">
 <h2>Release:<a class="headerlink" href="#release" title="Link to this heading">#</a></h2>
-<p>SOMA-X v0.2.4</p>
+<p>SOMA-X v0.3.0</p>
 </section>
 <section id="reference-s">
 <h2>Reference(s):<a class="headerlink" href="#reference-s" title="Link to this heading">#</a></h2>
@@ -515,6 +524,10 @@
 <li><p>Identity coefficients: floating-point tensor, shape <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">K)</span></code> where <code class="docutils literal notranslate"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">128</span></code> for SOMA-shape backend or backend-specific dimensionality for SMPL/SMPL-X/MHR/ANNY/Garment</p></li>
 <li><p>Pose parameters: axis-angle vectors <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3)</span></code> or rotation matrices <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> covering 77 articulated joints (excludes root dummy joint)</p></li>
 <li><p>Optional root translation: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">3)</span></code> in meters</p></li>
+<li><p>Hand pose parameters: axis-angle <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">25,</span> <span class="pre">3)</span></code> or rotation matrices
+<code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">25,</span> <span class="pre">3,</span> <span class="pre">3)</span></code>, with joint zero representing the wrist</p></li>
+<li><p>Hand identity coefficients: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">20)</span></code> for the native SOMA hand PCA, or the
+backend-specific MANO/MHR dimensionality</p></li>
 </ul>
 <p><strong>Input Parameters:</strong> One-Dimensional (1D) coefficient vectors; Three-Dimensional (3D) pose tensors <br></p>
 <p><strong>Other Properties Related to Input:</strong></p>
@@ -533,6 +546,9 @@
 <li><p>Posed mesh vertices: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">N_h,</span> <span class="pre">3)</span></code> where <code class="docutils literal notranslate"><span class="pre">N_h</span></code> depends on <code class="docutils literal notranslate"><span class="pre">lod</span></code> (<code class="docutils literal notranslate"><span class="pre">mid</span></code>: 18,056; <code class="docutils literal notranslate"><span class="pre">low</span></code>: 4,505; <code class="docutils literal notranslate"><span class="pre">xlo</span></code>: 612) – world-space vertex positions in <strong>meters</strong></p></li>
 <li><p>Joint positions: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3)</span></code> — world-space 3D joint positions in <strong>meters</strong></p></li>
 <li><p>Rest-shape vertices: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">N_h,</span> <span class="pre">3)</span></code> in meters, with the same LOD-dependent <code class="docutils literal notranslate"><span class="pre">N_h</span></code> (intermediate output, available on request)</p></li>
+<li><p>Hand vertices: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">V_h,</span> <span class="pre">3)</span></code> in wrist-local coordinates, where <code class="docutils literal notranslate"><span class="pre">V_h</span></code> is
+2,859 (<code class="docutils literal notranslate"><span class="pre">mid</span></code>), 718 (<code class="docutils literal notranslate"><span class="pre">low</span></code>), or 134 (<code class="docutils literal notranslate"><span class="pre">xlo</span></code>) per hand</p></li>
+<li><p>Hand joints and transforms: <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">25,</span> <span class="pre">3)</span></code> and <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">25,</span> <span class="pre">4,</span> <span class="pre">4)</span></code></p></li>
 </ul>
 <p><strong>Other Properties Related to Output:</strong> All outputs are in meters. Body vertex count <code class="docutils literal notranslate"><span class="pre">N_h</span></code> is selected by <code class="docutils literal notranslate"><span class="pre">SOMALayer(lod=...)</span></code>; <code class="docutils literal notranslate"><span class="pre">low_lod=True</span></code> is the legacy alias for <code class="docutils literal notranslate"><span class="pre">lod=&quot;low&quot;</span></code>. Joint count is fixed at 77.</p>
 <p>Our AI models are designed and/or optimized to run on NVIDIA GPU-accelerated systems. By leveraging NVIDIA’s hardware (GPU cores) and software frameworks (CUDA libraries, NVIDIA Warp), the model achieves real-time throughput exceeding 7,000 meshes per second at batch size 128 on an A100 GPU.</p>
@@ -564,10 +580,11 @@
 <section id="model-version-s">
 <h2>Model Version(s):<a class="headerlink" href="#model-version-s" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>SOMA-X v0.2.4</strong> — keeps the virtual Root fixed during Lie-GN pose
-inversion for a well-constrained optimization.</p></li>
-<li><p><strong>SOMA-X v0.2.3</strong> — full-body release with <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> (77-joint pose
-interface and mid/low/xlo LODs) and all six identity backends.</p></li>
+<li><p><strong>SOMA-X v0.3.0</strong> — adds <code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code> for left/right hands at
+mid/low/xlo LODs, native hand identity and articulation-pose PCA models, and
+MANO interoperability using separately licensed user-supplied model files.</p></li>
+<li><p><strong>SOMA-X v0.2.3</strong> — full-body release with <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> and all six body
+identity backends.</p></li>
 </ul>
 </section>
 <section id="training-testing-and-evaluation-datasets">

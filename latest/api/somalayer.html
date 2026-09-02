@@ -44,7 +44,7 @@
 
 
 
-    <script src="../_static/documentation_options.js?v=6ffd866b"></script>
+    <script src="../_static/documentation_options.js?v=e259d695"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -65,13 +65,13 @@
 
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="PoseInversion" href="pose_inversion.html" />
+    <link rel="next" title="SOMAHandLayer" href="somahandlayer.html" />
     <link rel="prev" title="API Overview" href="index.html" />
 
 
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2" />
+  <meta name="docsearch:version" content="0.3" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -369,20 +369,27 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">API</span></p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">Demos and conversion tools</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Models and Data</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hand_data_assets.html">SOMA Hand data assets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">API Reference</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="index.html">API Overview</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="somahandlayer.html"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="pose_inversion.html"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="io.html"><code class="docutils literal notranslate"><span class="pre">soma.io</span></code></a></li>
 <li class="toctree-l1"><a class="reference internal" href="geometry.html"><code class="docutils literal notranslate"><span class="pre">soma.geometry</span></code></a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../data_assets.html">Data Assets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../procedural_control_format.html">Procedural Control Format</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project Docs</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Project</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../model_card.html">Model Overview</a></li>
@@ -461,8 +468,8 @@
 <p>See the module overview below for the full parameter reference (joint grouping,
 per-backend identity dims, <code class="docutils literal notranslate"><span class="pre">scale_params</span></code> layout, units). The class reference
 follows.</p>
-<p id="module-soma.soma">Full-body SOMA layer and identity-aware posing pipeline.</p>
-<p>This module defines <a class="reference internal" href="#soma.soma.SOMALayer" title="soma.soma.SOMALayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOMALayer</span></code></a>, the full-body entry point of the
+<p id="module-soma.body.soma">Full-body SOMA layer and identity-aware posing pipeline.</p>
+<p>This module defines <a class="reference internal" href="#soma.body.SOMALayer" title="soma.body.soma.SOMALayer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SOMALayer</span></code></a>, the full-body entry point of the
 library. SOMA maps every supported identity backend to a single canonical
 mesh topology and 78-joint skeleton, enabling a shared LBS pipeline across
 backends.</p>
@@ -726,8 +733,8 @@ vertices, joints, transforms – are in <code class="docutils literal notranslat
 forward axis <code class="docutils literal notranslate"><span class="pre">+Z</span></code>, right-handed.</p>
 </section>
 <dl class="py class">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.soma.</span></span><span class="sig-name descname"><span class="pre">SOMALayer</span></span><span class="sig-paren">(</span>
+<dt class="sig sig-object py" id="soma.body.SOMALayer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.body.</span></span><span class="sig-name descname"><span class="pre">SOMALayer</span></span><span class="sig-paren">(</span>
 
 <dl>
 <dd><em class="sig-param"><span class="n"><span class="pre">data_root</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
@@ -744,7 +751,7 @@ forward axis <code class="docutils literal notranslate"><span class="pre">+Z</sp
 <dd><em class="sig-param"><span class="n"><span class="pre">correctives_model_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_DEFAULT_CORRECTIVES_MODEL_PATH</span></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code></p>
 <p>Full-body parametric human model with a 78-joint SOMA skeleton.</p>
 <p>Combines a pluggable identity backend, identity-dependent skeleton
@@ -758,7 +765,7 @@ rest shape + fitted skeleton for an identity.</p></li>
 identity.</p></li>
 </ol>
 <p><code class="docutils literal notranslate"><span class="pre">forward()</span></code> is a convenience wrapper that calls both.</p>
-<p>See the <a class="reference internal" href="#module-soma.soma" title="soma.soma"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soma.soma</span></code></a> module docstring for the SOMA skeleton joint
+<p>See the <a class="reference internal" href="#module-soma.body.soma" title="soma.body.soma"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soma.body.soma</span></code></a> module docstring for the SOMA skeleton joint
 layout, pose tensor conventions, per-backend identity dimensions, and
 <code class="docutils literal notranslate"><span class="pre">scale_params</span></code> semantics.</p>
 <p>Build a SOMALayer with the selected identity backend.</p>
@@ -777,7 +784,7 @@ tensors (e.g. <code class="docutils literal notranslate"><span class="pre">&quot
 <li><p><strong>identity_model_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Identity backend. One of <code class="docutils literal notranslate"><span class="pre">&quot;mhr&quot;</span></code>
 (default), <code class="docutils literal notranslate"><span class="pre">&quot;soma&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;smpl&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;smplh&quot;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&quot;smplx&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;anny&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;garment&quot;</span></code>. See
-<a class="reference internal" href="#module-soma.soma" title="soma.soma"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soma.soma</span></code></a> for per-backend identity dimensions
+<a class="reference internal" href="#module-soma.body.soma" title="soma.body.soma"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soma.body.soma</span></code></a> for per-backend identity dimensions
 and <code class="docutils literal notranslate"><span class="pre">scale_params</span></code> semantics.</p></li>
 <li><p><strong>mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Skinning backend. <code class="docutils literal notranslate"><span class="pre">&quot;warp&quot;</span></code> uses the NVIDIA Warp
 accelerated LBS kernel; other values fall back to the
@@ -810,8 +817,8 @@ are enabled. Pass <code class="docutils literal notranslate"><span class="pre">N
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.default_skin_mesh_name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_skin_mesh_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#soma.soma.SOMALayer.default_skin_mesh_name" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="soma.body.SOMALayer.default_skin_mesh_name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_skin_mesh_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#soma.body.SOMALayer.default_skin_mesh_name" title="Link to this definition">#</a></dt>
 <dd><p>Default USD skin-mesh prim name for this layer’s topology.</p>
 <p>Consumed by <code class="xref py py-obj docutils literal notranslate"><span class="pre">export_soma_usd</span></code> when the caller does
 not pass an explicit <code class="code docutils literal notranslate"><span class="pre">skin_mesh_name</span></code>. Uses the <code class="code docutils literal notranslate"><span class="pre">c_skin_&lt;lod&gt;</span></code>
@@ -819,57 +826,57 @@ convention (<code class="code docutils literal notranslate"><span class="pre">mi
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.public_joint_names">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">public_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.soma.SOMALayer.public_joint_names" title="Link to this definition">#</a></dt>
-<dd><p>Names of the public SOMA joints returned by <a class="reference internal" href="#soma.soma.SOMALayer.pose" title="soma.soma.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>.</p>
+<dt class="sig sig-object py" id="soma.body.SOMALayer.public_joint_names">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">public_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.body.SOMALayer.public_joint_names" title="Link to this definition">#</a></dt>
+<dd><p>Names of the public SOMA joints returned by <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.target_joint_names">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.soma.SOMALayer.target_joint_names" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="soma.body.SOMALayer.target_joint_names">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.body.SOMALayer.target_joint_names" title="Link to this definition">#</a></dt>
 <dd><p>Names of the internal target skinning joints.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.output_joint_parent_ids">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_joint_parent_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span></em><a class="headerlink" href="#soma.soma.SOMALayer.output_joint_parent_ids" title="Link to this definition">#</a></dt>
-<dd><p>Parent ids for the public transforms returned by <a class="reference internal" href="#soma.soma.SOMALayer.pose" title="soma.soma.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>.</p>
+<dt class="sig sig-object py" id="soma.body.SOMALayer.output_joint_parent_ids">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_joint_parent_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span></em><a class="headerlink" href="#soma.body.SOMALayer.output_joint_parent_ids" title="Link to this definition">#</a></dt>
+<dd><p>Parent ids for the public transforms returned by <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.public_skinning_weights">
-<span class="sig-name descname"><span class="pre">public_skinning_weights</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer.public_skinning_weights" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="soma.body.SOMALayer.public_skinning_weights">
+<span class="sig-name descname"><span class="pre">public_skinning_weights</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.public_skinning_weights" title="Link to this definition">#</a></dt>
 <dd><p>Return target skinning weights folded onto the public SOMA hierarchy.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.public_bind_transforms_world">
-<span class="sig-name descname"><span class="pre">public_bind_transforms_world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bind_transforms_world</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer.public_bind_transforms_world" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="soma.body.SOMALayer.public_bind_transforms_world">
+<span class="sig-name descname"><span class="pre">public_bind_transforms_world</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bind_transforms_world</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.public_bind_transforms_world" title="Link to this definition">#</a></dt>
 <dd><p>Select public-joint world bind transforms from target bind transforms.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.public_rig_view">
-<span class="sig-name descname"><span class="pre">public_rig_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bind_transforms_world</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer.public_rig_view" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="soma.body.SOMALayer.public_rig_view">
+<span class="sig-name descname"><span class="pre">public_rig_view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bind_transforms_world</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.public_rig_view" title="Link to this definition">#</a></dt>
 <dd><p>Return the public-joint view of this layer’s current fitted rig.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.to_public_rotations">
-<span class="sig-name descname"><span class="pre">to_public_rotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer.to_public_rotations" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="soma.body.SOMALayer.to_public_rotations">
+<span class="sig-name descname"><span class="pre">to_public_rotations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotations</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.to_public_rotations" title="Link to this definition">#</a></dt>
 <dd><p>Reduce target-joint rotations to the public SOMA joint order.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.prepare_identity">
+<dt class="sig sig-object py" id="soma.body.SOMALayer.prepare_identity">
 <span class="sig-name descname"><span class="pre">prepare_identity</span></span><span class="sig-paren">(</span>
 
 <dl>
@@ -880,7 +887,7 @@ convention (<code class="code docutils literal notranslate"><span class="pre">mi
 <dd><em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer.prepare_identity" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.prepare_identity" title="Link to this definition">#</a></dt>
 <dd><p>Cache rest shape and fitted skeleton for the given identity.</p>
 <p>Call once per identity, then call <code class="code docutils literal notranslate"><span class="pre">pose()</span></code> for each new frame.
 This avoids recomputing the identity model and skeleton transfer
@@ -908,7 +915,7 @@ after fitting. Keep enabled when <code class="code docutils literal notranslate"
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.pose">
+<dt class="sig sig-object py" id="soma.body.SOMALayer.pose">
 <span class="sig-name descname"><span class="pre">pose</span></span><span class="sig-paren">(</span>
 
 <dl>
@@ -921,7 +928,7 @@ after fitting. Keep enabled when <code class="code docutils literal notranslate"
 <dd><em class="sig-param"><span class="n"><span class="pre">return_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer.pose" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.pose" title="Link to this definition">#</a></dt>
 <dd><p>Pose the cached identity. Call <code class="code docutils literal notranslate"><span class="pre">prepare_identity()</span></code> first.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -959,7 +966,7 @@ intentionally not returned.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="soma.soma.SOMALayer.forward">
+<dt class="sig sig-object py" id="soma.body.SOMALayer.forward">
 <span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span>
 
 <dl>
@@ -975,7 +982,7 @@ intentionally not returned.</p></li>
 <dd><em class="sig-param"><span class="n"><span class="pre">return_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 
-<span class="sig-paren">)</span><a class="headerlink" href="#soma.soma.SOMALayer.forward" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.forward" title="Link to this definition">#</a></dt>
 <dd><p>Combined prepare_identity + pose (convenience).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1047,11 +1054,11 @@ intentionally not returned.</p></li>
       </div>
     </a>
     <a class="right-next"
-       href="pose_inversion.html"
+       href="somahandlayer.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">PoseInversion</span></code></p>
+        <p class="prev-next-title"><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1085,18 +1092,18 @@ intentionally not returned.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#body-part-scales-scale-params-optional">Body-part scales (<code class="docutils literal notranslate"><span class="pre">scale_params</span></code>, optional)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correctives">Correctives</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#units">Units</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.default_skin_mesh_name"><code class="docutils literal notranslate"><span class="pre">default_skin_mesh_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.public_joint_names"><code class="docutils literal notranslate"><span class="pre">public_joint_names</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.target_joint_names"><code class="docutils literal notranslate"><span class="pre">target_joint_names</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.output_joint_parent_ids"><code class="docutils literal notranslate"><span class="pre">output_joint_parent_ids</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.public_skinning_weights"><code class="docutils literal notranslate"><span class="pre">public_skinning_weights()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.public_bind_transforms_world"><code class="docutils literal notranslate"><span class="pre">public_bind_transforms_world()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.public_rig_view"><code class="docutils literal notranslate"><span class="pre">public_rig_view()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.to_public_rotations"><code class="docutils literal notranslate"><span class="pre">to_public_rotations()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.prepare_identity"><code class="docutils literal notranslate"><span class="pre">prepare_identity()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.pose"><code class="docutils literal notranslate"><span class="pre">pose()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.soma.SOMALayer.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.default_skin_mesh_name"><code class="docutils literal notranslate"><span class="pre">default_skin_mesh_name</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_joint_names"><code class="docutils literal notranslate"><span class="pre">public_joint_names</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.target_joint_names"><code class="docutils literal notranslate"><span class="pre">target_joint_names</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.output_joint_parent_ids"><code class="docutils literal notranslate"><span class="pre">output_joint_parent_ids</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_skinning_weights"><code class="docutils literal notranslate"><span class="pre">public_skinning_weights()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_bind_transforms_world"><code class="docutils literal notranslate"><span class="pre">public_bind_transforms_world()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_rig_view"><code class="docutils literal notranslate"><span class="pre">public_rig_view()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.to_public_rotations"><code class="docutils literal notranslate"><span class="pre">to_public_rotations()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.prepare_identity"><code class="docutils literal notranslate"><span class="pre">prepare_identity()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.pose"><code class="docutils literal notranslate"><span class="pre">pose()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
 </ul>
 </li>
 </ul>
