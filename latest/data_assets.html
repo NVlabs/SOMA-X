@@ -573,6 +573,123 @@ non-Python consumer plan.</p>
 <h3>Removed rig fields<a class="headerlink" href="#removed-rig-fields" title="Link to this heading">#</a></h3>
 <p>The slim asset no longer stores <code class="docutils literal notranslate"><span class="pre">joint_names</span></code>, <code class="docutils literal notranslate"><span class="pre">joint_parent_ids</span></code>, <code class="docutils literal notranslate"><span class="pre">bind_pose_world</span></code>, <code class="docutils literal notranslate"><span class="pre">bind_pose_local</span></code>, <code class="docutils literal notranslate"><span class="pre">t_pose_world</span></code>, <code class="docutils literal notranslate"><span class="pre">t_pose_local</span></code>, <code class="docutils literal notranslate"><span class="pre">bind_shape</span></code>, or <code class="docutils literal notranslate"><span class="pre">skinning_weights_{data,indices,indptr,shape}</span></code>. These arrays are loaded from <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code>.</p>
 </section>
+<section id="cumulative-t-pose-history">
+<h3>Cumulative T-pose history<a class="headerlink" href="#cumulative-t-pose-history" title="Link to this heading">#</a></h3>
+<p>The current <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code> retains historical input reference orientations.
+Both <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code> and <code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code> can use them offline. Set a default once:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">soma</span><span class="w"> </span><span class="kn">import</span> <span class="n">SOMALayer</span>
+
+<span class="n">layer</span> <span class="o">=</span> <span class="n">SOMALayer</span><span class="p">(</span>
+    <span class="n">reference_pose</span><span class="o">=</span><span class="p">{</span><span class="s2">"version"</span><span class="p">:</span> <span class="s2">"v0.1.0"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">prepare_identity</span><span class="p">(</span><span class="n">identity_coeffs</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">pose</span><span class="p">(</span><span class="n">rotations</span><span class="p">,</span> <span class="n">pose2rot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">forward()</span></code> uses the same default. A call-time tensor or dictionary overrides it
+for that call; omitted or <code class="docutils literal notranslate"><span class="pre">None</span></code> references inherit it. Without a constructor
+reference, the current template is used.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">out</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">pose</span><span class="p">(</span>
+    <span class="n">rotations</span><span class="p">,</span>
+    <span class="n">pose2rot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">reference_pose</span><span class="o">=</span><span class="p">{</span><span class="s2">"version"</span><span class="p">:</span> <span class="s2">"v0.3.0"</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Dictionaries use <code class="docutils literal notranslate"><span class="pre">get_reference_pose()</span></code> arguments. Constructor dictionaries are
+resolved once; call-time dictionaries resolve on each call. Stored references
+follow the layer’s device and dtype. To get a tensor directly, use
+<code class="docutils literal notranslate"><span class="pre">layer.get_reference_pose(version=&quot;v0.3.0&quot;)</span></code>. The default data key is <code class="docutils literal notranslate"><span class="pre">t_pose_world</span></code>.</p>
+<p>Version lookup selects the newest stored revision at or before the requested
+version. Here, <code class="docutils literal notranslate"><span class="pre">&quot;v0.3.0&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;0.3.0&quot;</span></code> both select <code class="docutils literal notranslate"><span class="pre">t_pose_world__v0.2.0</span></code>.
+SemVer precedence applies; build metadata is ignored. Requests newer than the
+bundle use its latest known revision. Missing keys or requests before the first
+revision raise <code class="docutils literal notranslate"><span class="pre">KeyError</span></code>. Invalid or conflicting selectors raise errors.
+<code class="docutils literal notranslate"><span class="pre">list_reference_poses()</span></code> lists available entries. A full NPZ key (<code class="docutils literal notranslate"><span class="pre">reference_id</span></code>)
+or source hash (<code class="docutils literal notranslate"><span class="pre">asset_revision</span></code>) selects an exact entry instead of a version.
+Use one selector at a time. The exact alias <code class="docutils literal notranslate"><span class="pre">pre-v0.1.0</span></code> selects the early
+reference used to train Kimodo, with its original asset hash retained:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">layer</span> <span class="o">=</span> <span class="n">SOMALayer</span><span class="p">(</span><span class="n">reference_pose</span><span class="o">=</span><span class="p">{</span><span class="s2">"alias"</span><span class="p">:</span> <span class="s2">"pre-v0.1.0"</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>To convert rotation matrices once between references, use either layer’s
+<code class="docutils literal notranslate"><span class="pre">convert_reference()</span></code> method:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">converted</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">convert_reference</span><span class="p">(</span>
+    <span class="n">rotations</span><span class="p">,</span>
+    <span class="n">from_ref</span><span class="o">=</span><span class="p">{</span><span class="s2">"alias"</span><span class="p">:</span> <span class="s2">"pre-v0.1.0"</span><span class="p">},</span>
+    <span class="n">to_ref</span><span class="o">=</span><span class="p">{</span><span class="s2">"version"</span><span class="p">:</span> <span class="s2">"v0.3.0"</span><span class="p">},</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Both references accept tensors or lookup dictionaries. Input and output are
+<code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> matrices for the body or <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">25,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> for a hand. Conversion
+preserves absolute local rotations, device, dtype and gradients. It does not
+change layer state or use the constructor default. No identity preparation is
+needed. Pose the result using the target reference and <code class="docutils literal notranslate"><span class="pre">pose2rot=False</span></code>.</p>
+<p>The getter returns a fresh tensor on the layer’s device and dtype:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Layer</p></th>
+<th class="head"><p>Reference shape and frame</p></th>
+<th class="head"><p>Input rotations</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(78,</span> <span class="pre">3,</span> <span class="pre">3)</span></code>, body world, including identity virtual Root</p></td>
+<td><p>77 joints, excluding Root</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">SOMAHandLayer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(25,</span> <span class="pre">3,</span> <span class="pre">3)</span></code>, hand world (current wrist bind frame), wrist first</p></td>
+<td><p>25 joints, including wrist</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Custom tensors use the same order and frame. They may also contain <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">4,</span> <span class="pre">4)</span></code>
+transforms; only rotation blocks are used. Rotations must be finite and in SO(3)
+(absolute tolerance <code class="docutils literal notranslate"><span class="pre">1e-4</span></code>). The body’s virtual Root must be identity; the hand’s
+wrist reference need not be. Tensor gradients are preserved.
+<code class="docutils literal notranslate"><span class="pre">absolute_pose=True</span></code> bypasses the constructor default. Combining it with an
+explicit call-time <code class="docutils literal notranslate"><span class="pre">reference_pose</span></code> is an error.</p>
+<p>Reference selection changes how rotations are interpreted. Geometry, bind
+transforms and identity models remain current; this does not reproduce an entire
+old model. Historical translations and internal twist joints are not included.
+Assets without history still accept custom tensors.</p>
+<section id="stored-arrays">
+<h4>Stored arrays<a class="headerlink" href="#stored-arrays" title="Link to this heading">#</a></h4>
+<p>Only changes add snapshots. The bundle stores v0.1.0, v0.2.0 and an earlier
+asset-hash reference. Both layers read this shared history; hands select their
+joints and convert orientations into the current wrist bind frame.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>NPZ key</p></th>
+<th class="head"><p>Contents</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">t_pose_world__v0.1.0</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(78,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> float32 public world rotations</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">t_pose_world__v0.1.0__joint_names</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(78,)</span></code> Unicode names, Root first</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">t_pose_world__v0.1.0__parent_ids</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(78,)</span></code> integer parent indices, Root parent 0</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">reference_pose_history_metadata</span></code></p></td>
+<td><p>Unicode JSON: schema version 2, default reference ID, conventions and entry metadata</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Other snapshots use the same suffixes. Unpublished sources use
+<code class="docutils literal notranslate"><span class="pre">t_pose_world__sha256_&lt;source-asset-hash&gt;</span></code>. Each metadata entry records its key,
+data key, version or source hash, provenance and orientation checksum.
+The default reference ID describes the stored history; it does not change the
+runtime template.</p>
+</section>
+</section>
 <section id="uv-primvars-three-sets">
 <h3>UV primvars (three sets)<a class="headerlink" href="#uv-primvars-three-sets" title="Link to this heading">#</a></h3>
 <p>Three UV sets (<code class="docutils literal notranslate"><span class="pre">st</span></code>, <code class="docutils literal notranslate"><span class="pre">st1</span></code>, <code class="docutils literal notranslate"><span class="pre">st2</span></code>) preserved from the source USD. Each uses <code class="docutils literal notranslate"><span class="pre">faceVarying</span></code> interpolation: indices are flat per-face-corner lookups into <code class="docutils literal notranslate"><span class="pre">uv_coord_*</span></code>.</p>
@@ -847,6 +964,10 @@ python<span class="w"> </span>tools/convert_gm_pca_to_npz.py<span class="w"> </s
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#shape-pca">Shape / PCA</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#topology">Topology</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#removed-rig-fields">Removed rig fields</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cumulative-t-pose-history">Cumulative T-pose history</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#stored-arrays">Stored arrays</a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uv-primvars-three-sets">UV primvars (three sets)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#low-lod-subset">Low-LOD subset</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#extra-low-lod-usd-asset">Extra-low LOD USD asset</a></li>

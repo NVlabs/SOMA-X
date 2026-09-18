@@ -20,6 +20,10 @@ The pose tensor has shape ``(B, 25, 3)`` in axis-angle form, or
 remaining 24 joints articulate the fingers. Outputs contain wrist-local
 vertices, joints, and transforms in the requested output unit.
 
+Use constructor ``reference_pose=`` for a reusable default, or pass it to
+``pose()`` / ``forward()`` for a one-call override.
+See :doc:`../data_assets` for the shared body/hand lookup API and frames.
+
 See :doc:`../hand_data_assets` for the checked-in identity and pose-PCA asset
 contract and the MANO setup requirements.
 
@@ -27,7 +31,7 @@ contract and the MANO setup requirements.
    :no-members:
 
 .. autoclass:: soma.hand.SOMAHandLayer
-   :members: default_skin_mesh_name, num_shape_components, prepare_identity, pose, forward
+   :members: default_skin_mesh_name, num_shape_components, list_reference_poses, get_reference_pose, convert_reference, prepare_identity, pose, forward
    :show-inheritance:
 
 .. autoclass:: soma.hand.SOMAHandPoseOutput

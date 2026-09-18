@@ -467,8 +467,8 @@ without going through the higher-level layer wrappers.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> (<em>Tensor</em>) – Target vectors (…, N, 3)</p></li>
 <li><p><strong>B</strong> (<em>Tensor</em>) – Source vectors (…, N, 3)</p></li>
-<li><p><strong>virtual_normal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, add synthetic normal correspondence for conditioning</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
+<li><p><strong>virtual_normal</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, add synthetic normal correspondence for conditioning</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -509,8 +509,8 @@ covariance is rank deficient.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>H</strong> (<em>Tensor</em>) – Covariance matrix (…, 3, 3)</p></li>
-<li><p><strong>num_iters</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of iterations (default 30)</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
+<li><p><strong>num_iters</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of iterations (default 30)</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -571,7 +571,7 @@ require more iterations or may not converge to high precision.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>a</strong> (<em>Tensor</em>) – Target vector (…, 3)</p></li>
 <li><p><strong>b</strong> (<em>Tensor</em>) – Source vector (…, 3)</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -593,7 +593,7 @@ Supports broadcasting across leading batch dims. Inputs: (…, N, 3).</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>A</strong> (<em>Tensor</em>) – Target vectors (…, N, 3)</p></li>
 <li><p><strong>B</strong> (<em>Tensor</em>) – Source vectors (…, N, 3)</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant for numerical stability</p></li>
 <li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><em>Literal</em></a><em>[</em><em>'kabsch'</em><em>, </em><em>'newton-schulz'</em><em>, </em><em>'auto'</em><em>]</em>) – ‘auto’, ‘kabsch’ (SVD-based), or ‘newton-schulz’ (iterative)</p></li>
 </ul>
 </dd>
@@ -670,7 +670,7 @@ Returns: T (…, 4, 4)</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>quaternion</strong> (<em>Tensor</em>) – (…, 4) quaternions ordered as x, y, z, w.</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -742,7 +742,7 @@ Returns: T (…, 4, 4)</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>quaternion</strong> (<em>Tensor</em>) – (…, 4) quaternions ordered as x, y, z, w.</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -758,11 +758,13 @@ Returns: T (…, 4, 4)</p>
 <dt class="sig sig-object py" id="soma.geometry.transforms.matrix_to_quaternion_xyzw">
 <span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">matrix_to_quaternion_xyzw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.matrix_to_quaternion_xyzw" title="Link to this definition">#</a></dt>
 <dd><p>Convert rotation matrices to XYZW unit quaternions.</p>
+<p>Recover all components together from the largest-component branch to preserve
+their relative signs near 180 degrees and avoid zero-valued square roots.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>R</strong> (<em>Tensor</em>) – (…, 3, 3) rotation matrices.</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -777,11 +779,10 @@ Returns: T (…, 4, 4)</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="soma.geometry.transforms.matrix_to_quaternion_xyzw_stable">
 <span class="sig-prename descclassname"><span class="pre">soma.geometry.transforms.</span></span><span class="sig-name descname"><span class="pre">matrix_to_quaternion_xyzw_stable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.transforms.matrix_to_quaternion_xyzw_stable" title="Link to this definition">#</a></dt>
-<dd><p>Convert rotation matrices to XYZW quaternions with finite sqrt gradients.</p>
-<p>This follows the same signed-branch convention as <code class="docutils literal notranslate"><span class="pre">matrix_to_quaternion_xyzw</span></code>
-but adds a tiny value inside each square root.  It is intended for code paths
-that need gradients through matrix-to-quaternion conversion near zero-valued
-branches.</p>
+<dd><p>Convert rotation matrices to XYZW quaternions with finite branch gradients.</p>
+<p>The shared largest-component implementation avoids zero-valued square roots,
+including at identity and 180-degree rotations. Keep this entry point for
+callers that need gradients through matrix-to-quaternion conversion.</p>
 <dl class="field-list simple">
 </dl>
 </dd></dl>
@@ -815,9 +816,9 @@ projection.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>quaternion</strong> (<em>Tensor</em>) – (…, 4) quaternions ordered as x, y, z, w.</p></li>
-<li><p><strong>axis_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>Tensor</em>) – scalar axis id or tensor broadcastable to <code class="docutils literal notranslate"><span class="pre">quaternion.shape[:-1]</span></code>.
+<li><p><strong>axis_ids</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>Tensor</em>) – scalar axis id or tensor broadcastable to <code class="docutils literal notranslate"><span class="pre">quaternion.shape[:-1]</span></code>.
 Axis ids use <code class="docutils literal notranslate"><span class="pre">0=x</span></code>, <code class="docutils literal notranslate"><span class="pre">1=y</span></code>, <code class="docutils literal notranslate"><span class="pre">2=z</span></code>.</p></li>
-<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
+<li><p><strong>eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small constant used when normalizing quaternions.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -886,14 +887,14 @@ Retrieved from <a class="reference external" href="http://arxiv.org/abs/1812.070
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>joint_world_transforms</strong> (<em>Tensor</em>) – (J, M, M) or (B, J, M, M) where M=4 or 3</p></li>
-<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>joint_local_transforms</em> – same shape as joint_world_transforms</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Tensor</em> | <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+<dd class="field-odd"><p><em>Tensor</em> | <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -906,7 +907,7 @@ Retrieved from <a class="reference external" href="http://arxiv.org/abs/1812.070
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>joint_local_transforms</strong> (<em>Tensor</em>) – (J, M, M) or (B, J, M, M) where M=4 or 3</p></li>
-<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array or Python list[int] (list preferred for torch.export)</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array or Python list[int] (list preferred for torch.export)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -925,7 +926,7 @@ Retrieved from <a class="reference external" href="http://arxiv.org/abs/1812.070
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array, tensor, or Python list of parent indices.</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array, tensor, or Python list of parent indices.</p></li>
 <li><p><strong>device</strong> (<em>device</em><em> | </em><em>None</em>) – torch device for the returned index tensors.  Defaults to the
 device of <em>joint_parent_ids</em> when it is a tensor, otherwise <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code>.</p></li>
 </ul>
@@ -936,7 +937,7 @@ Level 0 contains the root(s); levels 1+ contain joints whose parents
 are at strictly lower levels.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -952,7 +953,7 @@ launches to ~D (number of depth levels, typically 10-12 for humanoids).</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>joint_local_transforms</strong> (<em>Tensor</em>) – (J, M, M) or (B, J, M, M) where M = 3 or 4.</p></li>
-<li><p><strong>levels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><em>Tensor</em><em>, </em><em>Tensor</em><em>]</em><em>]</em>) – precomputed output of <a class="reference internal" href="#soma.geometry.rig_utils.compute_skeleton_levels" title="soma.geometry.rig_utils.compute_skeleton_levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_skeleton_levels</span></code></a>.</p></li>
+<li><p><strong>levels</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><em>tuple</em></a><em>[</em><em>Tensor</em><em>, </em><em>Tensor</em><em>]</em><em>]</em>) – precomputed output of <a class="reference internal" href="#soma.geometry.rig_utils.compute_skeleton_levels" title="soma.geometry.rig_utils.compute_skeleton_levels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compute_skeleton_levels</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -972,7 +973,7 @@ launches to ~D (number of depth levels, typically 10-12 for humanoids).</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>joint_orient</strong> (<em>Tensor</em>) – (J, 3, 3) world-space orientation per joint.</p></li>
-<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array or Python list of parent indices.</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array or Python list of parent indices.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -980,7 +981,7 @@ launches to ~D (number of depth levels, typically 10-12 for humanoids).</p>
 passed to <a class="reference internal" href="#soma.geometry.rig_utils.apply_joint_orient_local" title="soma.geometry.rig_utils.apply_joint_orient_local"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply_joint_orient_local</span></code></a>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1078,17 +1079,17 @@ relative convention expected by <code class="docutils literal notranslate"><span
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>skinning_weights</strong> (<em>Tensor</em>) – (V, J) array of skinning weights</p></li>
-<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array of joint parent indices</p></li>
-<li><p><strong>root_joint_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – int, joint ID of the body part root</p></li>
-<li><p><strong>include_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – bool, whether to include vertices influenced by the root joint itself</p></li>
-<li><p><strong>weight_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – float, minimum skinning weight to consider a vertex influenced by a joint</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><em>Tensor</em>) – (J,) int array of joint parent indices</p></li>
+<li><p><strong>root_joint_id</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – int, joint ID of the body part root</p></li>
+<li><p><strong>include_root</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – bool, whether to include vertices influenced by the root joint itself</p></li>
+<li><p><strong>weight_threshold</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – float, minimum skinning weight to consider a vertex influenced by a joint</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><em>vertex_ids</em> – list of int, vertex IDs influenced by the body part</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)">int</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1096,7 +1097,7 @@ relative convention expected by <code class="docutils literal notranslate"><span
 <dl class="py class">
 <dt class="sig sig-object py" id="soma.geometry.rig_utils.PoseMirror_SOMA">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">PoseMirror_SOMA</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">joint_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">root_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Root'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.PoseMirror_SOMA" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Mirrors world-space SOMA skeletal poses across the sagittal plane (YZ plane).</p>
 <p>This class reflects joint positions and orientations to swap the “Left” and “Right”
 sides of the body, effectively creating a mirror image of the pose. It handles the
@@ -1129,8 +1130,8 @@ determinant to +1 (fixing the “inside-out” matrix caused by reflection).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>joint_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – List of joint names in the order of the pose array.</p></li>
-<li><p><strong>root_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the root joint. Defaults to “Root”.</p></li>
+<li><p><strong>joint_names</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – List of joint names in the order of the pose array.</p></li>
+<li><p><strong>root_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Name of the root joint. Defaults to “Root”.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1139,7 +1140,7 @@ determinant to +1 (fixing the “inside-out” matrix caused by reflection).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="soma.geometry.rig_utils.PoseMirror_MHR">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.geometry.rig_utils.</span></span><span class="sig-name descname"><span class="pre">PoseMirror_MHR</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">negate_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_DEFAULT_MHR_NEGATE_PARAMS</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.rig_utils.PoseMirror_MHR" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Mirror MHR parameters across the sagittal plane (YZ plane).</p>
 <p>Handles both pose parameters (<code class="docutils literal notranslate"><span class="pre">l_</span></code> / <code class="docutils literal notranslate"><span class="pre">r_</span></code> prefixed) and scale parameters
 (<code class="docutils literal notranslate"><span class="pre">scale_l_</span></code> / <code class="docutils literal notranslate"><span class="pre">scale_r_</span></code> prefixed), swapping left/right counterparts and
@@ -1155,8 +1156,8 @@ negating parameters that reverse sign under reflection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>param_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – List of MHR parameter names (pose and/or scale).</p></li>
-<li><p><strong>negate_params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.14)"><em>set</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Set of parameter names to negate (multiply by -1).</p></li>
+<li><p><strong>param_names</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)"><em>list</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – List of MHR parameter names (pose and/or scale).</p></li>
+<li><p><strong>negate_params</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#set" title="(in Python v3.14)"><em>set</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – Set of parameter names to negate (multiply by -1).</p></li>
 </ul>
 </dd>
 </dl>
@@ -1227,7 +1228,7 @@ target_pose_world: (J, 4, 4)</p></li>
 </dl>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.batched_skinning.FKTopology" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Optional FK-only source topology for a target LBS rig.</p>
 <p><code class="docutils literal notranslate"><span class="pre">BatchedSkinning</span></code> always owns one target topology for LBS.  A source
 topology describes a related FK rig whose world transforms can be expanded
@@ -1256,10 +1257,10 @@ into the target topology by caller-owned logic.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>W</strong> (<em>Tensor</em>) – (N, J) float tensor of skinning weights per vertex.</p></li>
-<li><p><strong>K</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – number of influences per vertex to keep.</p></li>
-<li><p><strong>weight_eps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – prune tiny weights; also avoids div-by-zero in normalization.</p></li>
-<li><p><strong>sort_desc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – sort the chosen K influences by descending weight (stable output).</p></li>
-<li><p><strong>pad_index</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – index used when fewer than K nonzero weights exist for a vertex.</p></li>
+<li><p><strong>K</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – number of influences per vertex to keep.</p></li>
+<li><p><strong>weight_eps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – prune tiny weights; also avoids div-by-zero in normalization.</p></li>
+<li><p><strong>sort_desc</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – sort the chosen K influences by descending weight (stable output).</p></li>
+<li><p><strong>pad_index</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – index used when fewer than K nonzero weights exist for a vertex.</p></li>
 <li><p><strong>dtype_idx</strong> (<em>dtype</em>) – dtype for the joint-index output.</p></li>
 <li><p><strong>dtype_w</strong> (<em>dtype</em>) – dtype for the joint-weight output.</p></li>
 </ul>
@@ -1269,7 +1270,7 @@ into the target topology by caller-owned logic.</p>
 w_mat:   (N, K) float32</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1438,7 +1439,7 @@ perpendicular to the triangle plane.</p>
 <li><p><strong>p0</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>) – First triangle vertex, shape (…, 3)</p></li>
 <li><p><strong>p1</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>) – Second triangle vertex, shape (…, 3)</p></li>
 <li><p><strong>p2</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>) – Third triangle vertex, shape (…, 3)</p></li>
-<li><p><strong>normal_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;area&quot;</span></code> uses the legacy raw cross-product normal.
+<li><p><strong>normal_scale</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;area&quot;</span></code> uses the legacy raw cross-product normal.
 <code class="docutils literal notranslate"><span class="pre">&quot;edge&quot;</span></code> uses a unit normal scaled by local mean edge length.</p></li>
 </ul>
 </dd>
@@ -1519,8 +1520,8 @@ Uses tetrahedral mesh construction and 3D barycentric coordinates.</p>
 <li><p><strong>V_src</strong> (<em>Tensor</em>) – Source mesh vertices, (n_src_verts, 3) - torch tensor</p></li>
 <li><p><strong>F_src</strong> (<em>Tensor</em>) – Source mesh faces, (n_faces, 3) - torch tensor</p></li>
 <li><p><strong>V_dst</strong> (<em>Tensor</em>) – Target mesh vertices, (n_dst_verts, 3) - torch tensor</p></li>
-<li><p><strong>correspondence_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Optional path to load precomputed correspondence</p></li>
-<li><p><strong>tet_normal_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Height scale for fabricated tetrahedra. <code class="docutils literal notranslate"><span class="pre">&quot;area&quot;</span></code>
+<li><p><strong>correspondence_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Optional path to load precomputed correspondence</p></li>
+<li><p><strong>tet_normal_scale</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Height scale for fabricated tetrahedra. <code class="docutils literal notranslate"><span class="pre">&quot;area&quot;</span></code>
 preserves legacy behavior; <code class="docutils literal notranslate"><span class="pre">&quot;edge&quot;</span></code> uses a local edge-length
 normal height.</p></li>
 </ul>
@@ -1581,7 +1582,7 @@ normal height.</p></li>
 </dl>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#soma.geometry.interpolate.RadialBasisFunction" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>RBF interpolator with precomputed system matrix (PyTorch).</p>
 <dl class="field-list simple">
 </dl>
@@ -1644,7 +1645,7 @@ position of the joint (or point) being interpolated.</p>
 <dd class="field-even"><p>Sparse COO indices and values for cotangent Laplacian matrix</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>, <em>Tensor</em>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>, <em>Tensor</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1680,7 +1681,7 @@ depends on mesh connectivity.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>F</strong> (<em>Tensor</em>) – Faces (n_faces, 3), int tensor</p></li>
-<li><p><strong>n_verts</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of vertices in the mesh</p></li>
+<li><p><strong>n_verts</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Number of vertices in the mesh</p></li>
 <li><p><strong>device</strong> (<em>device</em><em> | </em><em>None</em>) – Torch device (inferred from F if None)</p></li>
 <li><p><strong>dtype</strong> (<em>dtype</em><em> | </em><em>None</em>) – Value dtype (default float32)</p></li>
 </ul>
@@ -1702,7 +1703,7 @@ depends on mesh connectivity.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>L</strong> (<em>Tensor</em>) – Sparse Laplacian matrix (CSR format)</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Power to raise L to</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Power to raise L to</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1740,10 +1741,10 @@ Supports both hard and soft constraints for deformation.</p>
 <li><p><strong>V</strong> (<em>Tensor</em>) – Reference vertices (n_verts, 3)</p></li>
 <li><p><strong>F</strong> (<em>Tensor</em>) – Faces (n_faces, 3)</p></li>
 <li><p><strong>mask_anchors</strong> (<em>Tensor</em>) – Boolean mask (n_verts,) - True for anchors, False for free</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Order of Laplacian (1 or 2)</p></li>
+<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Order of Laplacian (1 or 2)</p></li>
 <li><p><strong>constraint_mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><em>Literal</em></a><em>[</em><em>'hard'</em><em>, </em><em>'soft'</em><em>]</em>) – “hard” or “soft”</p></li>
-<li><p><strong>soft_weight</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Weight for soft constraints (only used if constraint_mode=”soft”)</p></li>
-<li><p><strong>jitter</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small value added to diagonal for numerical stability</p></li>
+<li><p><strong>soft_weight</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Weight for soft constraints (only used if constraint_mode=”soft”)</p></li>
+<li><p><strong>jitter</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Small value added to diagonal for numerical stability</p></li>
 <li><p><strong>solver</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><em>Literal</em></a><em>[</em><em>'cholespy'</em><em>, </em><em>'pytorch'</em><em>]</em>) – “cholespy” (pre-factored Cholesky via torch.linalg.cholesky) or
 “pytorch” (torch.sparse.spsolve, requires cuDSS on CUDA)</p></li>
 </ul>
@@ -2129,7 +2130,7 @@ kabsch_R: (N2_batches, 3, 3) rotation matrices from Kabsch</p>
 kabsch_R: (N2_batches, 3, 3) rotation matrices from Kabsch (empty tensor if no N&gt;=2 joints)</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
