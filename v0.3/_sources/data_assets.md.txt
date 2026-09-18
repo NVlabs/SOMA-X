@@ -79,6 +79,107 @@ Single-package PCA shape model + topology data for the neutral full-body mesh (`
 
 The slim asset no longer stores `joint_names`, `joint_parent_ids`, `bind_pose_world`, `bind_pose_local`, `t_pose_world`, `t_pose_local`, `bind_shape`, or `skinning_weights_{data,indices,indptr,shape}`. These arrays are loaded from `SOMA_template_rig.usda`.
 
+### Cumulative T-pose history
+
+The current `SOMA_neutral.npz` retains historical input reference orientations.
+Both `SOMALayer` and `SOMAHandLayer` can use them offline. Set a default once:
+
+```python
+from soma import SOMALayer
+
+layer = SOMALayer(
+    reference_pose={"version": "v0.1.0"},
+)
+layer.prepare_identity(identity_coeffs)
+out = layer.pose(rotations, pose2rot=False)
+```
+
+`forward()` uses the same default. A call-time tensor or dictionary overrides it
+for that call; omitted or `None` references inherit it. Without a constructor
+reference, the current template is used.
+
+```python
+out = layer.pose(
+    rotations,
+    pose2rot=False,
+    reference_pose={"version": "v0.3.0"},
+)
+```
+
+Dictionaries use `get_reference_pose()` arguments. Constructor dictionaries are
+resolved once; call-time dictionaries resolve on each call. Stored references
+follow the layer's device and dtype. To get a tensor directly, use
+`layer.get_reference_pose(version="v0.3.0")`. The default data key is `t_pose_world`.
+
+Version lookup selects the newest stored revision at or before the requested
+version. Here, `"v0.3.0"` and `"0.3.0"` both select `t_pose_world__v0.2.0`.
+SemVer precedence applies; build metadata is ignored. Requests newer than the
+bundle use its latest known revision. Missing keys or requests before the first
+revision raise `KeyError`. Invalid or conflicting selectors raise errors.
+`list_reference_poses()` lists available entries. A full NPZ key (`reference_id`)
+or source hash (`asset_revision`) selects an exact entry instead of a version.
+Use one selector at a time. The exact alias `pre-v0.1.0` selects the early
+reference used to train Kimodo, with its original asset hash retained:
+
+```python
+layer = SOMALayer(reference_pose={"alias": "pre-v0.1.0"})
+```
+
+To convert rotation matrices once between references, use either layer's
+`convert_reference()` method:
+
+```python
+converted = layer.convert_reference(
+    rotations,
+    from_ref={"alias": "pre-v0.1.0"},
+    to_ref={"version": "v0.3.0"},
+)
+```
+
+Both references accept tensors or lookup dictionaries. Input and output are
+`(B, 77, 3, 3)` matrices for the body or `(B, 25, 3, 3)` for a hand. Conversion
+preserves absolute local rotations, device, dtype and gradients. It does not
+change layer state or use the constructor default. No identity preparation is
+needed. Pose the result using the target reference and `pose2rot=False`.
+
+The getter returns a fresh tensor on the layer's device and dtype:
+
+| Layer | Reference shape and frame | Input rotations |
+| --- | --- | --- |
+| `SOMALayer` | `(78, 3, 3)`, body world, including identity virtual Root | 77 joints, excluding Root |
+| `SOMAHandLayer` | `(25, 3, 3)`, hand world (current wrist bind frame), wrist first | 25 joints, including wrist |
+
+Custom tensors use the same order and frame. They may also contain `(J, 4, 4)`
+transforms; only rotation blocks are used. Rotations must be finite and in SO(3)
+(absolute tolerance `1e-4`). The body's virtual Root must be identity; the hand's
+wrist reference need not be. Tensor gradients are preserved.
+`absolute_pose=True` bypasses the constructor default. Combining it with an
+explicit call-time `reference_pose` is an error.
+
+Reference selection changes how rotations are interpreted. Geometry, bind
+transforms and identity models remain current; this does not reproduce an entire
+old model. Historical translations and internal twist joints are not included.
+Assets without history still accept custom tensors.
+
+#### Stored arrays
+
+Only changes add snapshots. The bundle stores v0.1.0, v0.2.0 and an earlier
+asset-hash reference. Both layers read this shared history; hands select their
+joints and convert orientations into the current wrist bind frame.
+
+| NPZ key | Contents |
+| --- | --- |
+| `t_pose_world__v0.1.0` | `(78, 3, 3)` float32 public world rotations |
+| `t_pose_world__v0.1.0__joint_names` | `(78,)` Unicode names, Root first |
+| `t_pose_world__v0.1.0__parent_ids` | `(78,)` integer parent indices, Root parent 0 |
+| `reference_pose_history_metadata` | Unicode JSON: schema version 2, default reference ID, conventions and entry metadata |
+
+Other snapshots use the same suffixes. Unpublished sources use
+`t_pose_world__sha256_<source-asset-hash>`. Each metadata entry records its key,
+data key, version or source hash, provenance and orientation checksum.
+The default reference ID describes the stored history; it does not change the
+runtime template.
+
 ### UV primvars (three sets)
 
 Three UV sets (`st`, `st1`, `st2`) preserved from the source USD. Each uses `faceVarying` interpolation: indices are flat per-face-corner lookups into `uv_coord_*`.

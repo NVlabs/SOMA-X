@@ -1,7 +1,9 @@
 # SOMA Hand data assets
 
 SOMA-X v0.3 adds left- and right-hand layers whose meshes and 25-joint
-skeletons are strict subsets of the full-body SOMA template.
+skeletons are strict subsets of the full-body SOMA template. Historical T-poses
+come from the shared [reference history](data_assets.md#cumulative-t-pose-history)
+in `SOMA_neutral.npz`; no separate hand snapshots are needed.
 
 ## `SOMAHand.npz`
 

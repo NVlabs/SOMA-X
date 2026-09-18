@@ -465,6 +465,21 @@
 <li><p><code class="docutils literal notranslate"><span class="pre">pose(...)</span></code> for each new pose</p></li>
 </ol>
 <p><code class="docutils literal notranslate"><span class="pre">forward(...)</span></code> is the one-call convenience wrapper.</p>
+<section id="historical-and-custom-reference-poses">
+<h2>Historical and custom reference poses<a class="headerlink" href="#historical-and-custom-reference-poses" title="Link to this heading">#</a></h2>
+<p>Set a default reference when creating the layer, or override it in a pose call:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">layer</span> <span class="o">=</span> <span class="n">SOMALayer</span><span class="p">(</span>
+    <span class="n">reference_pose</span><span class="o">=</span><span class="p">{</span><span class="s2">"version"</span><span class="p">:</span> <span class="s2">"v0.1.0"</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">layer</span><span class="o">.</span><span class="n">prepare_identity</span><span class="p">(</span><span class="n">identity_coeffs</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">pose</span><span class="p">(</span><span class="n">rotations</span><span class="p">,</span> <span class="n">pose2rot</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">out</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">pose</span><span class="p">(</span><span class="n">rotations</span><span class="p">,</span> <span class="n">pose2rot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">reference_pose</span><span class="o">=</span><span class="n">another_reference</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">forward()</span></code> uses the same default and override rules. Omitted or <code class="docutils literal notranslate"><span class="pre">None</span></code>
+references inherit the constructor default. <code class="docutils literal notranslate"><span class="pre">absolute_pose=True</span></code> bypasses it;
+an explicit call-time reference with <code class="docutils literal notranslate"><span class="pre">absolute_pose=True</span></code> is an error.</p>
+<p>See <a class="reference internal" href="../data_assets.html"><span class="doc">Data Assets</span></a> for lookup rules, reference shapes and coordinate frames.</p>
 <p>See the module overview below for the full parameter reference (joint grouping,
 per-backend identity dims, <code class="docutils literal notranslate"><span class="pre">scale_params</span></code> layout, units). The class reference
 follows.</p>
@@ -478,7 +493,7 @@ semantics of the tensors that <code class="docutils literal notranslate"><span c
 batch size, <code class="docutils literal notranslate"><span class="pre">V</span></code> for the LOD-dependent body vertex count, and <code class="docutils literal notranslate"><span class="pre">J</span> <span class="pre">=</span> <span class="pre">78</span></code>
 for the full-body joint count.</p>
 <section id="lod-vertex-counts">
-<h2>LOD vertex counts<a class="headerlink" href="#lod-vertex-counts" title="Link to this heading">#</a></h2>
+<h3>LOD vertex counts<a class="headerlink" href="#lod-vertex-counts" title="Link to this heading">#</a></h3>
 <p>The posed vertex tensor has shape <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">V,</span> <span class="pre">3)</span></code>, where <code class="docutils literal notranslate"><span class="pre">V</span></code> depends on
 the selected <code class="docutils literal notranslate"><span class="pre">lod</span></code>:</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -507,7 +522,7 @@ the selected <code class="docutils literal notranslate"><span class="pre">lod</s
 <p><code class="docutils literal notranslate"><span class="pre">low_lod=True</span></code> is the legacy alias for <code class="docutils literal notranslate"><span class="pre">lod=&quot;low&quot;</span></code>.</p>
 </section>
 <section id="soma-skeleton-78-joints">
-<h2>SOMA skeleton (78 joints)<a class="headerlink" href="#soma-skeleton-78-joints" title="Link to this heading">#</a></h2>
+<h3>SOMA skeleton (78 joints)<a class="headerlink" href="#soma-skeleton-78-joints" title="Link to this heading">#</a></h3>
 <p>The full-body SOMA skeleton has <code class="docutils literal notranslate"><span class="pre">J</span> <span class="pre">=</span> <span class="pre">78</span></code> joints indexed 0-77. Joint 0 is
 a virtual <code class="docutils literal notranslate"><span class="pre">Root</span></code> that is always identity (padded internally, not
 user-controllable). Joint 1 is <code class="docutils literal notranslate"><span class="pre">Hips</span></code>.</p>
@@ -574,7 +589,7 @@ the caller’s frame.</p>
 procedural mode <code class="docutils literal notranslate"><span class="pre">rig_data</span></code> is the expanded internal skinning skeleton.</p>
 </section>
 <section id="procedural-transforms">
-<h2>Procedural transforms<a class="headerlink" href="#procedural-transforms" title="Link to this heading">#</a></h2>
+<h3>Procedural transforms<a class="headerlink" href="#procedural-transforms" title="Link to this heading">#</a></h3>
 <p>By default, SOMALayer keeps the expanded v0027 SOMA twist-joint skeleton from
 the universal <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> template, or from an explicit
 <code class="docutils literal notranslate"><span class="pre">template_rig_path</span></code> override. Passing <code class="docutils literal notranslate"><span class="pre">enable_procedural_transforms=False</span></code>
@@ -610,7 +625,7 @@ body-part stretch instead of trusting independently fitted twist translations.
 Pose correctives are supported only in this procedural-transform mode.</p>
 </section>
 <section id="pose-tensor-poses">
-<h2>Pose tensor (<code class="docutils literal notranslate"><span class="pre">poses</span></code>)<a class="headerlink" href="#pose-tensor-poses" title="Link to this heading">#</a></h2>
+<h3>Pose tensor (<code class="docutils literal notranslate"><span class="pre">poses</span></code>)<a class="headerlink" href="#pose-tensor-poses" title="Link to this heading">#</a></h3>
 <p>Shape <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3)</span></code> axis-angle, or <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> rotation matrices
 when <code class="docutils literal notranslate"><span class="pre">pose2rot=False</span></code>.</p>
 <ul class="simple">
@@ -622,12 +637,12 @@ treat them as already-oriented absolute local rotations instead.</p></li>
 </ul>
 </section>
 <section id="root-translation-transl-optional">
-<h2>Root translation (<code class="docutils literal notranslate"><span class="pre">transl</span></code>, optional)<a class="headerlink" href="#root-translation-transl-optional" title="Link to this heading">#</a></h2>
+<h3>Root translation (<code class="docutils literal notranslate"><span class="pre">transl</span></code>, optional)<a class="headerlink" href="#root-translation-transl-optional" title="Link to this heading">#</a></h3>
 <p>Shape <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">3)</span></code>. Hips translation in <code class="docutils literal notranslate"><span class="pre">output_unit</span></code>. <code class="docutils literal notranslate"><span class="pre">None</span></code> keeps the
 Hips at the origin.</p>
 </section>
 <section id="identity-coefficients-identity-coeffs">
-<h2>Identity coefficients (<code class="docutils literal notranslate"><span class="pre">identity_coeffs</span></code>)<a class="headerlink" href="#identity-coefficients-identity-coeffs" title="Link to this heading">#</a></h2>
+<h3>Identity coefficients (<code class="docutils literal notranslate"><span class="pre">identity_coeffs</span></code>)<a class="headerlink" href="#identity-coefficients-identity-coeffs" title="Link to this heading">#</a></h3>
 <p>Shape <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">K)</span></code>. <code class="docutils literal notranslate"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">num_shape_components</span></code> is backend-dependent,
 selected via the <code class="docutils literal notranslate"><span class="pre">identity_model_type</span></code> constructor argument.</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -668,7 +683,7 @@ selected via the <code class="docutils literal notranslate"><span class="pre">id
 </div>
 </section>
 <section id="body-part-scales-scale-params-optional">
-<h2>Body-part scales (<code class="docutils literal notranslate"><span class="pre">scale_params</span></code>, optional)<a class="headerlink" href="#body-part-scales-scale-params-optional" title="Link to this heading">#</a></h2>
+<h3>Body-part scales (<code class="docutils literal notranslate"><span class="pre">scale_params</span></code>, optional)<a class="headerlink" href="#body-part-scales-scale-params-optional" title="Link to this heading">#</a></h3>
 <p>Backend-dependent. Pass <code class="docutils literal notranslate"><span class="pre">None</span></code> to skip.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -717,7 +732,7 @@ ToeBase controls.</p></td>
 </div>
 </section>
 <section id="correctives">
-<h2>Correctives<a class="headerlink" href="#correctives" title="Link to this heading">#</a></h2>
+<h3>Correctives<a class="headerlink" href="#correctives" title="Link to this heading">#</a></h3>
 <p>Pose-dependent corrective vertex offsets are applied by default
 (<code class="docutils literal notranslate"><span class="pre">apply_correctives=True</span></code> on <code class="docutils literal notranslate"><span class="pre">pose()</span></code> / <code class="docutils literal notranslate"><span class="pre">forward()</span></code>) when a corrective
 checkpoint is loaded. Body correctives require procedural transforms. Pass
@@ -725,7 +740,7 @@ checkpoint is loaded. Body correctives require procedural transforms. Pass
 <code class="docutils literal notranslate"><span class="pre">correctives_model_path=None</span></code> to skip loading the checkpoint entirely.</p>
 </section>
 <section id="units">
-<h2>Units<a class="headerlink" href="#units" title="Link to this heading">#</a></h2>
+<h3>Units<a class="headerlink" href="#units" title="Link to this heading">#</a></h3>
 <p>Native unit of the SOMA rig is <strong>centimeters</strong>. Output unit is configurable
 via <code class="docutils literal notranslate"><span class="pre">output_unit</span></code> in <code class="docutils literal notranslate"><span class="pre">__init__</span></code> (default <code class="docutils literal notranslate"><span class="pre">Unit.METERS</span></code>). All
 translational quantities returned by <code class="docutils literal notranslate"><span class="pre">pose()</span></code> / <code class="docutils literal notranslate"><span class="pre">forward()</span></code> –
@@ -749,6 +764,8 @@ forward axis <code class="docutils literal notranslate"><span class="pre">+Z</sp
 <dd><em class="sig-param"><span class="n"><span class="pre">enable_procedural_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">load_correctives_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">correctives_model_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_DEFAULT_CORRECTIVES_MODEL_PATH</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">reference_pose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer" title="Link to this definition">#</a></dt>
@@ -772,53 +789,56 @@ layout, pose tensor conventions, per-backend identity dimensions, and
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data_root</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Directory containing <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code>,
+<li><p><strong>data_root</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Directory containing <code class="docutils literal notranslate"><span class="pre">SOMA_neutral.npz</span></code>,
 <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code>, and the per-backend model
 folders. If <code class="docutils literal notranslate"><span class="pre">None</span></code> or missing, assets are downloaded
 from HuggingFace automatically.</p></li>
-<li><p><strong>low_lod</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use the low-LOD mesh (4,505 vertices).
+<li><p><strong>low_lod</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, use the low-LOD mesh (4,505 vertices).
 Faster inference at the cost of detail. Legacy alias for
 <code class="docutils literal notranslate"><span class="pre">lod=&quot;low&quot;</span></code>.</p></li>
-<li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>device</em>) – Torch device for all buffers and intermediate
+<li><p><strong>device</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>device</em>) – Torch device for all buffers and intermediate
 tensors (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;cuda&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;cpu&quot;</span></code>).</p></li>
-<li><p><strong>identity_model_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Identity backend. One of <code class="docutils literal notranslate"><span class="pre">&quot;mhr&quot;</span></code>
+<li><p><strong>identity_model_type</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Identity backend. One of <code class="docutils literal notranslate"><span class="pre">&quot;mhr&quot;</span></code>
 (default), <code class="docutils literal notranslate"><span class="pre">&quot;soma&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;smpl&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;smplh&quot;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&quot;smplx&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;anny&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;garment&quot;</span></code>. See
 <a class="reference internal" href="#module-soma.body.soma" title="soma.body.soma"><code class="xref py py-mod docutils literal notranslate"><span class="pre">soma.body.soma</span></code></a> for per-backend identity dimensions
 and <code class="docutils literal notranslate"><span class="pre">scale_params</span></code> semantics.</p></li>
-<li><p><strong>mode</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Skinning backend. <code class="docutils literal notranslate"><span class="pre">&quot;warp&quot;</span></code> uses the NVIDIA Warp
+<li><p><strong>mode</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Skinning backend. <code class="docutils literal notranslate"><span class="pre">&quot;warp&quot;</span></code> uses the NVIDIA Warp
 accelerated LBS kernel; other values fall back to the
 dense PyTorch implementation.</p></li>
 <li><p><strong>output_unit</strong> (<em>Unit</em>) – Unit for all translational outputs of
 <code class="docutils literal notranslate"><span class="pre">pose()</span></code> / <code class="docutils literal notranslate"><span class="pre">forward()</span></code> (vertices, joints,
 transforms). Default <code class="docutils literal notranslate"><span class="pre">Unit.METERS</span></code>.</p></li>
-<li><p><strong>identity_model_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a><em>] </em><em>| </em><em>None</em>) – Extra keyword arguments forwarded to
+<li><p><strong>identity_model_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a><em>] </em><em>| </em><em>None</em>) – Extra keyword arguments forwarded to
 the identity-model constructor. Used e.g. by SMPL/SMPL-X
 to pass <code class="docutils literal notranslate"><span class="pre">model_path</span></code>.</p></li>
-<li><p><strong>lod</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Body mesh level of detail: <code class="docutils literal notranslate"><span class="pre">&quot;mid&quot;</span></code> (18,056 vertices),
+<li><p><strong>lod</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Body mesh level of detail: <code class="docutils literal notranslate"><span class="pre">&quot;mid&quot;</span></code> (18,056 vertices),
 <code class="docutils literal notranslate"><span class="pre">&quot;low&quot;</span></code> (4,505 vertices), or <code class="docutils literal notranslate"><span class="pre">&quot;xlo&quot;</span></code> (612 vertices).
 <code class="docutils literal notranslate"><span class="pre">&quot;xlo&quot;</span></code> loads mesh topology, bind shape, skinning
 weights, and UVs from
 the xlo mesh in <code class="docutils literal notranslate"><span class="pre">SOMA_template_rig.usda</span></code> in <code class="docutils literal notranslate"><span class="pre">data_root</span></code>.</p></li>
-<li><p><strong>template_rig_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Optional override path to a v0027 SOMA
+<li><p><strong>template_rig_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Optional override path to a v0027 SOMA
 twist-joint template. If omitted,
 <code class="docutils literal notranslate"><span class="pre">data_root/SOMA_template_rig.usda</span></code> is used as the universal
 template.</p></li>
-<li><p><strong>enable_procedural_transforms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), keep the expanded
+<li><p><strong>enable_procedural_transforms</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code> (default), keep the expanded
 v0027 twist-joint rig and drive SOMA-owned twist joints from the
 JSON procedural definition. <code class="docutils literal notranslate"><span class="pre">False</span></code> opts out to the legacy
 78-joint public rig.</p></li>
-<li><p><strong>load_correctives_model</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>) – Deprecated compatibility alias. Use
+<li><p><strong>load_correctives_model</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>) – Deprecated compatibility alias. Use
 <code class="docutils literal notranslate"><span class="pre">correctives_model_path=None</span></code> instead of <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
-<li><p><strong>correctives_model_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Path to a pose-corrective checkpoint. Defaults
+<li><p><strong>correctives_model_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a><em> | </em><em>None</em>) – Path to a pose-corrective checkpoint. Defaults
 to <code class="docutils literal notranslate"><span class="pre">data_root/correctives_model.pt</span></code> when procedural transforms
 are enabled. Pass <code class="docutils literal notranslate"><span class="pre">None</span></code> to skip loading correctives.</p></li>
+<li><p><strong>reference_pose</strong> (<em>Tensor</em><em> | </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>] </em><em>| </em><em>None</em>) – Default reference tensor or lookup dictionary for
+<a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a> and <a class="reference internal" href="#soma.body.SOMALayer.forward" title="soma.body.SOMALayer.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">forward()</span></code></a>. Dictionaries resolve once.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> uses the current T-pose. See <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a> for tensor shapes.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="soma.body.SOMALayer.default_skin_mesh_name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_skin_mesh_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#soma.body.SOMALayer.default_skin_mesh_name" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">default_skin_mesh_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></em><a class="headerlink" href="#soma.body.SOMALayer.default_skin_mesh_name" title="Link to this definition">#</a></dt>
 <dd><p>Default USD skin-mesh prim name for this layer’s topology.</p>
 <p>Consumed by <code class="xref py py-obj docutils literal notranslate"><span class="pre">export_soma_usd</span></code> when the caller does
 not pass an explicit <code class="code docutils literal notranslate"><span class="pre">skin_mesh_name</span></code>. Uses the <code class="code docutils literal notranslate"><span class="pre">c_skin_&lt;lod&gt;</span></code>
@@ -827,13 +847,13 @@ convention (<code class="code docutils literal notranslate"><span class="pre">mi
 
 <dl class="py property">
 <dt class="sig sig-object py" id="soma.body.SOMALayer.public_joint_names">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">public_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.body.SOMALayer.public_joint_names" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">public_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.body.SOMALayer.public_joint_names" title="Link to this definition">#</a></dt>
 <dd><p>Names of the public SOMA joints returned by <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="soma.body.SOMALayer.target_joint_names">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.body.SOMALayer.target_joint_names" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.body.SOMALayer.target_joint_names" title="Link to this definition">#</a></dt>
 <dd><p>Names of the internal target skinning joints.</p>
 </dd></dl>
 
@@ -841,6 +861,61 @@ convention (<code class="code docutils literal notranslate"><span class="pre">mi
 <dt class="sig sig-object py" id="soma.body.SOMALayer.output_joint_parent_ids">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output_joint_parent_ids</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tensor</span></em><a class="headerlink" href="#soma.body.SOMALayer.output_joint_parent_ids" title="Link to this definition">#</a></dt>
 <dd><p>Parent ids for the public transforms returned by <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.body.SOMALayer.list_reference_poses">
+<span class="sig-name descname"><span class="pre">list_reference_poses</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.list_reference_poses" title="Link to this definition">#</a></dt>
+<dd><p>List reference IDs and descriptive metadata shipped in the current NPZ.</p>
+<p>Each record includes its NPZ key, data key and reference revision or asset
+revision selector. Returned dictionaries are independent copies. Older assets
+without a reference history return an empty list; no historical assets are fetched.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.body.SOMALayer.get_reference_pose">
+<span class="sig-name descname"><span class="pre">get_reference_pose</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">reference_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">version</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">data_key</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'t_pose_world'</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">asset_revision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">alias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.get_reference_pose" title="Link to this definition">#</a></dt>
+<dd><p>Return a saved reference’s world rotations in current public joint order.</p>
+<p>Select exactly one of <code class="docutils literal notranslate"><span class="pre">version</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;v0.3.0&quot;</span></code>), an
+<code class="docutils literal notranslate"><span class="pre">asset_revision</span></code>, an <code class="docutils literal notranslate"><span class="pre">alias</span></code> listed in the catalog, or a direct <code class="docutils literal notranslate"><span class="pre">reference_id</span></code>.
+Version lookup selects the newest stored revision of <code class="docutils literal notranslate"><span class="pre">data_key</span></code> at
+or before the requested semantic version (optional leading <code class="docutils literal notranslate"><span class="pre">v</span></code>).
+Full NPZ keys and asset revisions match exactly. No downloads are used.
+<code class="docutils literal notranslate"><span class="pre">t_pose_world</span></code> selects public world orientation
+blocks, not historical translations or the full internal rig.</p>
+<p>The returned <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> tensor includes virtual Root and is a fresh
+copy on this layer’s device and dtype. This does not require a prepared
+identity. Raises <code class="docutils literal notranslate"><span class="pre">KeyError</span></code> for an unknown lookup and <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>
+for conflicting selectors or an incompatible public name/hierarchy mapping.</p>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.body.SOMALayer.convert_reference">
+<span class="sig-name descname"><span class="pre">convert_reference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rotations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">from_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_ref</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.convert_reference" title="Link to this definition">#</a></dt>
+<dd><p>Re-express <code class="docutils literal notranslate"><span class="pre">(B,</span> <span class="pre">77,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> rotations in another reference.</p>
+<p>Both references accept a tensor or <a class="reference internal" href="#soma.body.SOMALayer.get_reference_pose" title="soma.body.SOMALayer.get_reference_pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_reference_pose()</span></code></a> dictionary:
+body world orientations including identity virtual Root.
+The result preserves absolute local rotations, input device/dtype and
+gradients. No identity preparation or layer state changes are needed.
+References are explicit; the constructor default is not used.
+Pass the result to <code class="docutils literal notranslate"><span class="pre">pose(...,</span> <span class="pre">pose2rot=False,</span> <span class="pre">reference_pose=to_ref)</span></code>.</p>
+<dl class="field-list simple">
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -904,10 +979,10 @@ described by <code class="docutils literal notranslate"><span class="pre">layer.
 scales;
 MHR: (B, 68), required; Anny: optional local-change
 adjustments; other backends: unused). See class docstring.</p></li>
-<li><p><strong>repose_to_bind_pose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, rebind skinning to the bind pose
+<li><p><strong>repose_to_bind_pose</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, rebind skinning to the bind pose
 after fitting. Keep enabled when <code class="code docutils literal notranslate"><span class="pre">apply_correctives</span></code> is used.</p></li>
-<li><p><strong>global_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>Tensor</em>) – uniform scale scalar or (B,) tensor. Default 1.0.</p></li>
-<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a><em>] </em><em>| </em><em>None</em>) – optional dict forwarded to the identity model’s
+<li><p><strong>global_scale</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>Tensor</em>) – uniform scale scalar or (B,) tensor. Default 1.0.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a><em>] </em><em>| </em><em>None</em>) – optional dict forwarded to the identity model’s
 <code class="code docutils literal notranslate"><span class="pre">get_rest_shape</span></code>.</p></li>
 </ul>
 </dd>
@@ -926,6 +1001,8 @@ after fitting. Keep enabled when <code class="code docutils literal notranslate"
 <dd><em class="sig-param"><span class="n"><span class="pre">absolute_pose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">fk_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">return_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">reference_pose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.pose" title="Link to this definition">#</a></dt>
@@ -938,14 +1015,24 @@ after fitting. Keep enabled when <code class="code docutils literal notranslate"
 remaining entries = joint-local articulation.</p></li>
 <li><p><strong>transl</strong> (<em>Tensor</em><em> | </em><em>None</em>) – (B, 3) Hips translation in <code class="code docutils literal notranslate"><span class="pre">output_unit</span></code>.
 If None, Hips stays at origin.</p></li>
-<li><p><strong>pose2rot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – convert axis-angle to rot matrices if True.</p></li>
-<li><p><strong>apply_correctives</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, apply pose-dependent corrective offsets.</p></li>
-<li><p><strong>absolute_pose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, rotations are absolute (not relative to
+<li><p><strong>pose2rot</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – convert axis-angle to rot matrices if True.</p></li>
+<li><p><strong>apply_correctives</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, apply pose-dependent corrective offsets.</p></li>
+<li><p><strong>absolute_pose</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, rotations are absolute (not relative to
 T-pose joint orient).</p></li>
-<li><p><strong>fk_only</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, run forward kinematics only and skip LBS.</p></li>
-<li><p><strong>return_transforms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>) – <strong>deprecated</strong> – <code class="code docutils literal notranslate"><span class="pre">&quot;transforms&quot;</span></code> is always
+<li><p><strong>fk_only</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, run forward kinematics only and skip LBS.</p></li>
+<li><p><strong>return_transforms</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>) – <strong>deprecated</strong> – <code class="code docutils literal notranslate"><span class="pre">&quot;transforms&quot;</span></code> is always
 included in the result. Emits <code class="code docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> and
 has no effect.</p></li>
+<li><p><strong>reference_pose</strong> (<em>Tensor</em><em> | </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>] </em><em>| </em><em>None</em>) – Optional dictionary of <a class="reference internal" href="#soma.body.SOMALayer.get_reference_pose" title="soma.body.SOMALayer.get_reference_pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_reference_pose()</span></code></a>
+arguments, or <code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">3,</span> <span class="pre">3)</span></code> world orientations or
+<code class="docutils literal notranslate"><span class="pre">(J,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> transforms in <code class="docutils literal notranslate"><span class="pre">public_joint_names</span></code> order,
+including identity virtual Root. One reference is shared across
+the batch. Rotation blocks must be finite SO(3) matrices
+(absolute tolerance 1e-4); translation blocks are ignored.
+Overrides the input T-pose convention without changing bind
+geometry or bone lengths. <code class="docutils literal notranslate"><span class="pre">None</span></code> uses the constructor default,
+or the current T-pose if none was set. <code class="docutils literal notranslate"><span class="pre">absolute_pose=True</span></code>
+bypasses the stored default but rejects an explicit reference.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -980,6 +1067,8 @@ intentionally not returned.</p></li>
 <dd><em class="sig-param"><span class="n"><span class="pre">global_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">return_transforms</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">reference_pose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 
 <span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.forward" title="Link to this definition">#</a></dt>
@@ -1001,16 +1090,22 @@ MHR: (B, 68), required; Anny: optional local-change
 adjustments; other backends: unused). See class docstring.</p></li>
 <li><p><strong>transl</strong> (<em>Tensor</em><em> | </em><em>None</em>) – (B, 3) Hips translation in <code class="code docutils literal notranslate"><span class="pre">output_unit</span></code>.
 If None, Hips stays at origin.</p></li>
-<li><p><strong>pose2rot</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – convert axis-angle to rot matrices if True.</p></li>
-<li><p><strong>apply_correctives</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, apply pose-dependent corrective offsets.</p></li>
-<li><p><strong>absolute_pose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, rotations are absolute (not relative to
+<li><p><strong>pose2rot</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – convert axis-angle to rot matrices if True.</p></li>
+<li><p><strong>apply_correctives</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, apply pose-dependent corrective offsets.</p></li>
+<li><p><strong>absolute_pose</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – if True, rotations are absolute (not relative to
 T-pose joint orient).</p></li>
-<li><p><strong>global_scale</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>Tensor</em>) – uniform scale scalar or (B,) tensor. Default 1.0.</p></li>
-<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a><em>] </em><em>| </em><em>None</em>) – optional dict forwarded to the identity model’s
+<li><p><strong>global_scale</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a><em> | </em><em>Tensor</em>) – uniform scale scalar or (B,) tensor. Default 1.0.</p></li>
+<li><p><strong>kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><em>Any</em></a><em>] </em><em>| </em><em>None</em>) – optional dict forwarded to the identity model’s
 <code class="code docutils literal notranslate"><span class="pre">get_rest_shape</span></code>.</p></li>
-<li><p><strong>return_transforms</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>) – <strong>deprecated</strong> – <code class="code docutils literal notranslate"><span class="pre">&quot;transforms&quot;</span></code> is always
+<li><p><strong>return_transforms</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> | </em><em>None</em>) – <strong>deprecated</strong> – <code class="code docutils literal notranslate"><span class="pre">&quot;transforms&quot;</span></code> is always
 included in the result. Emits <code class="code docutils literal notranslate"><span class="pre">DeprecationWarning</span></code> and
 has no effect.</p></li>
+<li><p><strong>reference_pose</strong> (<em>Tensor</em><em> | </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>] </em><em>| </em><em>None</em>) – Optional dictionary of <a class="reference internal" href="#soma.body.SOMALayer.get_reference_pose" title="soma.body.SOMALayer.get_reference_pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_reference_pose()</span></code></a>
+arguments, or shared public-joint world orientations including
+identity Root. Dictionaries resolve before preparing identity.
+See <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a> for shapes and rotation validation.
+<code class="docutils literal notranslate"><span class="pre">None</span></code> uses the constructor default. <code class="docutils literal notranslate"><span class="pre">absolute_pose=True</span></code>
+bypasses that default but rejects an explicit reference.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1032,6 +1127,7 @@ intentionally not returned.</p></li>
 
 </dd></dl>
 
+</section>
 </section>
 
 
@@ -1083,27 +1179,33 @@ intentionally not returned.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#lod-vertex-counts">LOD vertex counts</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma-skeleton-78-joints">SOMA skeleton (78 joints)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#procedural-transforms">Procedural transforms</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pose-tensor-poses">Pose tensor (<code class="docutils literal notranslate"><span class="pre">poses</span></code>)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#root-translation-transl-optional">Root translation (<code class="docutils literal notranslate"><span class="pre">transl</span></code>, optional)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#identity-coefficients-identity-coeffs">Identity coefficients (<code class="docutils literal notranslate"><span class="pre">identity_coeffs</span></code>)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#body-part-scales-scale-params-optional">Body-part scales (<code class="docutils literal notranslate"><span class="pre">scale_params</span></code>, optional)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#correctives">Correctives</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#units">Units</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a><ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.default_skin_mesh_name"><code class="docutils literal notranslate"><span class="pre">default_skin_mesh_name</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_joint_names"><code class="docutils literal notranslate"><span class="pre">public_joint_names</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.target_joint_names"><code class="docutils literal notranslate"><span class="pre">target_joint_names</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.output_joint_parent_ids"><code class="docutils literal notranslate"><span class="pre">output_joint_parent_ids</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_skinning_weights"><code class="docutils literal notranslate"><span class="pre">public_skinning_weights()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_bind_transforms_world"><code class="docutils literal notranslate"><span class="pre">public_bind_transforms_world()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_rig_view"><code class="docutils literal notranslate"><span class="pre">public_rig_view()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.to_public_rotations"><code class="docutils literal notranslate"><span class="pre">to_public_rotations()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.prepare_identity"><code class="docutils literal notranslate"><span class="pre">prepare_identity()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.pose"><code class="docutils literal notranslate"><span class="pre">pose()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#historical-and-custom-reference-poses">Historical and custom reference poses</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#lod-vertex-counts">LOD vertex counts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma-skeleton-78-joints">SOMA skeleton (78 joints)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#procedural-transforms">Procedural transforms</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pose-tensor-poses">Pose tensor (<code class="docutils literal notranslate"><span class="pre">poses</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#root-translation-transl-optional">Root translation (<code class="docutils literal notranslate"><span class="pre">transl</span></code>, optional)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#identity-coefficients-identity-coeffs">Identity coefficients (<code class="docutils literal notranslate"><span class="pre">identity_coeffs</span></code>)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#body-part-scales-scale-params-optional">Body-part scales (<code class="docutils literal notranslate"><span class="pre">scale_params</span></code>, optional)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#correctives">Correctives</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#units">Units</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.default_skin_mesh_name"><code class="docutils literal notranslate"><span class="pre">default_skin_mesh_name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_joint_names"><code class="docutils literal notranslate"><span class="pre">public_joint_names</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.target_joint_names"><code class="docutils literal notranslate"><span class="pre">target_joint_names</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.output_joint_parent_ids"><code class="docutils literal notranslate"><span class="pre">output_joint_parent_ids</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.list_reference_poses"><code class="docutils literal notranslate"><span class="pre">list_reference_poses()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.get_reference_pose"><code class="docutils literal notranslate"><span class="pre">get_reference_pose()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.convert_reference"><code class="docutils literal notranslate"><span class="pre">convert_reference()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_skinning_weights"><code class="docutils literal notranslate"><span class="pre">public_skinning_weights()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_bind_transforms_world"><code class="docutils literal notranslate"><span class="pre">public_bind_transforms_world()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_rig_view"><code class="docutils literal notranslate"><span class="pre">public_rig_view()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.to_public_rotations"><code class="docutils literal notranslate"><span class="pre">to_public_rotations()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.prepare_identity"><code class="docutils literal notranslate"><span class="pre">prepare_identity()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.pose"><code class="docutils literal notranslate"><span class="pre">pose()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.forward"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
