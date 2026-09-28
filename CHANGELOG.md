@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.2
+
+Changes from v0.3.1:
+
+- Fixes `SOMALayer` initialization when the asset directory is omitted or missing.
+
 ## v0.3.1
 
 Changes from v0.3.0:

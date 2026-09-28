@@ -536,7 +536,7 @@ class SOMALayer(nn.Module):
                 )
             else:
                 logger.info("No data_root provided, downloading assets from HuggingFace...")
-            from .assets import get_assets_dir
+            from ..assets import get_assets_dir
 
             data_root = get_assets_dir()
 
