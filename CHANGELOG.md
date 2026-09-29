@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.3
+
+Changes from v0.3.2:
+
+- Fixes model loading with PyTorch 2.14 while preserving existing DataLoader behavior.
+
 ## v0.3.2
 
 Changes from v0.3.1:

@@ -356,17 +356,21 @@ class CorrectivesMLP(nn.Module):
         # the target device afterwards via .to(device).  Loading directly to
         # GPU fails in forked DataLoader workers where the CUDA context is
         # unavailable.
-        #
-        # Temporarily disable sparse-tensor validation: it calls
-        # torch._validate_sparse_coo_tensor_args which triggers CUDA
-        # in forked workers.  The tensors are converted to dense
-        # immediately after loading, so validation is unnecessary.
-        _orig_validate = torch._utils._validate_loaded_sparse_tensors
-        torch._utils._validate_loaded_sparse_tensors = lambda: None
-        try:
+        if torch.__version__ < "2.8" and torch.cuda._is_in_bad_fork():
+            # Before PyTorch 2.8, sparse validation checks pinned memory and
+            # reinitializes CUDA in forked workers (pytorch/pytorch#153143).
+            # Retain the legacy bypass only there. Newer PyTorch avoids that
+            # pinning check and must retain its native validation behavior.
+            _orig_validate = torch._utils._validate_loaded_sparse_tensors
+            torch._utils._validate_loaded_sparse_tensors = lambda: None
+            try:
+                ckpt = torch.load(path, map_location="cpu", weights_only=True)
+            finally:
+                torch._utils._validate_loaded_sparse_tensors = _orig_validate
+                # The skipped validator normally releases these references.
+                torch._utils._sparse_tensors_to_validate.clear()
+        else:
             ckpt = torch.load(path, map_location="cpu", weights_only=True)
-        finally:
-            torch._utils._validate_loaded_sparse_tensors = _orig_validate
         native_unit = Unit.from_name(ckpt["unit"]) if "unit" in ckpt else Unit.CENTIMETERS
         model_scale = native_unit.meters_per_unit / output_unit.meters_per_unit
 
