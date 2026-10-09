@@ -468,7 +468,9 @@ using tools that render images or video:</p>
 </pre></div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">--random-shape</span></code> to animate identities and <code class="docutils literal notranslate"><span class="pre">--motion-file</span></code> to provide a
-custom motion. The <code class="docutils literal notranslate"><span class="pre">mid</span></code>, <code class="docutils literal notranslate"><span class="pre">low</span></code>, and <code class="docutils literal notranslate"><span class="pre">xlo</span></code> LODs share the same public pose
+custom motion. Both body and hand demos default to <code class="docutils literal notranslate"><span class="pre">assets/example_animation.usd</span></code>,
+the canonical example animation updated alongside the corrective model.
+The <code class="docutils literal notranslate"><span class="pre">mid</span></code>, <code class="docutils literal notranslate"><span class="pre">low</span></code>, and <code class="docutils literal notranslate"><span class="pre">xlo</span></code> LODs share the same public pose
 contract.</p>
 </section>
 <section id="soma-hand-demo">
@@ -491,6 +493,8 @@ By default, motion renders apply the wrist’s animated world transform. Use
 <code class="docutils literal notranslate"><span class="pre">--remove-wrist-translation</span></code> to retain wrist orientation while keeping the
 hand centered. The default camera framing leaves room around the motion-wide
 hand bounds; increase <code class="docutils literal notranslate"><span class="pre">--camera-framing-scale</span></code> to zoom out further.</p>
+<p>Both demos leave pose correctives disabled by default. Use <code class="docutils literal notranslate"><span class="pre">--apply-correctives</span></code>
+to enable them.</p>
 <p>Both demos accept <code class="docutils literal notranslate"><span class="pre">--skeleton-overlay</span></code> to draw the public skeleton as
 octahedral bones over the mesh, and <code class="docutils literal notranslate"><span class="pre">--skeleton-style</span> <span class="pre">{light,skin}</span></code> to pick a
 neutral light-gray or a darker skin-toned bone color.</p>
@@ -499,29 +503,43 @@ neutral light-gray or a darker skin-toned bone color.</p>
 <h2>README teaser<a class="headerlink" href="#readme-teaser" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">make_teaser.py</span></code> composes the body and hand demo renders into the single
 README teaser GIF with one title and label specification, so both rows stay
-aligned and typographically consistent:</p>
+aligned and typographically consistent. The published <code class="docutils literal notranslate"><span class="pre">assets/images/soma-in-action.gif</span></code>
+uses correctives. To regenerate it, opt in when rendering and composing:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>tools/demo_soma_vis.py<span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--identity-model-type<span class="w"> </span>soma,mhr,smplx,anny,garment<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--apply-correctives<span class="w"> </span>--procedural-transforms<span class="w"> </span>on<span class="w"> </span>--pose-batch-size<span class="w"> </span><span class="m">64</span><span class="w"> </span><span class="se">\</span>
 <span class="w">  </span>--skeleton-overlay<span class="w"> </span>--skeleton-style<span class="w"> </span>skin<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--image-size<span class="w"> </span><span class="m">1440</span><span class="w"> </span>--max-frames<span class="w"> </span><span class="m">576</span><span class="w"> </span>--output-dir<span class="w"> </span>out/teaser/body
+<span class="w">  </span>--image-size<span class="w"> </span><span class="m">1440</span><span class="w"> </span>--max-frames<span class="w"> </span><span class="m">640</span><span class="w"> </span>--output-dir<span class="w"> </span>out/teaser/correctives/body
 <span class="k">for</span><span class="w"> </span>backend<span class="w"> </span><span class="k">in</span><span class="w"> </span>soma<span class="w"> </span>mhr<span class="w"> </span>mano<span class="p">;</span><span class="w"> </span><span class="k">do</span>
 <span class="w">  </span>python<span class="w"> </span>tools/hand/demo_soma_hand_vis.py<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--hand-type<span class="w"> </span>right<span class="w"> </span>--identity-model-type<span class="w"> </span><span class="s2">"</span><span class="nv">$backend</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--apply-correctives<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--remove-wrist-translation<span class="w"> </span>--camera-framing-scale<span class="w"> </span><span class="m">1</span>.0<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--skeleton-overlay<span class="w"> </span>--skeleton-style<span class="w"> </span>skin<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--image-size<span class="w"> </span><span class="m">1440</span><span class="w"> </span>--max-frames<span class="w"> </span><span class="m">576</span><span class="w"> </span>--output-dir<span class="w"> </span>out/teaser/hand
+<span class="w">    </span>--image-size<span class="w"> </span><span class="m">1440</span><span class="w"> </span>--max-frames<span class="w"> </span><span class="m">640</span><span class="w"> </span>--output-dir<span class="w"> </span>out/teaser/correctives/hand
 <span class="k">done</span>
-python<span class="w"> </span>tools/make_teaser.py<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--body-videos<span class="w"> </span>out/teaser/body/soma_fixed_shape_skel.mp4,out/teaser/body/mhr_fixed_shape_skel.mp4,out/teaser/body/smplx_fixed_shape_skel.mp4,out/teaser/body/anny_fixed_shape_skel.mp4,out/teaser/body/garment_fixed_shape_skel.mp4<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--body-labels<span class="w"> </span><span class="s2">"SOMA native,MHR,SMPL-X,Anny,GM"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--hand-videos<span class="w"> </span>out/teaser/hand/hand_right_soma_no_correctives_fixed_shape_skel.mp4,out/teaser/hand/hand_right_mhr_no_correctives_fixed_shape_skel.mp4,out/teaser/hand/hand_right_mano_no_correctives_fixed_shape_skel.mp4<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--hand-labels<span class="w"> </span><span class="s2">"SOMA native,MHR,MANO"</span><span class="w"> </span><span class="se">\</span>
-<span class="w">  </span>--output<span class="w"> </span>assets/images/soma-in-action.gif
+python<span class="w"> </span>tools/make_teaser.py<span class="w"> </span>--apply-correctives<span class="w"> </span>--fps<span class="w"> </span><span class="m">12</span>
 </pre></div>
 </div>
+<p>This writes <code class="docutils literal notranslate"><span class="pre">assets/images/soma-in-action.gif</span></code>, the single published teaser.
+Demos and the compositor still default to without correctives. To render that
+mode, omit <code class="docutils literal notranslate"><span class="pre">--apply-correctives</span></code> at both stages and use
+<code class="docutils literal notranslate"><span class="pre">out/teaser/no_correctives/body</span></code> and <code class="docutils literal notranslate"><span class="pre">out/teaser/no_correctives/hand</span></code> for the
+source directories. Both modes use the same default GIF output path.</p>
+<p>The compositor’s <code class="docutils literal notranslate"><span class="pre">--apply-correctives</span></code> flag selects pre-rendered inputs; it does
+not calculate
+corrective offsets. Use <code class="docutils literal notranslate"><span class="pre">--render-dir</span></code> to change the common render root, or
+<code class="docutils literal notranslate"><span class="pre">--body-videos</span></code>, <code class="docutils literal notranslate"><span class="pre">--hand-videos</span></code>, <code class="docutils literal notranslate"><span class="pre">--body-labels</span></code>, <code class="docutils literal notranslate"><span class="pre">--hand-labels</span></code>, and <code class="docutils literal notranslate"><span class="pre">--output</span></code>
+to supply custom inputs, labels, and output. Explicit video lists override the
+mode’s default inputs.</p>
 <p>The MANO backend additionally needs <code class="docutils literal notranslate"><span class="pre">--mano-model-path</span></code>, and the SMPL-X and
 GarmentMeasurements backends need their locally licensed model files. The
 compositor requires <code class="docutils literal notranslate"><span class="pre">ffmpeg</span></code> on the path.</p>
+<p>The example USD runs at 24 fps; keeping every second frame at 12 fps preserves
+its playback speed. The 640-frame source range ends after the second rightward
+kick: the last GIF sample is source frame 638, back in neutral standing before
+the next action. This gives a 26.67-second teaser. The recipe enables procedural
+body transforms.</p>
 </section>
 <section id="sample-the-hand-articulation-prior">
 <h2>Sample the hand articulation prior<a class="headerlink" href="#sample-the-hand-articulation-prior" title="Link to this heading">#</a></h2>

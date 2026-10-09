@@ -21,7 +21,9 @@ python tools/demo_soma_vis.py \
 ```
 
 Use `--random-shape` to animate identities and `--motion-file` to provide a
-custom motion. The `mid`, `low`, and `xlo` LODs share the same public pose
+custom motion. Both body and hand demos default to `assets/example_animation.usd`,
+the canonical example animation updated alongside the corrective model.
+The `mid`, `low`, and `xlo` LODs share the same public pose
 contract.
 
 ## SOMA Hand demo
@@ -47,6 +49,9 @@ By default, motion renders apply the wrist's animated world transform. Use
 hand centered. The default camera framing leaves room around the motion-wide
 hand bounds; increase `--camera-framing-scale` to zoom out further.
 
+Both demos leave pose correctives disabled by default. Use `--apply-correctives`
+to enable them.
+
 Both demos accept `--skeleton-overlay` to draw the public skeleton as
 octahedral bones over the mesh, and `--skeleton-style {light,skin}` to pick a
 neutral light-gray or a darker skin-toned bone color.
@@ -55,31 +60,48 @@ neutral light-gray or a darker skin-toned bone color.
 
 `make_teaser.py` composes the body and hand demo renders into the single
 README teaser GIF with one title and label specification, so both rows stay
-aligned and typographically consistent:
+aligned and typographically consistent. The published `assets/images/soma-in-action.gif`
+uses correctives. To regenerate it, opt in when rendering and composing:
 
 ```bash
 python tools/demo_soma_vis.py \
   --identity-model-type soma,mhr,smplx,anny,garment \
+  --apply-correctives --procedural-transforms on --pose-batch-size 64 \
   --skeleton-overlay --skeleton-style skin \
-  --image-size 1440 --max-frames 576 --output-dir out/teaser/body
+  --image-size 1440 --max-frames 640 --output-dir out/teaser/correctives/body
 for backend in soma mhr mano; do
   python tools/hand/demo_soma_hand_vis.py \
     --hand-type right --identity-model-type "$backend" \
+    --apply-correctives \
     --remove-wrist-translation --camera-framing-scale 1.0 \
     --skeleton-overlay --skeleton-style skin \
-    --image-size 1440 --max-frames 576 --output-dir out/teaser/hand
+    --image-size 1440 --max-frames 640 --output-dir out/teaser/correctives/hand
 done
-python tools/make_teaser.py \
-  --body-videos out/teaser/body/soma_fixed_shape_skel.mp4,out/teaser/body/mhr_fixed_shape_skel.mp4,out/teaser/body/smplx_fixed_shape_skel.mp4,out/teaser/body/anny_fixed_shape_skel.mp4,out/teaser/body/garment_fixed_shape_skel.mp4 \
-  --body-labels "SOMA native,MHR,SMPL-X,Anny,GM" \
-  --hand-videos out/teaser/hand/hand_right_soma_no_correctives_fixed_shape_skel.mp4,out/teaser/hand/hand_right_mhr_no_correctives_fixed_shape_skel.mp4,out/teaser/hand/hand_right_mano_no_correctives_fixed_shape_skel.mp4 \
-  --hand-labels "SOMA native,MHR,MANO" \
-  --output assets/images/soma-in-action.gif
+python tools/make_teaser.py --apply-correctives --fps 12
 ```
+
+This writes `assets/images/soma-in-action.gif`, the single published teaser.
+Demos and the compositor still default to without correctives. To render that
+mode, omit `--apply-correctives` at both stages and use
+`out/teaser/no_correctives/body` and `out/teaser/no_correctives/hand` for the
+source directories. Both modes use the same default GIF output path.
+
+The compositor's `--apply-correctives` flag selects pre-rendered inputs; it does
+not calculate
+corrective offsets. Use `--render-dir` to change the common render root, or
+`--body-videos`, `--hand-videos`, `--body-labels`, `--hand-labels`, and `--output`
+to supply custom inputs, labels, and output. Explicit video lists override the
+mode's default inputs.
 
 The MANO backend additionally needs `--mano-model-path`, and the SMPL-X and
 GarmentMeasurements backends need their locally licensed model files. The
 compositor requires `ffmpeg` on the path.
+
+The example USD runs at 24 fps; keeping every second frame at 12 fps preserves
+its playback speed. The 640-frame source range ends after the second rightward
+kick: the last GIF sample is source frame 638, back in neutral standing before
+the next action. This gives a 26.67-second teaser. The recipe enables procedural
+body transforms.
 
 ## Sample the hand articulation prior
 

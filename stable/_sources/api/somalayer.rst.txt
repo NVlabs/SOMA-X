@@ -17,6 +17,12 @@ Two-phase API:
 
 ``forward(...)`` is the one-call convenience wrapper.
 
+Load an animation with ``poses, translation, fps = layer.load_motion(path)``.
+Translations use the layer's output units. Loading does not require a prepared
+identity. ``load_motion(path, *, absolute_pose=False, reference_pose=None)``
+uses the same reference selection rules as ``pose()``. Supply the same options
+to both calls, with ``pose2rot=False`` and ``transl=translation`` for posing.
+
 Historical and custom reference poses
 -------------------------------------
 
@@ -45,5 +51,5 @@ follows.
    :no-members:
 
 .. autoclass:: soma.body.SOMALayer
-   :members: default_skin_mesh_name, num_shape_components, prepare_identity, pose, forward, list_reference_poses, get_reference_pose, convert_reference
+   :members: default_skin_mesh_name, num_shape_components, prepare_identity, pose, forward, list_reference_poses, get_reference_pose, convert_reference, load_motion
    :show-inheritance:

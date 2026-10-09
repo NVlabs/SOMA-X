@@ -454,18 +454,34 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">soma.io</span></code> module provides the file-format boundary for the library.</p>
 <p>The main responsibilities are:</p>
 <ul class="simple">
-<li><p>USD mesh and skeleton import/export</p></li>
+<li><p>USD mesh and skeleton import/export, and standalone joint animation import</p></li>
 <li><p>SOMA NPZ save/load helpers</p></li>
 <li><p>convenience export helpers built around <code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></p></li>
 </ul>
-<p id="module-soma.io">I/O helpers for SOMA: NPZ animation files and USD mesh/skeleton I/O.</p>
+<p>Read a standalone UsdSkel joint animation without a skeleton or mesh:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">soma.io</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_usd_animation_sequence</span>
+
+<span class="n">animation</span> <span class="o">=</span> <span class="n">load_usd_animation_sequence</span><span class="p">(</span><span class="s2">"assets/example_animation.usd"</span><span class="p">)</span>
+<span class="n">local_transforms</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">local_transforms</span>
+<span class="n">times_seconds</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">time_codes</span> <span class="o">/</span> <span class="n">animation</span><span class="o">.</span><span class="n">time_codes_per_second</span>
+</pre></div>
+</div>
+<p>The reader preserves source joint paths, units, axes, and scale. Unit conversion
+and interpretation of the motion for a particular rig belong to the caller.
+<code class="docutils literal notranslate"><span class="pre">load_usd_animation</span></code> retains its existing default-pose return contract.</p>
+<p>For SOMA playback, <code class="docutils literal notranslate"><span class="pre">load_soma_animation</span></code> maps joints and converts translations
+to meters. Set <code class="docutils literal notranslate"><span class="pre">world_space=True</span></code> to compose authored joint-path ancestors
+before selecting joints. <a class="reference internal" href="somalayer.html#soma.body.SOMALayer.load_motion" title="soma.body.SOMALayer.load_motion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">soma.body.SOMALayer.load_motion()</span></code></a> and
+<a class="reference internal" href="somahandlayer.html#soma.hand.SOMAHandLayer.load_motion" title="soma.hand.SOMAHandLayer.load_motion"><code class="xref py py-meth docutils literal notranslate"><span class="pre">soma.hand.SOMAHandLayer.load_motion()</span></code></a> convert rotations and root translations
+for their respective layers, with absolute or reference-relative output.</p>
+<p id="module-soma.io">I/O helpers for SOMA: NPZ animation files and USD mesh/skeleton/animation I/O.</p>
 <p>An .npz file contains everything needed to replay an animation with
 SOMALayer: identity model type, identity coefficients, poses, root
 translation, and metadata describing the representation.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="soma.io.UVPrimvarEntry">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">UVPrimvarEntry</span></span><a class="headerlink" href="#soma.io.UVPrimvarEntry" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
 <p>Serialized UV primvar data returned by <a class="reference internal" href="#soma.io.load_usd_mesh" title="soma.io.load_usd_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_mesh</span></code></a>.</p>
 <p>Behaves like a <code class="docutils literal notranslate"><span class="pre">dict</span></code> for backwards compatibility
 (<code class="docutils literal notranslate"><span class="pre">entry[&quot;coordinates&quot;]</span></code>) while also supporting attribute access
@@ -475,7 +491,7 @@ translation, and metadata describing the representation.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="soma.io.SOMANPZData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">SOMANPZData</span></span><a class="headerlink" href="#soma.io.SOMANPZData" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
 <p>Dictionary returned by <a class="reference internal" href="#soma.io.load_soma_npz" title="soma.io.load_soma_npz"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_soma_npz</span></code></a>.</p>
 <p>Behaves like a <code class="docutils literal notranslate"><span class="pre">dict</span></code> for backwards compatibility
 (<code class="docutils literal notranslate"><span class="pre">data[&quot;poses&quot;]</span></code>) while also supporting attribute access
@@ -484,9 +500,19 @@ translation, and metadata describing the representation.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="soma.io.AnimationUSDData">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">AnimationUSDData</span></span><a class="headerlink" href="#soma.io.AnimationUSDData" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<p>Sampled joint animation returned by <a class="reference internal" href="#soma.io.load_usd_animation_sequence" title="soma.io.load_usd_animation_sequence"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_animation_sequence</span></code></a>.</p>
+<p>Supports both dictionary and attribute access. Transforms use column vectors
+in the source stage’s units and axis convention; joint paths retain their
+authored order. No skeleton, mesh, or SOMA joint layout is required.</p>
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="soma.io.RigUSDData">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">RigUSDData</span></span><a class="headerlink" href="#soma.io.RigUSDData" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></a>]</p>
 <p>Dictionary returned by <a class="reference internal" href="#soma.io.load_rig_from_usd" title="soma.io.load_rig_from_usd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_rig_from_usd</span></code></a>.</p>
 <p>Behaves like a <code class="docutils literal notranslate"><span class="pre">dict</span></code> for backwards compatibility
 (<code class="docutils literal notranslate"><span class="pre">rig[&quot;joint_names&quot;]</span></code>) while also supporting attribute access
@@ -501,13 +527,13 @@ mesh carries polygon/UV data.</p>
 <dd><p>Return prim paths of all Mesh prims in a USD file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p>
+<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Path to the USD file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>list of prim path strings.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)">list</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)">str</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -519,8 +545,8 @@ mesh carries polygon/UV data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p></li>
-<li><p><strong>mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Prim path of the mesh (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;/Root/Mesh&quot;</span></code>).
+<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Path to the USD file.</p></li>
+<li><p><strong>mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Prim path of the mesh (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;/Root/Mesh&quot;</span></code>).
 A leading <code class="docutils literal notranslate"><span class="pre">/</span></code> is added if missing.</p></li>
 </ul>
 </dd>
@@ -535,7 +561,7 @@ A leading <code class="docutils literal notranslate"><span class="pre">/</span><
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)">dict</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a>, <a class="reference internal" href="#soma.io.UVPrimvarEntry" title="soma.io.UVPrimvarEntry"><em>UVPrimvarEntry</em></a>]]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)">dict</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)">str</a>, <a class="reference internal" href="#soma.io.UVPrimvarEntry" title="soma.io.UVPrimvarEntry"><em>UVPrimvarEntry</em></a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -558,12 +584,12 @@ A leading <code class="docutils literal notranslate"><span class="pre">/</span><
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Output path.</p></li>
-<li><p><strong>mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Prim path for the mesh.</p></li>
+<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Output path.</p></li>
+<li><p><strong>mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Prim path for the mesh.</p></li>
 <li><p><strong>vertices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>) – <code class="docutils literal notranslate"><span class="pre">(V,</span> <span class="pre">3)</span></code> vertex positions.</p></li>
 <li><p><strong>face_vert_indices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>) – Flattened face-vertex indices.</p></li>
 <li><p><strong>face_vert_counts</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>) – Verts-per-face array.</p></li>
-<li><p><strong>uv_data</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><em>dict</em></a><em> | </em><em>None</em>) – Optional UV sets (same format as <a class="reference internal" href="#soma.io.load_usd_mesh" title="soma.io.load_usd_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_mesh</span></code></a> output).</p></li>
+<li><p><strong>uv_data</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><em>dict</em></a><em> | </em><em>None</em>) – Optional UV sets (same format as <a class="reference internal" href="#soma.io.load_usd_mesh" title="soma.io.load_usd_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_mesh</span></code></a> output).</p></li>
 </ul>
 </dd>
 </dl>
@@ -595,7 +621,7 @@ A leading <code class="docutils literal notranslate"><span class="pre">/</span><
 <dd><p>Extract skeleton from a USD file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p>
+<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Path to the USD file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Tuple <code class="docutils literal notranslate"><span class="pre">(joint_paths,</span> <span class="pre">bind_transforms,</span> <span class="pre">parent_ids)</span></code>.
@@ -606,7 +632,7 @@ of world-space bind transforms in USD row-major convention
 with <code class="docutils literal notranslate"><span class="pre">-1</span></code> for the root.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)">str</a>], <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.14)">list</a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)">int</a>]]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)">list</a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)">str</a>], <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)">list</a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)">int</a>]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -617,7 +643,7 @@ with <code class="docutils literal notranslate"><span class="pre">-1</span></cod
 <dd><p>Extract SkelAnimation rotations and translations from a USD file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p>
+<dd class="field-odd"><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Path to the USD file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><p><code class="docutils literal notranslate"><span class="pre">(rot_mats,</span> <span class="pre">translations)</span></code> where</p>
@@ -629,7 +655,80 @@ with <code class="docutils literal notranslate"><span class="pre">-1</span></cod
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>] | None</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_usd_animation_sequence">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_usd_animation_sequence</span></span><span class="sig-paren">(</span>
+
+<dl>
+<dd><em class="sig-param"><span class="n"><span class="pre">usd_file_path</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">animation_prim_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">time_codes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
+</dl>
+
+<span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_usd_animation_sequence" title="Link to this definition">#</a></dt>
+<dd><p>Read a UsdSkel joint animation without requiring a skeleton or mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Path to the USD file.</p></li>
+<li><p><strong>animation_prim_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><em>None</em>) – Select a SkelAnimation prim explicitly. If omitted,
+the stage must contain exactly one SkelAnimation.</p></li>
+<li><p><strong>time_codes</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a><em>] </em><em>| </em><em>None</em>) – Times to evaluate using USD interpolation and held values.
+By default, sample at one-time-code intervals across the inclusive
+stage playback range, without exceeding its end. If no playback
+range is authored, use the transform attributes’ sample range,
+or time zero for a static animation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#soma.io.AnimationUSDData" title="soma.io.AnimationUSDData"><code class="xref py py-class docutils literal notranslate"><span class="pre">AnimationUSDData</span></code></a> with <code class="docutils literal notranslate"><span class="pre">joint_paths</span></code> in authored order,
+<code class="docutils literal notranslate"><span class="pre">local_transforms</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(T,</span> <span class="pre">J,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> (float32, column-vector
+convention), <code class="docutils literal notranslate"><span class="pre">scales</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(T,</span> <span class="pre">J,</span> <span class="pre">3)</span></code>, and the sampled
+<code class="docutils literal notranslate"><span class="pre">time_codes</span></code>. Translations remain in source-stage units. Metadata
+includes <code class="docutils literal notranslate"><span class="pre">meters_per_unit</span></code>, <code class="docutils literal notranslate"><span class="pre">up_axis</span></code>, and <code class="docutils literal notranslate"><span class="pre">time_codes_per_second</span></code>;
+elapsed seconds are time-code differences divided by the latter.
+Joint names, units, axes, and scale are not restricted to SOMA.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#soma.io.AnimationUSDData" title="soma.io.AnimationUSDData"><em>AnimationUSDData</em></a></p>
+</dd>
+</dl>
+<p>Unlike <a class="reference internal" href="#soma.io.load_usd_animation" title="soma.io.load_usd_animation"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_usd_animation()</span></code></a>, which reads the default pose, this
+function reads a time sequence and returns its joint paths and metadata.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="soma.io.load_soma_animation">
+<span class="sig-prename descclassname"><span class="pre">soma.io.</span></span><span class="sig-name descname"><span class="pre">load_soma_animation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joint_names</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">world_space</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#soma.io.load_soma_animation" title="Link to this definition">#</a></dt>
+<dd><p>Load a USD animation in the requested SOMA joint order and meter units.</p>
+<p>USD animation is sampled once per time code over the stage playback range,
+including frames without authored keys. Joint paths determine the mapping;
+stage metadata determines translation units and playback speed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – USD animation file. Legacy NPY motion files are unsupported.</p></li>
+<li><p><strong>joint_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>]</em>) – Target joint leaf names in the desired output order.</p></li>
+<li><p><strong>world_space</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><em>bool</em></a>) – Compose authored joint-path ancestors before selecting
+joints. Output is in the animation’s coordinate frame, without
+scene prim transforms. Missing leading path prefixes are allowed
+for animation roots; gaps between authored ancestors are rejected.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">(transforms,</span> <span class="pre">fps)</span></code> with float32 transforms of shape
+<code class="docutils literal notranslate"><span class="pre">(T,</span> <span class="pre">J,</span> <span class="pre">4,</span> <span class="pre">4)</span></code> in column-vector convention and translations in meters.
+Requires Y-up animation, unambiguous joint leaf names, and unit scale.
+Use <a class="reference internal" href="#soma.io.load_usd_animation_sequence" title="soma.io.load_usd_animation_sequence"><code class="xref py py-func docutils literal notranslate"><span class="pre">load_usd_animation_sequence()</span></code></a> to read other USD conventions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)">float</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -644,8 +743,8 @@ order so it aligns with <a class="reference internal" href="#soma.io.load_usd_sk
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the USD file.</p></li>
-<li><p><strong>mesh_prim_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Prim path of the mesh to read skinning from.  If
+<li><p><strong>usd_file_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Path to the USD file.</p></li>
+<li><p><strong>mesh_prim_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><em>None</em>) – Prim path of the mesh to read skinning from.  If
 <code class="docutils literal notranslate"><span class="pre">None</span></code>, the first Mesh prim in the file is used.</p></li>
 </ul>
 </dd>
@@ -658,7 +757,7 @@ order so it aligns with <a class="reference internal" href="#soma.io.load_usd_sk
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.14)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)">int</a>]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)">int</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -714,8 +813,8 @@ are not included; they must still be loaded from <code class="docutils literal n
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>usd_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, <code class="docutils literal notranslate"><span class="pre">.usdc</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usd</span></code> template rig.</p></li>
-<li><p><strong>skin_mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><em>None</em>) – Name of the <code class="docutils literal notranslate"><span class="pre">UsdGeomMesh</span></code> prim holding the body
+<li><p><strong>usd_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Path to the <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, <code class="docutils literal notranslate"><span class="pre">.usdc</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usd</span></code> template rig.</p></li>
+<li><p><strong>skin_mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><em>None</em>) – Name of the <code class="docutils literal notranslate"><span class="pre">UsdGeomMesh</span></code> prim holding the body
 skin (leaf path component, not full path). If <code class="docutils literal notranslate"><span class="pre">None</span></code> (the
 default), look for <code class="docutils literal notranslate"><span class="pre">DEFAULT_SKIN_MESH_NAME</span></code> first, and
 fall back to the first <code class="docutils literal notranslate"><span class="pre">UsdGeomMesh</span></code> descendant of any
@@ -733,11 +832,11 @@ or UV data, the result also includes <code class="docutils literal notranslate">
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#FileNotFoundError" title="(in Python v3.14)"><strong>FileNotFoundError</strong></a> – if the USD file does not exist.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#RuntimeError" title="(in Python v3.14)"><strong>RuntimeError</strong></a> – if the file cannot be opened, has no
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#FileNotFoundError" title="(in Python v3.15)"><strong>FileNotFoundError</strong></a> – if the USD file does not exist.</p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#RuntimeError" title="(in Python v3.15)"><strong>RuntimeError</strong></a> – if the file cannot be opened, has no
     <code class="docutils literal notranslate"><span class="pre">UsdSkelSkeleton</span></code>, has no <code class="docutils literal notranslate"><span class="pre">bindTransforms</span></code>, has joint/
     transform count mismatches, or has malformed skinning primvars.</p></li>
-<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.14)"><strong>ValueError</strong></a> – if the skin mesh cannot be located under
+<li><p><a class="reference external" href="https://docs.python.org/3/builtins/exceptions.html#ValueError" title="(in Python v3.15)"><strong>ValueError</strong></a> – if the skin mesh cannot be located under
     <em>skin_mesh_name</em> (or the auto-discovery fallback), or has
     no points.</p></li>
 </ul>
@@ -783,7 +882,7 @@ or UV data, the result also includes <code class="docutils literal notranslate">
 <p>Any extra arrays stored via <em>extra_arrays</em> are included as-is.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Path to the <code class="docutils literal notranslate"><span class="pre">.npz</span></code> file.</p>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Path to the <code class="docutils literal notranslate"><span class="pre">.npz</span></code> file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>dict of numpy arrays and Python scalars.</p>
@@ -830,11 +929,11 @@ written (skeleton bind pose + skinned mesh) with no SkelAnimation prim.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Output <code class="docutils literal notranslate"><span class="pre">.usd</span></code>, <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usdc</span></code> file path.</p></li>
+<li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Output <code class="docutils literal notranslate"><span class="pre">.usd</span></code>, <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usdc</span></code> file path.</p></li>
 <li><p><strong>rotations</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – (N, J, 3, 3) local rotation matrices, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for a static rig.</p></li>
 <li><p><strong>root_translation</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – (N, 3) root joint local translation, or <code class="docutils literal notranslate"><span class="pre">None</span></code> for a static rig.</p></li>
-<li><p><strong>joint_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em>) – list of J joint name strings (including Root).</p></li>
-<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em>] </em><em>| </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (J,) parent index array.</p></li>
+<li><p><strong>joint_names</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>]</em>) – list of J joint name strings (including Root).</p></li>
+<li><p><strong>joint_parent_ids</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><em>Sequence</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a><em>] </em><em>| </em><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (J,) parent index array.</p></li>
 <li><p><strong>bind_transforms_world</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (J, 4, 4) or (1, J, 4, 4) world-space bind transforms.</p></li>
 <li><p><strong>bind_transforms_local</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (J, 4, 4) or (1, J, 4, 4) local-space bind transforms.</p></li>
 <li><p><strong>rest_shape</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (V, 3) bind-pose vertex positions.</p></li>
@@ -843,16 +942,16 @@ written (skeleton bind pose + skinned mesh) with no SkelAnimation prim.</p>
 <li><p><strong>face_vert_indices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – Flattened polygon face-vertex indices (e.g. quads from
 the template USD).  Takes priority over <em>faces</em> when provided.</p></li>
 <li><p><strong>face_vert_counts</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em><em> | </em><em>None</em>) – Per-face vertex counts matching <em>face_vert_indices</em>.</p></li>
-<li><p><strong>uv_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><a class="reference internal" href="#soma.io.UVPrimvarEntry" title="soma.io.UVPrimvarEntry"><em>UVPrimvarEntry</em></a><em>] </em><em>| </em><em>None</em>) – Optional UV sets in nested-dict format
+<li><p><strong>uv_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><em>Mapping</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em>, </em><a class="reference internal" href="#soma.io.UVPrimvarEntry" title="soma.io.UVPrimvarEntry"><em>UVPrimvarEntry</em></a><em>] </em><em>| </em><em>None</em>) – Optional UV sets in nested-dict format
 <code class="docutils literal notranslate"><span class="pre">{name:</span> <span class="pre">{&quot;coordinates&quot;:</span> <span class="pre">(M,2),</span> <span class="pre">&quot;indices&quot;:</span> <span class="pre">...,</span> <span class="pre">&quot;interpolation&quot;:</span> <span class="pre">str}}</span></code>,
 as returned by <a class="reference internal" href="#soma.io.load_usd_mesh" title="soma.io.load_usd_mesh"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_usd_mesh</span></code></a> or <a class="reference internal" href="#soma.io.load_rig_from_usd" title="soma.io.load_rig_from_usd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_rig_from_usd</span></code></a>.</p></li>
 <li><p><strong>skinning_weights</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (V, J) dense skinning weights.</p></li>
-<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;meters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;centimeters&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;millimeters&quot;</span></code>.</p></li>
-<li><p><strong>fps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Frames per second (timeCodesPerSecond).</p></li>
-<li><p><strong>topk</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a>) – Max joint influences per vertex for sparse skinning.</p></li>
-<li><p><strong>root_joint_idx</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.14)"><em>int</em></a><em> | </em><em>None</em>) – Index of the joint that receives root_translation.
+<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;meters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;centimeters&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;millimeters&quot;</span></code>.</p></li>
+<li><p><strong>fps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Frames per second (timeCodesPerSecond).</p></li>
+<li><p><strong>topk</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a>) – Max joint influences per vertex for sparse skinning.</p></li>
+<li><p><strong>root_joint_idx</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><em>int</em></a><em> | </em><em>None</em>) – Index of the joint that receives root_translation.
 Defaults to 1 (SOMA body Hips); pass 0 for hand models.</p></li>
-<li><p><strong>skin_mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – Leaf name for the skinned mesh prim under the
+<li><p><strong>skin_mesh_name</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – Leaf name for the skinned mesh prim under the
 <code class="docutils literal notranslate"><span class="pre">UsdSkelRoot</span></code>. Defaults to <code class="docutils literal notranslate"><span class="pre">DEFAULT_SKIN_MESH_NAME</span></code> so that
 files written here round-trip cleanly through
 <a class="reference internal" href="#soma.io.load_rig_from_usd" title="soma.io.load_rig_from_usd"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_rig_from_usd</span></code></a>.</p></li>
@@ -883,12 +982,12 @@ topology-constant vertex animation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><em>Path</em></a>) – Output <code class="docutils literal notranslate"><span class="pre">.usd</span></code>, <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usdc</span></code> file path.</p></li>
+<li><p><strong>out_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a><em> | </em><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><em>Path</em></a>) – Output <code class="docutils literal notranslate"><span class="pre">.usd</span></code>, <code class="docutils literal notranslate"><span class="pre">.usda</span></code>, or <code class="docutils literal notranslate"><span class="pre">.usdc</span></code> file path.</p></li>
 <li><p><strong>vertices</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (N, V, 3) per-frame vertex positions.</p></li>
 <li><p><strong>faces</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.5)"><em>ndarray</em></a><em> | </em><em>Tensor</em>) – (F, 3) triangle face indices (constant across frames).</p></li>
-<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;meters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;centimeters&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;millimeters&quot;</span></code>.</p></li>
-<li><p><strong>fps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><em>float</em></a>) – Frames per second.</p></li>
-<li><p><strong>prim_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a>) – USD prim path for the mesh (default <code class="docutils literal notranslate"><span class="pre">&quot;/Mesh&quot;</span></code>).</p></li>
+<li><p><strong>unit</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – <code class="docutils literal notranslate"><span class="pre">&quot;meters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;centimeters&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;millimeters&quot;</span></code>.</p></li>
+<li><p><strong>fps</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><em>float</em></a>) – Frames per second.</p></li>
+<li><p><strong>prim_path</strong> (<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><em>str</em></a>) – USD prim path for the mesh (default <code class="docutils literal notranslate"><span class="pre">&quot;/Mesh&quot;</span></code>).</p></li>
 </ul>
 </dd>
 </dl>
@@ -947,6 +1046,7 @@ topology-constant vertex animation.</p>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.UVPrimvarEntry"><code class="docutils literal notranslate"><span class="pre">UVPrimvarEntry</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.SOMANPZData"><code class="docutils literal notranslate"><span class="pre">SOMANPZData</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.AnimationUSDData"><code class="docutils literal notranslate"><span class="pre">AnimationUSDData</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.RigUSDData"><code class="docutils literal notranslate"><span class="pre">RigUSDData</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.list_usd_meshes"><code class="docutils literal notranslate"><span class="pre">list_usd_meshes()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_mesh"><code class="docutils literal notranslate"><span class="pre">load_usd_mesh()</span></code></a></li>
@@ -954,6 +1054,8 @@ topology-constant vertex animation.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.fan_triangulate"><code class="docutils literal notranslate"><span class="pre">fan_triangulate()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_skeleton"><code class="docutils literal notranslate"><span class="pre">load_usd_skeleton()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_animation"><code class="docutils literal notranslate"><span class="pre">load_usd_animation()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_animation_sequence"><code class="docutils literal notranslate"><span class="pre">load_usd_animation_sequence()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_soma_animation"><code class="docutils literal notranslate"><span class="pre">load_soma_animation()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.load_usd_skinning"><code class="docutils literal notranslate"><span class="pre">load_usd_skinning()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.missing_soma_neutral_rig_keys"><code class="docutils literal notranslate"><span class="pre">missing_soma_neutral_rig_keys()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.io.find_lod_skin_mesh_name"><code class="docutils literal notranslate"><span class="pre">find_lod_skin_mesh_name()</span></code></a></li>
