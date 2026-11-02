@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.3.5
+
+Changes from v0.3.4:
+
+- Improves the corrective model for uncommon poses.
+
 ## v0.3.4
 
 Changes from v0.3.3:
