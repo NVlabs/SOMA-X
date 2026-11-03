@@ -357,6 +357,24 @@ class TestInvert:
         assert mean_err < 0.01, f"Mean vertex error too high: {mean_err:.6f} m"
         assert max_err < 0.05, f"Max vertex error too high: {max_err:.6f} m"
 
+    def test_lie_gn_iterates_stay_on_so3(self, soma_and_inv):
+        """Lie-GN refinement must not drift off SO(3).
+
+        Before re-projection, the R_parent^T @ R_world composition squared the
+        warm start's residual non-orthonormality down every chain each
+        iteration (fingertip joints reached det ~0.98 after 3 iterations and
+        ~0.83 after 10).
+        """
+        soma, inv = soma_and_inv
+        verts, _ = _load_motion(soma, frames=[0, 100, 300])
+        result = inv.fit(verts, lie_iters=10)
+        R = result["rotations"].double()
+        eye = torch.eye(3, device=R.device, dtype=R.dtype)
+        dev = torch.linalg.norm(R @ R.transpose(-1, -2) - eye, dim=(-2, -1))
+        assert dev.max().item() < 1e-5, f"max |R R^T - I| = {dev.max().item():.2e}"
+        det = torch.linalg.det(R)
+        torch.testing.assert_close(det, torch.ones_like(det), rtol=0, atol=1e-5)
+
     def test_batch_roundtrip(self, soma_and_inv):
         """Multiple diverse frames: consistent low error across batch."""
         soma, inv = soma_and_inv

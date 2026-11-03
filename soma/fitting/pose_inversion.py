@@ -174,6 +174,21 @@ def _solve_lie_gn_normal_equations(JtJ: torch.Tensor, rhs: torch.Tensor) -> torc
     return solution
 
 
+def _project_to_so3(rotations: torch.Tensor) -> torch.Tensor:
+    """Project (..., 3, 3) matrices onto SO(3) via the polar factor (nearest rotation).
+
+    Reflections (det < 0) are repaired by flipping the last singular direction.
+    """
+    U, _, Vh = torch.linalg.svd(rotations)
+    proj = U @ Vh
+    flip = torch.linalg.det(proj) < 0
+    if flip.any():
+        U = U.clone()
+        U[flip, :, -1] = -U[flip, :, -1]
+        proj = U @ Vh
+    return proj
+
+
 def _active_lie_joint_indices(descendant_weights: torch.Tensor, root_idx: int) -> torch.Tensor:
     """Return joints with geometry influence, excluding the full-body virtual root."""
     active_mask = descendant_weights.any(dim=1)
@@ -1750,6 +1765,14 @@ class PoseInversion:
             pose_local = joint_world_to_local(W_init, cache["parent_ids"])
         if has_virtual_root:
             pose_local[:, 0, :3, :3] = eye3
+        # The analytical warm start (Newton-Schulz / least-squares rotation
+        # extraction) is only approximately orthonormal.  The update below
+        # composes R_parent^T @ R_world, which treats the transpose as the
+        # inverse; any non-orthonormality is therefore squared down each
+        # kinematic chain and compounds every iteration (fingertips reach
+        # det ~0.98 after 3 iterations, ~0.83 after 10).  Keep every iterate
+        # on SO(3).
+        pose_local[:, :, :3, :3] = _project_to_so3(pose_local[:, :, :3, :3])
 
         # ---- Precompute ancestor mask (constant across iterations) ----
         # A[j, k] = 1.0 if k is in the subtree of j (j is ancestor-or-equal of k)
@@ -1871,6 +1894,7 @@ class PoseInversion:
                 accepted_err[improved] = err_try[improved]
 
             pose_local = pose_local_accepted
+            pose_local[:, :, :3, :3] = _project_to_so3(pose_local[:, :, :3, :3])
 
             # Fine-tune root translation every iteration
             _update_root_translation(pose_local, target, cache, vert_weights)
