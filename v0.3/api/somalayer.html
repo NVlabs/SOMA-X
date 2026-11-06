@@ -856,6 +856,28 @@ convention (<code class="code docutils literal notranslate"><span class="pre">mi
 <dd><p>Names of the public SOMA joints returned by <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="soma.body.SOMALayer.public_joint_orient">
+<span class="sig-name descname"><span class="pre">public_joint_orient</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#soma.body.SOMALayer.public_joint_orient" title="Link to this definition">#</a></dt>
+<dd><p>Joint-orient tensors for the public joints returned by <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>.</p>
+<p>Procedural layers keep an expanded target skeleton (e.g. 110 joints with
+twist helpers) for skinning, so <code class="docutils literal notranslate"><span class="pre">_t_pose_orient</span></code> is sized to the target
+skeleton.  Rotations produced by <a class="reference internal" href="#soma.body.SOMALayer.pose" title="soma.body.SOMALayer.pose"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pose()</span></code></a>, <code class="docutils literal notranslate"><span class="pre">PoseInversion.fit</span></code> and
+the conversion tools are sized to the public skeleton (78 joints).  Use
+this when converting those rotations between absolute and T-pose-relative
+conventions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">(orient,</span> <span class="pre">orient_parent_T)</span></code> as produced by
+<a class="reference internal" href="geometry.html#soma.geometry.rig_utils.precompute_joint_orient" title="soma.geometry.rig_utils.precompute_joint_orient"><code class="xref py py-func docutils literal notranslate"><span class="pre">precompute_joint_orient()</span></code></a>, both
+<code class="docutils literal notranslate"><span class="pre">(J_public,</span> <span class="pre">3,</span> <span class="pre">3)</span></code>.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)">tuple</a>[<em>Tensor</em>, <em>Tensor</em>]</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="soma.body.SOMALayer.target_joint_names">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">target_joint_names</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#soma.body.SOMALayer.target_joint_names" title="Link to this definition">#</a></dt>
@@ -1236,6 +1258,7 @@ intentionally not returned.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer"><code class="docutils literal notranslate"><span class="pre">SOMALayer</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.default_skin_mesh_name"><code class="docutils literal notranslate"><span class="pre">default_skin_mesh_name</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_joint_names"><code class="docutils literal notranslate"><span class="pre">public_joint_names</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.public_joint_orient"><code class="docutils literal notranslate"><span class="pre">public_joint_orient()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.target_joint_names"><code class="docutils literal notranslate"><span class="pre">target_joint_names</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.output_joint_parent_ids"><code class="docutils literal notranslate"><span class="pre">output_joint_parent_ids</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#soma.body.SOMALayer.list_reference_poses"><code class="docutils literal notranslate"><span class="pre">list_reference_poses()</span></code></a></li>
