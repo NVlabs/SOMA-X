@@ -1050,7 +1050,7 @@ class PoseInversion:
             # Create an internal low-LOD layer for the refit.  Procedural mode
             # remains enabled here so autograd refinement can evaluate twist
             # LBS through the same public-pose API as the original layer.
-            from .body import SOMALayer
+            from ..body import SOMALayer
 
             template_rig_path = getattr(soma_layer, "procedural_template_rig_path", None)
             self.soma = SOMALayer(
@@ -1218,19 +1218,27 @@ class PoseInversion:
             kwargs: optional dict passed to the identity model's ``get_rest_shape``.
         """
         soma = self.soma
-        soma.prepare_identity(
-            identity_coeffs,
-            scale_params,
-            repose_to_bind_pose=repose_to_bind_pose,
-            kwargs=kwargs,
-        )
-        if self._autograd_soma is not None and self._autograd_soma is not soma:
-            self._autograd_soma.prepare_identity(
+        # Pose inversion never differentiates through the identity model, but
+        # the layer's identity caches (rest shape, bind transforms, skinning
+        # local translations) would otherwise keep the identity model's
+        # autograd graph alive.  The autograd FK refinement then backpropagates
+        # through those cached tensors on its first step, frees the shared
+        # graph, and the second step fails with "Trying to backward through the
+        # graph a second time".
+        with torch.no_grad():
+            soma.prepare_identity(
                 identity_coeffs,
                 scale_params,
                 repose_to_bind_pose=repose_to_bind_pose,
                 kwargs=kwargs,
             )
+            if self._autograd_soma is not None and self._autograd_soma is not soma:
+                self._autograd_soma.prepare_identity(
+                    identity_coeffs,
+                    scale_params,
+                    repose_to_bind_pose=repose_to_bind_pose,
+                    kwargs=kwargs,
+                )
 
         public_view = soma.public_rig_view() if hasattr(soma, "public_rig_view") else None
         bind_world = (

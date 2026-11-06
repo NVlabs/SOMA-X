@@ -3,12 +3,14 @@
 
 import pytest
 import torch
+from scipy.spatial.transform import Rotation
 
 from soma.geometry.lbs import batch_rodrigues
 from soma.geometry.transforms import (
     euler_xyz_to_matrix,
     matrix_to_quaternion_xyzw,
     matrix_to_quaternion_xyzw_stable,
+    matrix_to_rotvec,
     project_rotations_to_so3,
     quaternion_conjugate_xyzw,
     quaternion_exp_xyzw,
@@ -17,8 +19,92 @@ from soma.geometry.transforms import (
     quaternion_normalize_xyzw,
     quaternion_twist_angle_xyzw,
     quaternion_xyzw_to_matrix,
+    rotvec_to_matrix,
     single_axis_rotation_matrices,
 )
+
+
+@pytest.mark.parametrize("dtype", [torch.float32, torch.float64])
+@pytest.mark.parametrize("batched", [False, True])
+def test_rotvec_to_matrix_matches_scipy(dtype, batched):
+    rotvecs = torch.tensor(
+        [
+            [0.0, 0.0, 0.0],
+            [0.0, 0.0, 5e-9],
+            [0.0, 0.0, 5e-7],
+            [0.0, 0.0, 1e-6],
+            [1e-4, -2e-4, 3e-4],
+            [0.2, -0.4, 0.7],
+            [0.0, 0.0, torch.pi / 2],
+            [torch.pi - 1e-5, 0.0, 0.0],
+        ],
+        dtype=dtype,
+    )
+    expected = torch.tensor(Rotation.from_rotvec(rotvecs.numpy()).as_matrix(), dtype=dtype)
+    if batched:
+        actual = rotvec_to_matrix(rotvecs.reshape(2, 4, 3)).reshape(-1, 3, 3)
+    else:
+        actual = torch.stack([rotvec_to_matrix(vector) for vector in rotvecs])
+
+    tolerance = 1e-6 if dtype == torch.float32 else 1e-12
+    torch.testing.assert_close(actual, expected, atol=tolerance, rtol=tolerance)
+    torch.testing.assert_close(
+        actual.transpose(-1, -2) @ actual,
+        torch.eye(3, dtype=dtype).expand_as(actual),
+        atol=tolerance,
+        rtol=tolerance,
+    )
+    torch.testing.assert_close(
+        torch.linalg.det(actual), torch.ones(8, dtype=dtype), atol=tolerance, rtol=tolerance
+    )
+
+
+@pytest.mark.parametrize("dtype", [torch.float32, torch.float64])
+@pytest.mark.parametrize("batched", [False, True])
+def test_matrix_to_rotvec_matches_scipy_for_small_and_regular_angles(dtype, batched):
+    vectors = [
+        [0.0, 0.0, 0.0],
+        [0.0, 0.0, 5e-7],
+        [1e-5, -2e-5, 3e-5],
+        [0.0, 0.0, 1e-4],
+        [0.0, 0.0, 9e-4],
+        [0.0, 0.0, 1.1e-3],
+        [0.2, -0.4, 0.7],
+        [0.0, 0.0, torch.pi / 2],
+    ]
+    matrices = torch.tensor(Rotation.from_rotvec(vectors).as_matrix(), dtype=dtype)
+    expected = torch.tensor(vectors, dtype=dtype)
+    if batched:
+        actual = matrix_to_rotvec(matrices.reshape(2, 4, 3, 3)).reshape(-1, 3)
+    else:
+        actual = torch.stack([matrix_to_rotvec(matrix) for matrix in matrices])
+
+    tolerance = 1e-5 if dtype == torch.float32 else 1e-12
+    torch.testing.assert_close(actual, expected, atol=tolerance, rtol=tolerance)
+
+
+@pytest.mark.parametrize("dtype", [torch.float32, torch.float64])
+def test_rotvec_to_matrix_identity_jacobian(dtype):
+    vector = torch.zeros(3, dtype=dtype, requires_grad=True)
+    jacobian = torch.autograd.functional.jacobian(rotvec_to_matrix, vector)
+    # Infinitesimal rotation about each axis acts by its cross product.
+    basis = torch.eye(3, dtype=dtype)
+    expected = torch.stack(
+        [torch.linalg.cross(axis.expand_as(basis), basis, dim=-1).T for axis in basis],
+        dim=-1,
+    )
+
+    torch.testing.assert_close(jacobian, expected)
+
+
+def test_rotvec_to_matrix_gradcheck():
+    vectors = torch.tensor(
+        [[0.0, 0.0, 0.0], [1e-7, -2e-7, 3e-7], [0.2, -0.4, 0.7]],
+        dtype=torch.float64,
+        requires_grad=True,
+    )
+
+    assert torch.autograd.gradcheck(rotvec_to_matrix, (vectors,), eps=1e-8)
 
 
 def test_matrix_to_quaternion_xyzw_round_trips_rotation_matrices():

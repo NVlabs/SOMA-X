@@ -357,6 +357,14 @@ class TestInvert:
         assert mean_err < 0.01, f"Mean vertex error too high: {mean_err:.6f} m"
         assert max_err < 0.05, f"Max vertex error too high: {max_err:.6f} m"
 
+    def test_autograd_refinement_runs_multiple_steps(self, soma_and_inv):
+        """autograd_iters > 1 must not fail with a second backward through
+        the identity caches built by prepare_identity()."""
+        soma, inv = soma_and_inv
+        verts, _ = _load_motion(soma, frames=[0])
+        result = inv.fit(verts, lie_iters=0, autograd_iters=3)
+        assert result["per_vertex_error"].mean().item() < 0.02
+
     def test_batch_roundtrip(self, soma_and_inv):
         """Multiple diverse frames: consistent low error across batch."""
         soma, inv = soma_and_inv
@@ -616,12 +624,10 @@ class TestLieAlgebraGN:
         weighted_heel_err = weighted["per_vertex_error"][:, heel_ids].mean()
         assert weighted_heel_err < 0.5 * unweighted_heel_err
 
-    @pytest.mark.parametrize("allow_tf32", [False, True])
-    def test_lie_gn_after_analytical(self, soma_and_inv, monkeypatch, allow_tf32):
+    @pytest.mark.parametrize("fp32_precision", ["ieee", "tf32"])
+    def test_lie_gn_after_analytical(self, soma_and_inv, monkeypatch, fp32_precision):
         """Lie-GN should not significantly worsen its own analytical warm start."""
-        monkeypatch.setattr(torch.backends.cuda.matmul, "allow_tf32", allow_tf32)
         soma, inv = soma_and_inv
-        verts, _ = _load_motion(soma, frames=[0, 100, 300, 600])
 
         # Fused GPU reductions can produce different analytical fits, especially
         # with TF32. Capture this call's warm start instead of fitting twice.
@@ -634,7 +640,9 @@ class TestLieAlgebraGN:
             return result
 
         monkeypatch.setattr(inv, "_fit_analytical", capture_analytical)
-        result_combined = inv.fit(verts, body_iters=2, full_iters=1, lie_iters=3)
+        with torch.backends.flags(fp32_precision=fp32_precision):
+            verts, _ = _load_motion(soma, frames=[0, 100, 300, 600])
+            result_combined = inv.fit(verts, body_iters=2, full_iters=1, lie_iters=3)
         assert len(analytical_results) == 1
         result_analytical = analytical_results[0]
 

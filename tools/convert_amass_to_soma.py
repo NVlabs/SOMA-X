@@ -44,6 +44,7 @@ from soma.geometry.rig_utils import remove_joint_orient_local
 from soma.geometry.transforms import matrix_to_rotvec
 from soma.io import add_npz_args, save_soma_npz
 from soma.units import Unit
+from tools.conversion_utils import resolve_joint_orient
 from tools.logging_utils import add_logging_args, configure_logging
 from tools.vis_pyrender import (
     default_pyopengl_platform,
@@ -227,15 +228,15 @@ def convert_amass_sequence(amass_data, args, smpl_model, inv, device="cuda"):
 def _save_conversion(conv, inv, args, output_path):
     """Save conversion result to a SOMA .npz file."""
     _soma = inv.soma
-    orient_device = _soma._t_pose_orient.device
-    rotations = conv["rotations"].to(orient_device)
+    rotations = conv["rotations"]
+    orient, orient_parent_T, joint_names = resolve_joint_orient(_soma, rotations.shape[1])
+    orient = orient.to(device=rotations.device, dtype=rotations.dtype)
+    orient_parent_T = orient_parent_T.to(device=rotations.device, dtype=rotations.dtype)
     root_transl = conv["root_transl"]
     betas = conv["betas"]
 
     # Convert absolute -> relative, matrix -> rotvec
-    rel_rotations = remove_joint_orient_local(
-        rotations, _soma._t_pose_orient, _soma._t_pose_orient_parent_T
-    )
+    rel_rotations = remove_joint_orient_local(rotations, orient, orient_parent_T)
     poses_rotvec = matrix_to_rotvec(rel_rotations.reshape(-1, 3, 3)).reshape(
         rotations.shape[0], rotations.shape[1], 3
     )
@@ -250,10 +251,10 @@ def _save_conversion(conv, inv, args, output_path):
         output_path,
         poses_rotvec,
         save_transl,
-        joint_names=list(_soma.rig_data["joint_names"]),
+        joint_names=joint_names,
         identity_model_type=_soma.identity_model_type,
         identity_coeffs=betas[:1],
-        joint_orient=_soma._t_pose_orient,
+        joint_orient=orient,
         unit=args.output_unit,
         keep_root=args.keep_root,
         extra_arrays={"per_vertex_error": conv["per_vertex_error"]},

@@ -3,7 +3,7 @@
 
 """Public SOMA-X package exports."""
 
-__version__ = "0.3.5"
+__version__ = "0.3.6"
 
 import sys as _sys
 

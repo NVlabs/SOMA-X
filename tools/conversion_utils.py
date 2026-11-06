@@ -148,6 +148,32 @@ def add_hand_inversion_args(
 # ---------------------------------------------------------------------------
 
 
+def resolve_joint_orient(soma, num_joints):
+    """Joint-orient tensors matching ``num_joints`` rotations from ``soma``.
+
+    Procedural layers skin an expanded target skeleton (110 joints) while
+    ``PoseInversion.fit`` and ``SOMALayer.pose`` operate on the public skeleton
+    (78 joints).  ``soma._t_pose_orient`` is sized to the target skeleton, so
+    applying it to public rotations raises a size mismatch (110 vs 78).
+
+    Returns:
+        ``(orient, orient_parent_T, joint_names)`` sized to ``num_joints``.
+    """
+    orient = getattr(soma, "_t_pose_orient", None)
+    if orient is not None and orient.shape[0] == num_joints:
+        return orient, soma._t_pose_orient_parent_T, list(soma.rig_data["joint_names"])
+    public_names = list(getattr(soma, "public_joint_names", ()))
+    if len(public_names) == num_joints and hasattr(soma, "public_joint_orient"):
+        orient, orient_parent_T = soma.public_joint_orient()
+        return orient, orient_parent_T, public_names
+    raise ValueError(
+        "Cannot resolve joint orient for rotations with "
+        f"{num_joints} joints: layer target skeleton has "
+        f"{None if orient is None else orient.shape[0]} joints and public skeleton has "
+        f"{len(public_names)}."
+    )
+
+
 def export_soma_npz(
     output_path,
     rotations,
@@ -177,10 +203,9 @@ def export_soma_npz(
         scale_params: (N, S) scale parameters to store (MHR only).
         extra_arrays: dict of additional arrays to store in the NPZ.
     """
-    orient = soma._t_pose_orient.to(device=rotations.device, dtype=rotations.dtype)
-    orient_parent_T = soma._t_pose_orient_parent_T.to(
-        device=rotations.device, dtype=rotations.dtype
-    )
+    orient, orient_parent_T, joint_names = resolve_joint_orient(soma, rotations.shape[1])
+    orient = orient.to(device=rotations.device, dtype=rotations.dtype)
+    orient_parent_T = orient_parent_T.to(device=rotations.device, dtype=rotations.dtype)
     rel_rotations = remove_joint_orient_local(rotations, orient, orient_parent_T)
     poses_rotvec = matrix_to_rotvec(rel_rotations.reshape(-1, 3, 3)).reshape(
         rotations.shape[0], rotations.shape[1], 3
@@ -196,7 +221,7 @@ def export_soma_npz(
         output_path,
         poses_rotvec,
         save_transl,
-        joint_names=list(soma.rig_data["joint_names"]),
+        joint_names=joint_names,
         identity_model_type=soma.identity_model_type,
         identity_coeffs=identity_coeffs,
         scale_params=scale_params,

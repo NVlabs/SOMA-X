@@ -687,9 +687,9 @@ def matrix_to_rotvec(R: torch.Tensor, eps: float = 1e-6) -> torch.Tensor:
     S = R - R.swapaxes(-2, -1)
     v = torch.stack(
         [
-            S[..., 2, 1] - S[..., 1, 2],
-            S[..., 0, 2] - S[..., 2, 0],
-            S[..., 1, 0] - S[..., 0, 1],
+            S[..., 2, 1],
+            S[..., 0, 2],
+            S[..., 1, 0],
         ],
         dim=-1,
     )
@@ -739,16 +739,15 @@ def rotvec_to_matrix(rotvec: torch.Tensor, eps: float = 1e-8) -> torch.Tensor:
         raise ValueError(f"Expected (...,3), got {rotvec.shape}")
 
     theta = torch.linalg.norm(rotvec, dim=-1)
-    denom = torch.where(theta < eps, eps, theta)[..., None]
-    axis = rotvec / denom
 
+    # The coefficients below use the skew matrix of the unnormalized vector.
     K = torch.zeros(rotvec.shape[:-1] + (3, 3), dtype=rotvec.dtype, device=rotvec.device)
-    K[..., 0, 1] = -axis[..., 2]
-    K[..., 0, 2] = axis[..., 1]
-    K[..., 1, 0] = axis[..., 2]
-    K[..., 1, 2] = -axis[..., 0]
-    K[..., 2, 0] = -axis[..., 1]
-    K[..., 2, 1] = axis[..., 0]
+    K[..., 0, 1] = -rotvec[..., 2]
+    K[..., 0, 2] = rotvec[..., 1]
+    K[..., 1, 0] = rotvec[..., 2]
+    K[..., 1, 2] = -rotvec[..., 0]
+    K[..., 2, 0] = -rotvec[..., 1]
+    K[..., 2, 1] = rotvec[..., 0]
 
     eye = torch.eye(3, dtype=rotvec.dtype, device=rotvec.device)
 

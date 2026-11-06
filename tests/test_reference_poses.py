@@ -504,25 +504,25 @@ def test_current_asset_bundle_can_replay_historical_reference_offline(monkeypatc
             )
 
 
-def test_float32_reference_validation_with_tf32_enabled(layer, monkeypatch):
+def test_float32_reference_validation_with_tf32_enabled(layer):
     """Saved float32 references must validate even when CUDA GEMMs use TF32."""
-    if layer.device.type == "cuda":
-        # Exercise the production precision setting and restore it after this test.
-        monkeypatch.setattr(torch.backends.cuda.matmul, "allow_tf32", True)
-    angles, reference = _inputs(layer)
-    assert reference.dtype == torch.float32
-    torch.testing.assert_close(
-        validate_reference_pose(reference, len(layer.public_joint_names)),
-        reference,
-        rtol=0,
-        atol=0,
-    )
-    out = layer.pose(angles, reference_pose=reference, apply_correctives=False)
-    assert all(torch.isfinite(value).all() for value in out.values())
-    malformed = reference.clone()
-    malformed[2] *= 1.001
-    with pytest.raises(ValueError, match="orthonormal"):
-        validate_reference_pose(malformed, len(layer.public_joint_names))
+    # Exercise the production precision setting; the context restores it afterwards.
+    precision = "tf32" if layer.device.type == "cuda" else "none"
+    with torch.backends.flags(fp32_precision=precision):
+        angles, reference = _inputs(layer)
+        assert reference.dtype == torch.float32
+        torch.testing.assert_close(
+            validate_reference_pose(reference, len(layer.public_joint_names)),
+            reference,
+            rtol=0,
+            atol=0,
+        )
+        out = layer.pose(angles, reference_pose=reference, apply_correctives=False)
+        assert all(torch.isfinite(value).all() for value in out.values())
+        malformed = reference.clone()
+        malformed[2] *= 1.001
+        with pytest.raises(ValueError, match="orthonormal"):
+            validate_reference_pose(malformed, len(layer.public_joint_names))
 
 
 def test_reference_cast_preserves_gradient(layer):

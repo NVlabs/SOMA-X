@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.3.6
+
+Changes from v0.3.5:
+
+- Fixes rotation-vector conversion scaling, including tiny-angle conversion and
+  the derivative at zero rotation.
+- Fixes low-LOD pose inversion layer construction.
+- Fixes NPZ export of public-joint rotations and joint names with procedural
+  skeletons, including AMASS conversion.
+- Prevents repeated autograd pose-refinement steps from reusing a freed identity
+  graph.
+
+Thanks to Daniel Elebash (@delebash) for reporting the `rotvec_to_matrix`
+scaling error and identifying the raw-vector correction in
+[issue #23](https://github.com/NVlabs/SOMA-X/issues/23).
+
+Thanks to Fei Teng (@SAKUrie) for the pose-inversion and export fixes in
+[PR #19](https://github.com/NVlabs/SOMA-X/pull/19),
+[PR #20](https://github.com/NVlabs/SOMA-X/pull/20), and
+[PR #22](https://github.com/NVlabs/SOMA-X/pull/22).
+
 ## v0.3.5
 
 Changes from v0.3.4:

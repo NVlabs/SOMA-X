@@ -1,0 +1,4 @@
+# Inputs for the CI test-environment lock, together with setup.cfg extras
+# `all` and `dev`. Bump pins here, then regenerate requirements-test.txt with
+# the command in its header.
+torch==2.14.1

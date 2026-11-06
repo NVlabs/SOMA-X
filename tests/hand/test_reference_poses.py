@@ -286,19 +286,19 @@ def test_absolute_reference_conflict_fails_before_identity_mutation(prepared_han
     assert hand._cached_bind_transforms_world is bind
 
 
-def test_float32_getter_can_be_passed_to_pose(hand, monkeypatch):
+def test_float32_getter_can_be_passed_to_pose(hand):
     # Getter output must remain valid with reduced-precision CUDA matmul enabled.
-    if hand.bind_pose_world.device.type == "cuda":
-        monkeypatch.setattr(torch.backends.cuda.matmul, "allow_tf32", True)
+    precision = "tf32" if hand.bind_pose_world.device.type == "cuda" else "none"
     hand.float()
     try:
-        hand.prepare_identity(hand.bind_shape.new_zeros(1, hand.num_shape_components))
-        reference = hand.get_reference_pose(**SELECTOR)
-        assert reference.dtype == torch.float32
-        assert reference.device == hand.bind_pose_world.device
-        angles = _angles(hand)
-        actual = hand.pose(angles, reference_pose=reference)
-        expected = hand.pose(angles)
-        _assert_output_close(actual, expected)
+        with torch.backends.flags(fp32_precision=precision):
+            hand.prepare_identity(hand.bind_shape.new_zeros(1, hand.num_shape_components))
+            reference = hand.get_reference_pose(**SELECTOR)
+            assert reference.dtype == torch.float32
+            assert reference.device == hand.bind_pose_world.device
+            angles = _angles(hand)
+            actual = hand.pose(angles, reference_pose=reference)
+            expected = hand.pose(angles)
+            _assert_output_close(actual, expected)
     finally:
         hand.double()

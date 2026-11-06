@@ -1101,6 +1101,28 @@ class SOMALayer(nn.Module):
         """Names of the public SOMA joints returned by :meth:`pose`."""
         return tuple(str(name) for name in self._public_joint_names)
 
+    def public_joint_orient(self) -> tuple[torch.Tensor, torch.Tensor]:
+        """Joint-orient tensors for the public joints returned by :meth:`pose`.
+
+        Procedural layers keep an expanded target skeleton (e.g. 110 joints with
+        twist helpers) for skinning, so ``_t_pose_orient`` is sized to the target
+        skeleton.  Rotations produced by :meth:`pose`, ``PoseInversion.fit`` and
+        the conversion tools are sized to the public skeleton (78 joints).  Use
+        this when converting those rotations between absolute and T-pose-relative
+        conventions.
+
+        Returns:
+            ``(orient, orient_parent_T)`` as produced by
+            :func:`~soma.geometry.rig_utils.precompute_joint_orient`, both
+            ``(J_public, 3, 3)``.
+        """
+        if self.t_pose_world is None:
+            raise ValueError("This layer has no T-pose reference; joint orient is unavailable.")
+        public_indices = self.public_transform_joint_indices.to(self.t_pose_world.device)
+        t_pose_world = self.t_pose_world[public_indices]
+        parent_ids = self.public_joint_parent_ids.to(t_pose_world.device)
+        return precompute_joint_orient(t_pose_world, parent_ids)
+
     @property
     def target_joint_names(self) -> tuple[str, ...]:
         """Names of the internal target skinning joints."""
