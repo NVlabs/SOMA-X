@@ -113,9 +113,10 @@ licensed MANO models are not redistributed.
 ## Related projects
 
 - [GEM-X](https://github.com/NVlabs/GEM-X) — SOMA-based video pose estimation.
+- [EgoHand](https://github.com/NVlabs/GEM-X) - SOMA-based hand pose estimation.
 - [Kimodo](https://github.com/nv-tlabs/kimodo) — controllable text-to-motion generation. 
 - [ARDY](https://research.nvidia.com/labs/sil/projects/ardy/) — an autoregressive diffusion model designed for interactive motion generation. 
-- [MotionBricks](https://nvlabs.github.io/motionbricks/) — a real-time motion in-betweener. 
+- [MotionBricks](https://nvlabs.github.io/motionbricks/) — a real-time motion in-betweener.
 - [BONES-SEED](https://huggingface.co/datasets/bones-studio/seed) — human and humanoid motion dataset in SOMA format.
 - [SOMA Retargeter](https://github.com/NVIDIA/soma-retargeter) — SOMA-to-Humanoid retargeting.
 - [ProtoMotions](https://github.com/NVlabs/ProtoMotions) — physically simulated character learning.
